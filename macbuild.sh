@@ -4,6 +4,7 @@ git push https://hairmachine:$1@github.com/HairMachine/megarogue master
 
 ssh macair@139.59.173.86 << EOF
   cd megarogue
+  git pull origin master
   make
   git add out.bin
   git commit -m "Automated build commit"
