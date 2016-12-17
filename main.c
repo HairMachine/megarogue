@@ -23,7 +23,7 @@ void tile_draw(enum tile tilenum, int x, int y) {
 		case TIL_NULL: break;
 		case TIL_FLOOR: VDP_drawText(" ", x, y); break;
 		case TIL_WALL: VDP_drawText("#", x, y); break;
-		case TIL_GOBLIN: VDP_drawText("g", x, y); break;
+		case TIL_GOBLIN: VDP_drawText("G", x, y); break;
 		case TIL_PLAYER: VDP_drawText("0", x, y); break;
 	}
 }
