@@ -3,7 +3,7 @@ git commit -m "$2"
 git push https://hairmachine:$1@github.com/HairMachine/megarogue master
 
 ssh macair@139.59.173.86 << EOF
-  cd megarogue
+  cd gendev/megarogue
   git pull origin master
   make
   git add out.bin
