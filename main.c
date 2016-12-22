@@ -110,6 +110,7 @@ struct Thing {
 	enum FLAGS flags;
 	enum tile til;
 	int damage;
+	int range;
 };
 
 struct vect2d {
@@ -146,9 +147,6 @@ int in_range(int v, int l, int u) {
 
 int gsrand(int min, int max) {
 	u16 val = random() & 255;
-	//char str[15];
-	//sprintf(str, "%d %d %d", val, min, max);
-	//VDP_drawText(str, 5, 0);
 	while (in_range(val, min, max) == 0)
 		val = random() & 255;
 	return val;
@@ -202,7 +200,7 @@ void redraw_tiles() {
 	for (j = 0; j < maparraysize; ++j) {
 		absx = abs(player.xpos - x);
 		absy = abs(player.ypos - y);
-		if (absx < 5 && absy < 5)
+		if (absx < player.range && absy < player.range)
 			tile_draw(maparray[j], x, y);
 		else
 			tile_draw(TIL_NULL, x, y);
@@ -219,7 +217,7 @@ void redraw_things() {
 	for (k = 0; k < 32; ++k) {
 		absx = abs(player.xpos - things[k].xpos);
 		absy = abs(player.ypos - things[k].ypos);
-		if (things[k].til > TIL_NULL && absx < 5 && absy < 5)
+		if (things[k].til > TIL_NULL && absx < player.range && absy < player.range)
 			sprite_set(k, things[k].til, things[k].xpos, things[k].ypos);
 		else
 			sprite_set(k, things[k].til, -1, -1); // thing is drawn in the non-display zone so it vanishes
@@ -279,6 +277,7 @@ struct Thing thing_make(enum tile t, int x, int y) {
 	thing.til = t;
 	thing.xpos = x;
 	thing.ypos = y;
+	thing.range = 5;
 	switch (t) {
 		case TIL_PLAYER:
 			thing.hp = 20;
@@ -407,12 +406,16 @@ void thing_move(struct Thing *t, enum direction d) {
 			t->xpos--;
 			break;
 	}
-
-	//redraw_things();
 }
 
 void thing_move_toward(struct Thing *t, int xpos, int ypos) {
 	if (!(t->flags & FL_MOVES))
+		return;
+
+	int absx, absy;
+	absx = abs(xpos - t->xpos);
+	absy = abs(ypos - t->ypos);
+	if (absx >= t->range || absy >= t->range)
 		return;
 
 	int x_dir = t->xpos - xpos;
@@ -656,11 +659,6 @@ void level_generate() {
 	while (1) {
 		ntc = level_get_first_unconnected();
 		if (ntc.x == -1) break;
-
-		char str[15];
-		sprintf(str, "%d, %d", ntc.x, ntc.y);
-		VDP_drawText(str, 5, wtf);
-		VDP_drawText("    ", 5, wtf + 2);
 
 		rtcx = ntc.x;
 		rtcy = ntc.y;
