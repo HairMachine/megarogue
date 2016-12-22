@@ -1,14 +1,28 @@
 #include <genesis.h>
+#include "res/testm.h"
 
-enum direction { DIR_NORTH, DIR_EAST, DIR_SOUTH, DIR_WEST };
+enum direction {
+	DIR_NORTH, DIR_EAST, DIR_SOUTH, DIR_WEST
+};
 
 enum tile {
 	TIL_NULL, TIL_FLOOR, TIL_WALL, TIL_PLAYER, TIL_GOBLIN, TIL_STAIRS, TIL_MACGUFFIN,
 	TIL_WPN, TIL_POTION, TIL_SCROLL
 };
 
+const u32 tile_null[8] = {
+		0x00000000,
+		0x00000000,
+		0x00000000,
+		0x00000000,
+		0x00000000,
+		0x00000000,
+		0x00000000,
+		0x00000000
+};
+
 const u32 tile_wall[8] = {
-    0x11111111,
+		0x11111111,
 		0x11111111,
 		0x11111111,
 		0x11111111,
@@ -85,7 +99,9 @@ const u32 tile_scroll[8] = {
 };
 
 
-enum FLAGS { FL_NONE = 0, FL_MOVES = 1, FL_PASSTHRU = 2};
+enum FLAGS {
+	FL_NONE = 0, FL_MOVES = 1, FL_PASSTHRU = 2
+};
 
 struct Thing {
 	int xpos;
@@ -106,74 +122,90 @@ const int maparraysize = 784;
 const int roomsize = 8;
 enum tile maparray[784];
 struct Thing things[32];
+Sprite sprite[33];
 struct Thing player;
 struct Thing empty;
 struct Thing blocker;
 int connections[9] = {
-    0, 0, 0,
-    0, 0, 0,
-    0, 0, 0
+		0, 0, 0,
+		0, 0, 0,
+		0, 0, 0
 };
 int depth = 0;
 int maxdepth = 15;
+
 void level_generate();
-void thing_interact(struct Thing* subj, struct Thing* obj);
-struct Equipment player_e = {WP_UNARMED, AR_NONE};
+
+void thing_interact(struct Thing *subj, struct Thing *obj);
 
 int in_range(int v, int l, int u) {
-    if (v >= l && v <= u) 
-        return 1;
-    return 0;
+	if (v >= l && v <= u)
+		return 1;
+	return 0;
 }
 
 int gsrand(int min, int max) {
-    u16 val = random() & 255;
-    //char str[15];
-    //sprintf(str, "%d %d %d", val, min, max);
-    //VDP_drawText(str, 5, 0);
-    while (in_range(val, min, max) == 0)    
-        val = random() & 255;
-    return val;
+	u16 val = random() & 255;
+	//char str[15];
+	//sprintf(str, "%d %d %d", val, min, max);
+	//VDP_drawText(str, 5, 0);
+	while (in_range(val, min, max) == 0)
+		val = random() & 255;
+	return val;
 }
 
 void tile_draw(enum tile tilenum, int x, int y) {
 	//return;
 	switch (tilenum) {
 		case TIL_NULL:
+			VDP_setTileMapXY(APLAN, 8, x, y);
+			break;
 		case TIL_FLOOR:
 			VDP_setTileMapXY(APLAN, 3, x, y);
 			break;
 		case TIL_WALL:
 			VDP_setTileMapXY(APLAN, 1, x, y);
 			break;
+
+	}
+}
+
+void sprite_set(int id, enum tile tilenum, int x, int y) {
+	switch (tilenum) {
 		case TIL_GOBLIN:
-			VDP_setTileMapXY(APLAN, TILE_ATTR_FULL(PAL2, 0, 1, 0, 1), x, y);
+			SPR_initSprite(&sprite[id], &testm, x * 8, y * 8, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
 			break;
 		case TIL_PLAYER:
-			VDP_setTileMapXY(APLAN, 4, x, y);
+			SPR_initSprite(&sprite[id], &testm, x * 8, y * 8, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
 			break;
 		case TIL_STAIRS:
-			VDP_setTileMapXY(APLAN, 2, x, y);
+			SPR_initSprite(&sprite[id], &testm, x * 8, y * 8, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
 			break;
 		case TIL_MACGUFFIN:
-			VDP_setTileMapXY(APLAN, 1, x, y);
-			break;
-		case TIL_WPN:
-			VDP_setTileMapXY(APLAN, 5, x, y);
+			SPR_initSprite(&sprite[id], &testm, x * 8, y * 8, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
 			break;
 		case TIL_POTION:
-			VDP_setTileMapXY(APLAN, 6, x, y);
+			SPR_initSprite(&sprite[id], &testm, x * 8, y * 8, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
 			break;
 		case TIL_SCROLL:
-			VDP_setTileMapXY(APLAN, 7, x, y);
+			SPR_initSprite(&sprite[id], &testm, x * 8, y * 8, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
+			break;
+		default:
+			// actually should de-initialise the sprite rather than drawing it offscreen
+			SPR_initSprite(&sprite[id], &testm, -8, -8, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
 			break;
 	}
 }
 
 void redraw_tiles() {
-	int x = 0, y = 0, j = 0;
+	int x = 0, y = 0, j = 0, absx = 0, absy = 0;
 	for (j = 0; j < maparraysize; ++j) {
-		tile_draw(maparray[j], x, y);
+		absx = abs(player.xpos - x);
+		absy = abs(player.ypos - y);
+		if (absx < 5 && absy < 5)
+			tile_draw(maparray[j], x, y);
+		else
+			tile_draw(TIL_NULL, x, y);
 		++x;
 		if (x >= mapsize) {
 			x = 0;
@@ -183,13 +215,18 @@ void redraw_tiles() {
 }
 
 void redraw_things() {
-	int k = 0;
+	int k = 0, absx = 0, absy = 0;
 	for (k = 0; k < 32; ++k) {
-		if (things[k].til > TIL_NULL)
-			tile_draw(things[k].til, things[k].xpos, things[k].ypos);
+		absx = abs(player.xpos - things[k].xpos);
+		absy = abs(player.ypos - things[k].ypos);
+		if (things[k].til > TIL_NULL && absx < 5 && absy < 5)
+			sprite_set(k, things[k].til, things[k].xpos, things[k].ypos);
+		else
+			sprite_set(k, things[k].til, -1, -1); // thing is drawn in the non-display zone so it vanishes
 	}
 	// and the player on top
-	tile_draw(player.til, player.xpos, player.ypos);
+	sprite_set(32, player.til, player.xpos, player.ypos);
+	SPR_update(sprite, 33);
 }
 
 void draw_health() {
@@ -208,7 +245,7 @@ void screen_game() {
 	// main screen
 	redraw_tiles();
 	redraw_things();
-	tile_draw(player.til, player.xpos, player.ypos);
+	//tile_draw(player.til, player.xpos, player.ypos);
 	// sidebar
 	draw_health();
 	draw_depth();
@@ -293,13 +330,21 @@ void things_generate() {
 		things[31] = thing_put(TIL_MACGUFFIN);
 }
 
-struct Thing* thing_collide(struct Thing* t, enum direction dir) {
+struct Thing *thing_collide(struct Thing *t, enum direction dir) {
 	int xm = 0, ym = 0;
 	switch (dir) {
-		case DIR_NORTH: ym = -1; break;
-		case DIR_EAST: xm = 1; break;
-		case DIR_SOUTH: ym = 1; break;
-		case DIR_WEST: xm = -1; break; 
+		case DIR_NORTH:
+			ym = -1;
+			break;
+		case DIR_EAST:
+			xm = 1;
+			break;
+		case DIR_SOUTH:
+			ym = 1;
+			break;
+		case DIR_WEST:
+			xm = -1;
+			break;
 	}
 	// check wall
 	int til_i = ((t->ypos + ym) * mapsize) + (t->xpos + xm);
@@ -320,22 +365,22 @@ struct Thing* thing_collide(struct Thing* t, enum direction dir) {
 	return &empty;
 }
 
-void thing_destroy(struct Thing* t) {
+void thing_destroy(struct Thing *t) {
 	if (t->til == TIL_PLAYER)
 		screen_dead();
 	tile_draw(TIL_FLOOR, t->xpos, t->ypos);
 	*t = thing_make(TIL_NULL, 0, 0);
 }
 
-void thing_damage(struct Thing* t, int damage) {
+void thing_damage(struct Thing *t, int damage) {
 	t->hp -= damage;
 	if (t->til == TIL_PLAYER)
 		draw_health();
 	if (t->hp <= 0) thing_destroy(t);
 }
 
-void thing_move(struct Thing* t, enum direction d) {
-	struct Thing* collided = thing_collide(t, d);
+void thing_move(struct Thing *t, enum direction d) {
+	struct Thing *collided = thing_collide(t, d);
 	// This looks weird but is for a reason: if a blocking thing is destroyed by an interaction we still want it to act
 	// as a blocker
 	if (!(collided->flags & FL_PASSTHRU)) {
@@ -347,34 +392,26 @@ void thing_move(struct Thing* t, enum direction d) {
 	switch (d) {
 		case DIR_NORTH:
 			if (t->ypos <= 0) return;
-			tile_draw(t->til, t->xpos, t->ypos - 1);
-        	tile_draw(maparray[(t->ypos * mapsize) + t->xpos], t->xpos, t->ypos);
-        	t->ypos--;
-        	break;
-        case DIR_EAST:
-        	if (t->xpos >= mapsize) return;
-        	tile_draw(t->til, t->xpos + 1, t->ypos);
-        	tile_draw(maparray[(t->ypos * mapsize) + t->xpos], t->xpos, t->ypos);
-        	t->xpos++;
-        	break;
-        case DIR_SOUTH:
-        	if (t->ypos >= mapsize) return;
-        	tile_draw(t->til, t->xpos, t->ypos + 1);
-        	tile_draw(maparray[(t->ypos * mapsize) + t->xpos], t->xpos, t->ypos);
-        	t->ypos++;
-        	break;
-    	case DIR_WEST:
-    		if (t->xpos <= 0) return;
-    		tile_draw(t->til, t->xpos - 1, t->ypos);
-        	tile_draw(maparray[(t->ypos * mapsize) + t->xpos], t->xpos, t->ypos);
-        	t->xpos--;
-        	break;
+			t->ypos--;
+			break;
+		case DIR_EAST:
+			if (t->xpos >= mapsize) return;
+			t->xpos++;
+			break;
+		case DIR_SOUTH:
+			if (t->ypos >= mapsize) return;
+			t->ypos++;
+			break;
+		case DIR_WEST:
+			if (t->xpos <= 0) return;
+			t->xpos--;
+			break;
 	}
 
-	redraw_things();
+	//redraw_things();
 }
 
-void thing_move_toward(struct Thing* t, int xpos, int ypos) {
+void thing_move_toward(struct Thing *t, int xpos, int ypos) {
 	if (!(t->flags & FL_MOVES))
 		return;
 
@@ -414,7 +451,7 @@ void thing_move_toward(struct Thing* t, int xpos, int ypos) {
 	}
 }
 
-void thing_interact(struct Thing* subj, struct Thing* obj) {
+void thing_interact(struct Thing *subj, struct Thing *obj) {
 	switch (obj->til) {
 		case TIL_GOBLIN:
 		case TIL_PLAYER:
@@ -444,105 +481,105 @@ void thing_interact(struct Thing* subj, struct Thing* obj) {
 }
 
 void level_generate_room(int minx, int miny, int maxx, int maxy) {
-    int sizex = 0;
-    int sizey = 0;
-    while (sizex - minx < 3 || sizey - miny < 3) {
-        sizex = gsrand(minx, maxx);
-        sizey = gsrand(miny, maxy);
-    }
-    int offsx = gsrand(0, maxx - sizex);
-    int offsy = gsrand(0, maxy - sizey);
-    int x;
-    int y;
-    for (x = minx + offsx; x < sizex + offsx; ++x) {
-        for (y = miny + offsy; y < sizey + offsy; ++y) {
-            maparray[x + (y * mapsize)] = TIL_FLOOR;
-        }
-    }
+	int sizex = 0;
+	int sizey = 0;
+	while (sizex - minx < 3 || sizey - miny < 3) {
+		sizex = gsrand(minx, maxx);
+		sizey = gsrand(miny, maxy);
+	}
+	int offsx = gsrand(0, maxx - sizex);
+	int offsy = gsrand(0, maxy - sizey);
+	int x;
+	int y;
+	for (x = minx + offsx; x < sizex + offsx; ++x) {
+		for (y = miny + offsy; y < sizey + offsy; ++y) {
+			maparray[x + (y * mapsize)] = TIL_FLOOR;
+		}
+	}
 }
 
 int room_open_connections(int x, int y) {
-    int c = 0;
-    if (y - 1 >= 0 && connections[(y - 1) * 3 + x] == 0)
-        c++;
-    if (x + 1 < 3 && connections[y * 3 + (x + 1)] == 0)
-        c++;
-    if (y + 1 < 3 && connections[(y + 1) * 3 + x] == 0)
-        c++;
-    if (x - 1 >= 0 && connections[y * 3 + (x - 1)] == 0)
-        c++;
-    return c;
+	int c = 0;
+	if (y - 1 >= 0 && connections[(y - 1) * 3 + x] == 0)
+		c++;
+	if (x + 1 < 3 && connections[y * 3 + (x + 1)] == 0)
+		c++;
+	if (y + 1 < 3 && connections[(y + 1) * 3 + x] == 0)
+		c++;
+	if (x - 1 >= 0 && connections[y * 3 + (x - 1)] == 0)
+		c++;
+	return c;
 }
 
 int level_unconnected_rooms() {
-    int x, y;
-    int c = 0;
-    for (x = 0; x < 3; ++x) {
-        for (y = 0; y < 3; ++y) {
-            if (connections[y * 3 + x] == 0)
-                ++c;
-        }
-    }
-    return c;
+	int x, y;
+	int c = 0;
+	for (x = 0; x < 3; ++x) {
+		for (y = 0; y < 3; ++y) {
+			if (connections[y * 3 + x] == 0)
+				++c;
+		}
+	}
+	return c;
 }
 
 struct vect2d level_get_first_unconnected() {
-    int x, y;
-    struct vect2d ntc = {-1, -1};
-    for (x = 0; x < 3; ++x) {
-        for (y = 0; y < 3; ++y) {
-            if (connections[y * 3 + x] == 0) {
-                ntc.x = x;
-                ntc.y = y;
-                return ntc;
-            }
-        }
-    }
-    return ntc;
+	int x, y;
+	struct vect2d ntc = {-1, -1};
+	for (x = 0; x < 3; ++x) {
+		for (y = 0; y < 3; ++y) {
+			if (connections[y * 3 + x] == 0) {
+				ntc.x = x;
+				ntc.y = y;
+				return ntc;
+			}
+		}
+	}
+	return ntc;
 }
 
 void level_connect_rooms(int rtcx, int rtcy, int rtctx, int rtcty) {
-    // Set starting tiles for connection; has to be a floor
-    int tsx = 0;
-    int tsy = 0;
-    int ts = 0;
-		while (maparray[ts] != TIL_FLOOR) {
-        tsx = gsrand(rtcx * roomsize + 1, rtcx * roomsize + roomsize);
-        tsy = gsrand(rtcy * roomsize + 1, rtcy * roomsize + roomsize);
-        ts = tsy * mapsize + tsx;
-    }
+	// Set starting tiles for connection; has to be a floor
+	int tsx = 0;
+	int tsy = 0;
+	int ts = 0;
+	while (maparray[ts] != TIL_FLOOR) {
+		tsx = gsrand(rtcx * roomsize + 1, rtcx * roomsize + roomsize);
+		tsy = gsrand(rtcy * roomsize + 1, rtcy * roomsize + roomsize);
+		ts = tsy * mapsize + tsx;
+	}
 
-    int tex = 0;
-    int tey = 0;
-    int te = 0;
-    while (maparray[te] != TIL_FLOOR) {
-        tex = gsrand(rtctx * roomsize + 1, rtctx * roomsize + roomsize);
-        tey = gsrand(rtcty * roomsize + 1, rtcty * roomsize + roomsize);
-        te = tey * mapsize + tex;
-    }
+	int tex = 0;
+	int tey = 0;
+	int te = 0;
+	while (maparray[te] != TIL_FLOOR) {
+		tex = gsrand(rtctx * roomsize + 1, rtctx * roomsize + roomsize);
+		tey = gsrand(rtcty * roomsize + 1, rtcty * roomsize + roomsize);
+		te = tey * mapsize + tex;
+	}
 
-    int c = 0;
-    if (tsy < tey) {
-        for (c = tsy; c < tey; c++) {
-            maparray[c * mapsize + tsx] = TIL_FLOOR;
-        }
-    }
-    else if (tsy > tey) {
-        for (c = tsy; c > tey; c--) {
-            maparray[c * mapsize + tsx] = TIL_FLOOR;
-        }
-    }
-    if (tsx < tex) {
-       for (c = tsx; c < tex; c++) {
-            maparray[tey * mapsize + c] = TIL_FLOOR;
-        }
-    }
-    else if (tsx > tex) {
-        for (c = tsx; c > tex; c--) {
-            maparray[tey * mapsize + c] = TIL_FLOOR;
-        }
-    }
-    connections[rtcy * 3 + rtcx] = 1;
+	int c = 0;
+	if (tsy < tey) {
+		for (c = tsy; c < tey; c++) {
+			maparray[c * mapsize + tsx] = TIL_FLOOR;
+		}
+	}
+	else if (tsy > tey) {
+		for (c = tsy; c > tey; c--) {
+			maparray[c * mapsize + tsx] = TIL_FLOOR;
+		}
+	}
+	if (tsx < tex) {
+		for (c = tsx; c < tex; c++) {
+			maparray[tey * mapsize + c] = TIL_FLOOR;
+		}
+	}
+	else if (tsx > tex) {
+		for (c = tsx; c > tex; c--) {
+			maparray[tey * mapsize + c] = TIL_FLOOR;
+		}
+	}
+	connections[rtcy * 3 + rtcx] = 1;
 }
 
 void level_generate() {
@@ -552,83 +589,107 @@ void level_generate() {
 		connections[i] = 0;
 	}
 
-    for (i = 0; i < maparraysize; ++i) {
-        maparray[i] = TIL_WALL;
-    }
-    level_generate_room(1 , 1 , roomsize, roomsize);
-    level_generate_room(roomsize+1, 1 , roomsize*2, roomsize);
-    level_generate_room(roomsize*2+1, 1 , roomsize*3, roomsize);
-    level_generate_room(1 , roomsize+1, roomsize, roomsize*2);
-    level_generate_room(roomsize+1, roomsize+1, roomsize*2, roomsize*2);
-    level_generate_room(roomsize*2+1, roomsize+1, roomsize*3, roomsize*2);
-    level_generate_room(1 , roomsize*2+1, roomsize, roomsize*3);
-    level_generate_room(roomsize+1, roomsize*2+1, roomsize*2, roomsize*3);
-    level_generate_room(roomsize*2+1, roomsize*2+1, roomsize*3, roomsize*3);
+	for (i = 0; i < maparraysize; ++i) {
+		maparray[i] = TIL_WALL;
+	}
+	level_generate_room(1, 1, roomsize, roomsize);
+	level_generate_room(roomsize + 1, 1, roomsize * 2, roomsize);
+	level_generate_room(roomsize * 2 + 1, 1, roomsize * 3, roomsize);
+	level_generate_room(1, roomsize + 1, roomsize, roomsize * 2);
+	level_generate_room(roomsize + 1, roomsize + 1, roomsize * 2, roomsize * 2);
+	level_generate_room(roomsize * 2 + 1, roomsize + 1, roomsize * 3, roomsize * 2);
+	level_generate_room(1, roomsize * 2 + 1, roomsize, roomsize * 3);
+	level_generate_room(roomsize + 1, roomsize * 2 + 1, roomsize * 2, roomsize * 3);
+	level_generate_room(roomsize * 2 + 1, roomsize * 2 + 1, roomsize * 3, roomsize * 3);
 
-    int rtcx, rtcy, rtctx, rtcty, dir;
+	int rtcx, rtcy, rtctx, rtcty, dir;
 
-    rtcx = gsrand(0, 2);
-    rtcy = gsrand(0, 2);
+	rtcx = gsrand(0, 2);
+	rtcy = gsrand(0, 2);
 
-    rtctx = 3;
-    rtcty = 3;
+	rtctx = 3;
+	rtcty = 3;
 
-    // First step: step through, joining rooms then using that room to make a new join.
-    // Eventually, we get into a dead end, so stop and go on to phase 2 of the generator.
+	// First step: step through, joining rooms then using that room to make a new join.
+	// Eventually, we get into a dead end, so stop and go on to phase 2 of the generator.
 
-	while(1) {
+	while (1) {
 
-        // for some ungodly reason, doing this in the while condition itself does not work.
-        if (room_open_connections(rtcx, rtcy) == 0) break;
+		// for some ungodly reason, doing this in the while condition itself does not work.
+		if (room_open_connections(rtcx, rtcy) == 0) break;
 
-        // make sure the connection is valid
-        while (rtctx > 2 || rtcty > 2 || rtctx < 0 || rtcty < 0 || connections[rtcty * 3 + rtctx] == 1) {
-            dir = gsrand(0, 3);
-            switch (dir) {
-                case 0: rtcty = rtcy - 1; rtctx = rtcx; break;
-                case 1: rtctx = rtcx + 1; rtcty = rtcy; break;
-                case 2: rtcty = rtcy + 1; rtctx = rtcx; break;
-                case 3: rtctx = rtcx - 1; rtcty = rtcy; break;
-            }
-        }
+		// make sure the connection is valid
+		while (rtctx > 2 || rtcty > 2 || rtctx < 0 || rtcty < 0 || connections[rtcty * 3 + rtctx] == 1) {
+			dir = gsrand(0, 3);
+			switch (dir) {
+				case 0:
+					rtcty = rtcy - 1;
+					rtctx = rtcx;
+					break;
+				case 1:
+					rtctx = rtcx + 1;
+					rtcty = rtcy;
+					break;
+				case 2:
+					rtcty = rtcy + 1;
+					rtctx = rtcx;
+					break;
+				case 3:
+					rtctx = rtcx - 1;
+					rtcty = rtcy;
+					break;
+			}
+		}
 
-        level_connect_rooms(rtcx, rtcy, rtctx, rtcty);
+		level_connect_rooms(rtcx, rtcy, rtctx, rtcty);
 
-        rtcx = rtctx;
-        rtcy = rtcty;
-        rtctx = 3;
-        rtcty = 3;
-    }
+		rtcx = rtctx;
+		rtcy = rtcty;
+		rtctx = 3;
+		rtcty = 3;
+	}
 
 	// Second part: select randomly an unjoined room, and join to an adjacent room, until no more unjoined rooms exist.
 	// NOTE: there is a bug, sometimes rooms are not connected
-    struct vect2d ntc;
-    int wtf = 0;
-    while (1) {
-        ntc = level_get_first_unconnected();
-        if (ntc.x == -1) break;
+	struct vect2d ntc;
+	int wtf = 0;
+	while (1) {
+		ntc = level_get_first_unconnected();
+		if (ntc.x == -1) break;
 
-        char str[15];
-        sprintf(str, "%d, %d", ntc.x, ntc.y);
-        VDP_drawText(str, 5, wtf);
-        VDP_drawText("    ", 5, wtf+2);
+		char str[15];
+		sprintf(str, "%d, %d", ntc.x, ntc.y);
+		VDP_drawText(str, 5, wtf);
+		VDP_drawText("    ", 5, wtf + 2);
 
-        rtcx = ntc.x;
-        rtcy = ntc.y;
-        rtctx = 3;
-        rtcty = 3;
-        while (rtctx > 2 || rtcty > 2 || rtctx < 0 || rtcty < 0) {
-            dir = gsrand(0, 3);
-            switch (dir) {
-                case 0: rtcty = rtcy - 1; rtctx = rtcx; break;
-                case 1: rtctx = rtcx + 1; rtcty = rtcy; break;
-                case 2: rtcty = rtcy + 1; rtctx = rtcx; break;
-                case 3: rtctx = rtcx - 1; rtcty = rtcy; break;
-            }
-        }
+		rtcx = ntc.x;
+		rtcy = ntc.y;
+		rtctx = 3;
+		rtcty = 3;
+		while (rtctx > 2 || rtcty > 2 || rtctx < 0 || rtcty < 0) {
+			dir = gsrand(0, 3);
+			switch (dir) {
+				case 0:
+					rtcty = rtcy - 1;
+					rtctx = rtcx;
+					break;
+				case 1:
+					rtctx = rtcx + 1;
+					rtcty = rtcy;
+					break;
+				case 2:
+					rtcty = rtcy + 1;
+					rtctx = rtcx;
+					break;
+				case 3:
+					rtctx = rtcx - 1;
+					rtcty = rtcy;
+					break;
+			}
+		}
 
-        level_connect_rooms(rtcx, rtcy, rtctx, rtcty);
-    }
+		level_connect_rooms(rtcx, rtcy, rtctx, rtcty);
+	}
 
 	// Third part: some random connections
 	int xtra_connections = gsrand(3, 7);
@@ -647,75 +708,84 @@ void level_generate() {
 
 	things_generate();
 
-	screen_game();
+	//screen_game();
 }
 
 void joypad_handle(u16 joy, u16 changed, u16 state) {
-    int turn = 0;
-    if (joy == JOY_1) {
-        if (state & BUTTON_UP) {
-        	thing_move(&player, DIR_NORTH);
-        	turn = 1;
-        }
-        else if (state & BUTTON_RIGHT) {
-        	thing_move(&player, DIR_EAST);
-        	turn = 1;
-        }
-        else if (state & BUTTON_DOWN) {
-            thing_move(&player, DIR_SOUTH);
-            turn = 1;
-        }
-        else if (state & BUTTON_LEFT) {
-					thing_move(&player, DIR_WEST);
-					turn = 1;
-				}
-    }
-    if (turn == 1) {
-			int m = 0;
-			for (m = 0; m < 32; ++m) {
-				if (things[m].til > TIL_NULL) {
-					thing_move_toward(&things[m], player.xpos, player.ypos);
-				}
+	int turn = 0;
+	if (joy == JOY_1) {
+		if (state & BUTTON_UP) {
+			thing_move(&player, DIR_NORTH);
+			turn = 1;
+			//screen_game();
+		}
+		else if (state & BUTTON_RIGHT) {
+			thing_move(&player, DIR_EAST);
+			turn = 1;
+			//screen_game();
+		}
+		else if (state & BUTTON_DOWN) {
+			thing_move(&player, DIR_SOUTH);
+			turn = 1;
+			//screen_game();
+		}
+		else if (state & BUTTON_LEFT) {
+			thing_move(&player, DIR_WEST);
+			turn = 1;
+			//screen_game();
+		}
+	}
+	if (turn == 1) {
+		int m = 0;
+		for (m = 0; m < 32; ++m) {
+			if (things[m].til > TIL_NULL) {
+				thing_move_toward(&things[m], player.xpos, player.ypos);
 			}
-    }
+		}
+	}
 }
 
 int main() {
-    JOY_init();
-    JOY_setEventHandler(&joypad_handle);
+	SPR_init(256);
+	JOY_init();
+	JOY_setEventHandler(&joypad_handle);
 
-    // Temp: randomise
-    int rs;
-    for (rs = 0; rs < 13; ++rs) {
-        random();
-    }
+	VDP_setPalette(1, testm.palette->data);
 
-    //we load our unique tile data at position 1 on VRAM
-    VDP_loadTileData((const u32 *)tile_wall, 1, 1, 0);
-		VDP_loadTileData((const u32 *)tile_stairs, 2, 1, 0);
-		VDP_loadTileData((const u32 *)tile_floor, 3, 1, 0);
-		VDP_loadTileData((const u32 *)tile_hero, 4, 1, 0);
-		VDP_loadTileData((const u32 *)tile_wpn, 5, 1, 0);
-		VDP_loadTileData((const u32 *)tile_ptn, 6, 1, 0);
-		VDP_loadTileData((const u32 *)tile_scroll, 7, 1, 0);
+	// Temp: randomise
+	int rs;
+	for (rs = 0; rs < 13; ++rs) {
+		random();
+	}
 
-		// Initialise basic stuff
-    empty = thing_make(TIL_NULL, 0, 0);
+	//we load our unique tile data at position 1 on VRAM
+	VDP_loadTileData((const u32 *) tile_null, 8, 1, 0);
+	VDP_loadTileData((const u32 *) tile_wall, 1, 1, 0);
+	VDP_loadTileData((const u32 *) tile_stairs, 2, 1, 0);
+	VDP_loadTileData((const u32 *) tile_floor, 3, 1, 0);
+	VDP_loadTileData((const u32 *) tile_hero, 4, 1, 0);
+	VDP_loadTileData((const u32 *) tile_wpn, 5, 1, 0);
+	VDP_loadTileData((const u32 *) tile_ptn, 6, 1, 0);
+	VDP_loadTileData((const u32 *) tile_scroll, 7, 1, 0);
 
-    int m = 0;
-    for (m = 0; m < 32; ++m) {
-    	things[m] = thing_make(TIL_NULL, 0, 0);
-    }
+	// Initialise basic stuff
+	empty = thing_make(TIL_NULL, 0, 0);
 
-    blocker = thing_make(TIL_WALL, 0, 0);
+	int m = 0;
+	for (m = 0; m < 32; ++m) {
+		things[m] = thing_make(TIL_NULL, 0, 0);
+	}
+
+	blocker = thing_make(TIL_WALL, 0, 0);
 
 	player = thing_make(TIL_PLAYER, 0, 0);
 
-		// Generate a level and place everything
-		level_generate();
+	// Generate a level and place everything
+	level_generate();
 
-    while(1) {
-        VDP_waitVSync();
-    }
-    return (0);
+	while (1) {
+		screen_game();
+		VDP_waitVSync();
+	}
+	return (0);
 }
