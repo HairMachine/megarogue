@@ -1,5 +1,9 @@
 #include <genesis.h>
 #include "res/testm.h"
+#include "res/potion.h"
+#include "res/hero.h"
+#include "res/stairs.h"
+#include "res/card.h"
 
 enum direction {
 	DIR_NORTH, DIR_EAST, DIR_SOUTH, DIR_WEST
@@ -7,7 +11,7 @@ enum direction {
 
 enum tile {
 	TIL_NULL, TIL_FLOOR, TIL_WALL, TIL_PLAYER, TIL_GOBLIN, TIL_STAIRS, TIL_MACGUFFIN,
-	TIL_WPN, TIL_POTION, TIL_SCROLL
+	TIL_WPN, TIL_POTION, TIL_SCROLL, TIL_ABILITY
 };
 
 const u32 tile_null[8] = {
@@ -43,64 +47,13 @@ const u32 tile_floor[8] = {
 		0x10000000
 };
 
-const u32 tile_stairs[8] = {
-		0x00000000,
-		0x00044000,
-		0x00000000,
-		0x00444400,
-		0x00000000,
-		0x04444440,
-		0x00000000,
-		0x44444444
+enum ABILITIES {
+	AB_NONE, AB_INV, AB_FADE, AB_RAGE, AB_BLINK, AB_SHAFT, AB_BLAST, AB_LEV, AB_FAM,
+	AB_FIRE, AB_SHIELD, AB_HEAL, AB_APP, AB_CLAIR, AB_SENSE
 };
-
-const u32 tile_hero[8] = {
-		0x00343400,
-		0x03344430,
-		0x00560600,
-		0x00566650,
-		0x03344450,
-		0x06333330,
-		0x00300300,
-		0x00000000
-};
-
-const u32 tile_wpn[8] = {
-		0x00000000,
-		0x00060000,
-		0x00055000,
-		0x00055000,
-		0x00055000,
-		0x00444400,
-		0x00033000,
-		0x00033000
-};
-
-const u32 tile_ptn[8] = {
-		0x00000000,
-		0x00222000,
-		0x00333000,
-		0x00333000,
-		0x03433300,
-		0x03333300,
-		0x00333000,
-		0x00000000
-};
-
-const u32 tile_scroll[8] = {
-		0x00000000,
-		0x0AAAAAA0,
-		0x0A3A33A0,
-		0x0A2A2AA0,
-		0x0A3333A0,
-		0x0AA22AA0,
-		0x0AAAAAA0,
-		0x00000000,
-};
-
 
 enum FLAGS {
-	FL_NONE = 0, FL_MOVES = 1, FL_PASSTHRU = 2
+	FL_NONE = 0, FL_MOVES = 1, FL_PASSTHRU = 2, FL_IMMORTAL = 4
 };
 
 struct Thing {
@@ -134,6 +87,7 @@ int connections[9] = {
 };
 int depth = 0;
 int maxdepth = 15;
+enum ABILITIES abilities[3] = {AB_NONE, AB_NONE, AB_NONE};
 
 void level_generate();
 
@@ -174,16 +128,19 @@ void sprite_set(int id, enum tile tilenum, int x, int y) {
 			SPR_initSprite(&sprite[id], &testm, x * 8, y * 8, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
 			break;
 		case TIL_PLAYER:
-			SPR_initSprite(&sprite[id], &testm, x * 8, y * 8, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
+			SPR_initSprite(&sprite[id], &hero, x * 8, y * 8, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
 			break;
 		case TIL_STAIRS:
-			SPR_initSprite(&sprite[id], &testm, x * 8, y * 8, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
+			SPR_initSprite(&sprite[id], &stairs, x * 8, y * 8, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
 			break;
 		case TIL_MACGUFFIN:
 			SPR_initSprite(&sprite[id], &testm, x * 8, y * 8, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
 			break;
 		case TIL_POTION:
-			SPR_initSprite(&sprite[id], &testm, x * 8, y * 8, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
+			SPR_initSprite(&sprite[id], &potion, x * 8, y * 8, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
+			break;
+		case TIL_ABILITY:
+			SPR_initSprite(&sprite[id], &card, x * 8, y * 8, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
 			break;
 		case TIL_SCROLL:
 			SPR_initSprite(&sprite[id], &testm, x * 8, y * 8, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
@@ -195,12 +152,53 @@ void sprite_set(int id, enum tile tilenum, int x, int y) {
 	}
 }
 
+void move_player_light(enum direction d) {
+	int minx, miny, maxx, maxy, i;
+
+	miny = player.ypos - player.range;
+	if (miny < 0) miny = 0;
+	maxy = player.ypos + player.range;
+	if (maxy >= mapsize) maxy = mapsize;
+
+	minx = player.xpos - player.range;
+	if (minx < 0) minx = 0;
+	maxx = player.xpos + player.range;
+	if (maxx >= mapsize) maxx = mapsize;
+
+	switch (d) {
+		case DIR_NORTH:
+			for (i = minx; i <= maxx; ++i) {
+				tile_draw(maparray[miny * mapsize + i], i, miny);
+				tile_draw(TIL_NULL, i, maxy + 1);
+			}
+			break;
+		case DIR_EAST:
+			for (i = miny; i <= maxy; ++i) {
+				tile_draw(TIL_NULL, minx - 1, i);
+				tile_draw(maparray[i * mapsize + maxx], maxx, i);
+			}
+			break;
+		case DIR_SOUTH:
+			for (i = minx; i <= maxx; ++i) {
+				tile_draw(TIL_NULL, i, miny - 1);
+				tile_draw(maparray[maxy * mapsize + i], i, maxy);
+			}
+			break;
+		case DIR_WEST:
+			for (i = miny; i <= maxy; ++i) {
+				tile_draw(maparray[i * mapsize + minx], minx, i);
+				tile_draw(TIL_NULL, maxx + 1, i);
+			}
+			break;
+	}
+}
+
 void redraw_tiles() {
 	int x = 0, y = 0, j = 0, absx = 0, absy = 0;
 	for (j = 0; j < maparraysize; ++j) {
 		absx = abs(player.xpos - x);
 		absy = abs(player.ypos - y);
-		if (absx < player.range && absy < player.range)
+		if (absx <= player.range && absy <= player.range)
 			tile_draw(maparray[j], x, y);
 		else
 			tile_draw(TIL_NULL, x, y);
@@ -217,7 +215,7 @@ void redraw_things() {
 	for (k = 0; k < 32; ++k) {
 		absx = abs(player.xpos - things[k].xpos);
 		absy = abs(player.ypos - things[k].ypos);
-		if (things[k].til > TIL_NULL && absx < player.range && absy < player.range)
+		if (things[k].til > TIL_NULL && absx <= player.range && absy <= player.range)
 			sprite_set(k, things[k].til, things[k].xpos, things[k].ypos);
 		else
 			sprite_set(k, things[k].til, -1, -1); // thing is drawn in the non-display zone so it vanishes
@@ -239,6 +237,67 @@ void draw_depth() {
 	VDP_drawText(msg, 30, 1);
 }
 
+void draw_abilities() {
+	int i;
+	for (i = 2; i < 5; ++i) {
+		switch (i) {
+			case 2: VDP_drawText("A:        ", 30, i); break;
+			case 3: VDP_drawText("B:        ", 30, i); break;
+			case 4: VDP_drawText("C:        ", 30, i); break;
+		}
+		switch (abilities[i - 2]) {
+			case AB_NONE:
+				VDP_drawText("None", 33, i);
+				break;
+			case AB_APP:
+				VDP_drawText("Apport", 33, i);
+				break;
+			case AB_BLAST:
+				VDP_drawText("Blast", 33, i);
+				break;
+			case AB_BLINK:
+				VDP_drawText("Blink", 33, i);
+				break;
+			case AB_CLAIR:
+				VDP_drawText("Clairv.", 33, i);
+				break;
+			case AB_FADE:
+				VDP_drawText("Fade", 33, i);
+				break;
+			case AB_FAM:
+				VDP_drawText("Familiar", 33, i);
+				break;
+			case AB_FIRE:
+				VDP_drawText("Fire", 33, i);
+				break;
+			case AB_HEAL:
+				VDP_drawText("Heal", 33, i);
+				break;
+			case AB_INV:
+				VDP_drawText("Invis", 33, i);
+				break;
+			case AB_LEV:
+				VDP_drawText("Fly", 33, i);
+				break;
+			case AB_RAGE:
+				VDP_drawText("Rage", 33, i);
+				break;
+			case AB_SENSE:
+				VDP_drawText("Sense", 33, i);
+				break;
+			case AB_SHAFT:
+				VDP_drawText("Shaft", 33, i);
+				break;
+			case AB_SHIELD:
+				VDP_drawText("Shield", 33, i);
+				break;
+			default:
+				VDP_drawText("ERROR", 33, i);
+				break;
+		}
+	}
+}
+
 void screen_game() {
 	// main screen
 	redraw_tiles();
@@ -247,6 +306,7 @@ void screen_game() {
 	// sidebar
 	draw_health();
 	draw_depth();
+	draw_abilities();
 }
 
 void screen_victory() {
@@ -272,6 +332,26 @@ struct vect2d position_find_valid() {
 	return pos;
 }
 
+
+int ability_get(enum ABILITIES a) {
+	int i;
+	for (i = 0; i < 3; ++i) {
+		if (abilities[i] == AB_NONE) {
+			abilities[i] = a;
+			return 1;
+		}
+	}
+	return 0;
+}
+
+int ability_get_random() {
+	int roll = gsrand(1, 14);
+	return ability_get(roll);
+}
+
+
+// THINGS
+
 struct Thing thing_make(enum tile t, int x, int y) {
 	struct Thing thing;
 	thing.til = t;
@@ -290,6 +370,9 @@ struct Thing thing_make(enum tile t, int x, int y) {
 			break;
 		case TIL_WALL:
 			thing.flags = FL_NONE;
+			break;
+		case TIL_STAIRS:
+			thing.flags = FL_IMMORTAL;
 			break;
 		default:
 			thing.flags = FL_PASSTHRU;
@@ -320,6 +403,7 @@ void things_generate() {
 	// third loop: permanent power ups.
 	for (i = 27; i < 31; ++i) {
 		// atm, nothing
+		things[i] = thing_put(TIL_ABILITY);
 	}
 
 	// finally the stairs or macguffin on last level
@@ -372,6 +456,9 @@ void thing_destroy(struct Thing *t) {
 }
 
 void thing_damage(struct Thing *t, int damage) {
+	if (t->flags & FL_IMMORTAL)
+		return;
+
 	t->hp -= damage;
 	if (t->til == TIL_PLAYER)
 		draw_health();
@@ -406,6 +493,8 @@ void thing_move(struct Thing *t, enum direction d) {
 			t->xpos--;
 			break;
 	}
+	if (t->til == TIL_PLAYER)
+		move_player_light(d);
 }
 
 void thing_move_toward(struct Thing *t, int xpos, int ypos) {
@@ -454,6 +543,88 @@ void thing_move_toward(struct Thing *t, int xpos, int ypos) {
 	}
 }
 
+
+int ability_use(enum ABILITIES a) {
+	int i, absx, absy;
+	struct vect2d newpos;
+
+	switch (a) {
+		case AB_NONE:
+			return 0;
+
+		case AB_APP:
+			return 1;
+
+		case AB_BLAST:
+			for (i = 0; i < 32; ++i) {
+				absx = abs(player.xpos - things[i].xpos);
+				absy = abs(player.ypos - things[i].ypos);
+				if (absx <= player.range && absy <= player.range) {
+					thing_damage(&things[i], 3);
+				}
+			}
+			return 1;
+
+		case AB_SHAFT:
+			++depth;
+			level_generate();
+			return 1;
+
+		case AB_SENSE:
+			++player.range;
+			screen_game();
+			return 1;
+
+		case AB_RAGE:
+			++player.damage;
+			return 1;
+
+		case AB_BLINK:
+			newpos = position_find_valid();
+			player.xpos = newpos.x;
+			player.ypos = newpos.y;
+			screen_game();
+			return 1;
+
+		case AB_CLAIR:
+			// All monsters visible briefly (status effect)
+			return 1;
+
+		case AB_FADE:
+			// Player can walk through walls for a x turns
+			return 1;
+
+		case AB_FAM:
+			// spawn an ally
+			return 1;
+
+		case AB_FIRE:
+			// spawn a fire
+			return 1;
+
+		case AB_HEAL:
+			player.hp += 5;
+			draw_health();
+			return 1;
+
+		case AB_INV:
+			// player gains invisibility state
+			return 1;
+
+		case AB_LEV:
+			// player gains levitation state
+			return 1;
+
+		case AB_SHIELD:
+			// player gains shielded state
+			return 1;
+
+		default:
+			return 1;
+
+	}
+}
+
 void thing_interact(struct Thing *subj, struct Thing *obj) {
 	switch (obj->til) {
 		case TIL_GOBLIN:
@@ -476,12 +647,20 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 		case TIL_POTION:
 			thing_damage(subj, -5);
 			thing_destroy(obj);
-			tile_draw(subj->til, subj->xpos, subj->ypos);
+			break;
+		case TIL_ABILITY:
+			if (ability_get_random() == 1) {
+				thing_destroy(obj);
+			}
+			draw_abilities();
 			break;
 		default:
 			break;
 	}
 }
+
+
+// LEVEL GENERATE
 
 void level_generate_room(int minx, int miny, int maxx, int maxy) {
 	int sizex = 0;
@@ -706,7 +885,7 @@ void level_generate() {
 
 	things_generate();
 
-	//screen_game();
+	screen_game();
 }
 
 void joypad_handle(u16 joy, u16 changed, u16 state) {
@@ -715,22 +894,36 @@ void joypad_handle(u16 joy, u16 changed, u16 state) {
 		if (state & BUTTON_UP) {
 			thing_move(&player, DIR_NORTH);
 			turn = 1;
-			//screen_game();
 		}
 		else if (state & BUTTON_RIGHT) {
 			thing_move(&player, DIR_EAST);
 			turn = 1;
-			//screen_game();
 		}
 		else if (state & BUTTON_DOWN) {
 			thing_move(&player, DIR_SOUTH);
 			turn = 1;
-			//screen_game();
 		}
 		else if (state & BUTTON_LEFT) {
 			thing_move(&player, DIR_WEST);
 			turn = 1;
-			//screen_game();
+		}
+		else if (state & BUTTON_A) {
+			turn = ability_use(abilities[0]);
+			if (turn)
+				abilities[0] = AB_NONE;
+			draw_abilities();
+		}
+		else if (state & BUTTON_B) {
+			turn = ability_use(abilities[1]);
+			if (turn)
+				abilities[1] = AB_NONE;
+			draw_abilities();
+		}
+		else if (state & BUTTON_C) {
+			turn = ability_use(abilities[2]);
+			if (turn)
+				abilities[2] = AB_NONE;
+			draw_abilities();
 		}
 	}
 	if (turn == 1) {
@@ -759,12 +952,7 @@ int main() {
 	//we load our unique tile data at position 1 on VRAM
 	VDP_loadTileData((const u32 *) tile_null, 8, 1, 0);
 	VDP_loadTileData((const u32 *) tile_wall, 1, 1, 0);
-	VDP_loadTileData((const u32 *) tile_stairs, 2, 1, 0);
 	VDP_loadTileData((const u32 *) tile_floor, 3, 1, 0);
-	VDP_loadTileData((const u32 *) tile_hero, 4, 1, 0);
-	VDP_loadTileData((const u32 *) tile_wpn, 5, 1, 0);
-	VDP_loadTileData((const u32 *) tile_ptn, 6, 1, 0);
-	VDP_loadTileData((const u32 *) tile_scroll, 7, 1, 0);
 
 	// Initialise basic stuff
 	empty = thing_make(TIL_NULL, 0, 0);
@@ -782,7 +970,7 @@ int main() {
 	level_generate();
 
 	while (1) {
-		screen_game();
+		redraw_things();
 		VDP_waitVSync();
 	}
 	return (0);

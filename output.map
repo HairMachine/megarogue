@@ -158,654 +158,667 @@ Linker script and memory map
                 0x0000000000000000                __DYNAMIC = 0x0
                 0x0000000001000000                PROVIDE (__stack, 0x1000000)
 
-.text           0x0000000000000000    0x16e18
+.text           0x0000000000000000    0x17790
  *(.text.keepboot)
  .text.keepboot
                 0x0000000000000000      0x5f4 boot/sega.o
  *(.text.*)
- .text.startup  0x00000000000005f4      0x1dc main.o
+ .text.startup  0x00000000000005f4      0x17a main.o
                 0x00000000000005f4                main
  *(.text)
- .text          0x00000000000007d0        0x0 boot/sega.o
- .text          0x00000000000007d0      0x9d8 /opt/toolchains/gen//m68k-elf/lib/libmd.a(sys.o)
-                0x00000000000007d0                _trace_callback
-                0x00000000000007d2                _line1x1x_callback
-                0x00000000000007d4                _int_callback
-                0x00000000000007d6                _extint_callback
-                0x0000000000000bc4                _buserror_callback
-                0x0000000000000bec                _addresserror_callback
-                0x0000000000000ca0                _illegalinst_callback
-                0x0000000000000cc8                _chkinst_callback
-                0x0000000000000cf0                _trapvinst_callback
-                0x0000000000000d18                _vint_callback
-                0x0000000000000e16                _hint_callback
-                0x0000000000000f4c                _zerodivide_callback
-                0x0000000000000f74                _privilegeviolation_callback
-                0x0000000000000f9c                _errorexception_callback
-                0x0000000000000fc4                _start_entry
-                0x0000000000001078                _reset_entry
-                0x0000000000001088                SYS_disableInts
-                0x00000000000010b8                SYS_enableInts
-                0x00000000000010e4                SYS_setVIntPreCallback
-                0x00000000000010ee                SYS_setVIntCallback
-                0x00000000000010f8                SYS_setHIntCallback
-                0x0000000000001102                SYS_setExtIntCallback
-                0x000000000000110c                SYS_isInVIntCallback
-                0x0000000000001118                SYS_isInHIntCallback
-                0x0000000000001124                SYS_isInExtIntCallback
-                0x0000000000001130                SYS_isInInterrupt
-                0x0000000000001138                SYS_isNTSC
-                0x0000000000001148                SYS_isPAL
-                0x0000000000001154                SYS_die
- .text          0x00000000000011a8      0x886 /opt/toolchains/gen//m68k-elf/lib/libmd.a(vdp.o)
-                0x00000000000011a8                VDP_getReg
-                0x00000000000011c8                VDP_setReg
-                0x0000000000001320                VDP_getEnable
-                0x000000000000132c                VDP_setEnable
-                0x0000000000001358                VDP_getScanlineNumber
-                0x000000000000136e                VDP_getScreenHeight
-                0x0000000000001376                VDP_setScreenHeight224
-                0x000000000000139c                VDP_setScreenHeight240
-                0x00000000000013ce                VDP_getScreenWidth
-                0x00000000000013d6                VDP_setScreenWidth256
-                0x00000000000013fc                VDP_setScreenWidth320
-                0x0000000000001422                VDP_getPlanWidth
-                0x0000000000001436                VDP_getPlanHeight
-                0x0000000000001448                VDP_setPlanSize
-                0x000000000000147c                VDP_getVerticalScrollingMode
-                0x000000000000148a                VDP_getHorizontalScrollingMode
-                0x0000000000001496                VDP_setScrollingMode
-                0x00000000000014c8                VDP_getBackgroundColor
-                0x00000000000014d0                VDP_setBackgroundColor
-                0x00000000000014ee                VDP_getAutoInc
-                0x00000000000014f6                VDP_setAutoInc
-                0x0000000000001510                VDP_setHInterrupt
-                0x000000000000153c                VDP_setHilightShadow
-                0x0000000000001568                VDP_getHIntCounter
-                0x0000000000001570                VDP_setHIntCounter
-                0x000000000000158a                VDP_getAPlanAddress
-                0x0000000000001592                VDP_getBPlanAddress
-                0x000000000000159a                VDP_getWindowAddress
-                0x00000000000015a2                VDP_getWindowPlanAddress
-                0x00000000000015aa                VDP_getSpriteListAddress
-                0x00000000000015b2                VDP_getHScrollTableAddress
-                0x00000000000015ba                VDP_setAPlanAddress
-                0x00000000000015de                VDP_setWindowAddress
-                0x0000000000001620                VDP_setWindowPlanAddress
-                0x0000000000001630                VDP_setBPlanAddress
-                0x0000000000001654                VDP_setSpriteListAddress
-                0x0000000000001696                VDP_setHScrollTableAddress
-                0x00000000000016bc                VDP_setScanMode
-                0x0000000000001704                VDP_waitDMACompletion
-                0x0000000000001712                VDP_init
-                0x0000000000001914                VDP_waitFIFOEmpty
-                0x0000000000001922                VDP_waitVSync
-                0x000000000000193c                VDP_resetScreen
-                0x00000000000019b0                VDP_showFPS
- *fill*         0x0000000000001a2e        0x2 
- .text          0x0000000000001a30      0x5a8 /opt/toolchains/gen//m68k-elf/lib/libmd.a(dma.o)
-                0x0000000000001a30                DMA_getAutoFlush
-                0x0000000000001a38                DMA_setAutoFlush
-                0x0000000000001a5e                DMA_getMaxTransferSize
-                0x0000000000001a66                DMA_setMaxTransferSize
-                0x0000000000001a70                DMA_clearQueue
-                0x0000000000001a8a                DMA_flushQueue
-                0x0000000000001b4e                DMA_getQueueSize
-                0x0000000000001b56                DMA_getQueueTransferSize
-                0x0000000000001b5e                DMA_queueDma
-                0x0000000000001d48                DMA_waitCompletion
-                0x0000000000001d56                DMA_doDma
-                0x0000000000001ea6                DMA_doVRamFill
-                0x0000000000001f52                DMA_doVRamCopy
- .text          0x0000000000001fd8     0x1860 /opt/toolchains/gen//m68k-elf/lib/libmd.a(tools.o)
-                0x0000000000001fd8                getFPS
-                0x0000000000002040                getFPS_f
-                0x00000000000020c2                KLog
-                0x00000000000020e6                KLog_U1
-                0x0000000000002132                KLog_U2
-                0x00000000000021a0                KLog_U3
-                0x000000000000222c                KLog_U4
-                0x00000000000022d4                KLog_U1x
-                0x0000000000002324                KLog_U2x
-                0x0000000000002394                KLog_U3x
-                0x0000000000002420                KLog_U4x
-                0x00000000000024c6                KLog_S1
-                0x0000000000002512                KLog_S2
-                0x0000000000002580                KLog_S3
-                0x000000000000260c                KLog_S4
-                0x00000000000026b4                KLog_S1x
-                0x0000000000002704                KLog_S2x
-                0x0000000000002774                KLog_S3x
-                0x0000000000002800                KLog_S4x
-                0x00000000000028a6                KLog_f1
-                0x00000000000028f6                KLog_f2
-                0x000000000000296c                KLog_f3
-                0x0000000000002a04                KLog_f4
-                0x0000000000002abc                KLog_f1x
-                0x0000000000002b10                KLog_f2x
-                0x0000000000002b88                KLog_f3x
-                0x0000000000002c20                KLog_f4x
-                0x0000000000002cd6                KLog_F1
-                0x0000000000002d22                KLog_F2
-                0x0000000000002d90                KLog_F3
-                0x0000000000002e1c                KLog_F4
-                0x0000000000002ec4                KLog_F1x
-                0x0000000000002f14                KLog_F2x
-                0x0000000000002f84                KLog_F3x
-                0x0000000000003010                KLog_F4x
-                0x00000000000030b6                allocateBitmap
-                0x0000000000003116                allocateBitmapEx
-                0x0000000000003158                allocateTileSet
-                0x00000000000031a2                allocateTileSetEx
-                0x00000000000031ce                allocateMap
-                0x0000000000003218                allocateMapEx
-                0x0000000000003242                allocateImage
-                0x0000000000003306                rle4b_unpack
-                0x0000000000003360                rlemap_unpack
-                0x00000000000033f8                unpackEx
-                0x00000000000034a6                getTileSet
-                0x00000000000034f4                unpack
-                0x0000000000003512                unpackBitmap
-                0x00000000000035a4                unpackTileSet
-                0x0000000000003616                unpackMap
-                0x000000000000368c                unpackImage
-                0x00000000000036e2                rle4b_unpackVRam
-                0x000000000000376e                uftc_unpack_old
- .text          0x0000000000003838      0x236 /opt/toolchains/gen//m68k-elf/lib/libmd.a(memory.o)
-                0x0000000000003838                MEM_init
-                0x0000000000003860                MEM_getFree
-                0x000000000000388a                MEM_free
-                0x000000000000389c                MEM_alloc
-                0x000000000000397a                memcpyU16
-                0x0000000000003998                memcpyU32
-                0x00000000000039b8                fastMemset
-                0x00000000000039d8                fastMemsetU16
-                0x00000000000039f8                fastMemsetU32
-                0x0000000000003a14                fastMemcpy
-                0x0000000000003a30                fastMemcpyU16
-                0x0000000000003a4e                fastMemcpyU32
- *fill*         0x0000000000003a6e        0x2 
- .text          0x0000000000003a70      0xb94 /opt/toolchains/gen//m68k-elf/lib/libmd.a(vdp_tile.o)
-                0x0000000000003a70                VDP_loadTileSet
-                0x0000000000003b1a                VDP_loadFontData
-                0x0000000000003b4a                VDP_loadFont
-                0x0000000000003b70                VDP_loadBMPTileDataEx
-                0x0000000000003bc4                VDP_fillTileData
-                0x0000000000003c7e                VDP_setTileMap
-                0x0000000000003cbc                VDP_setTileMapXY
-                0x0000000000003d22                VDP_fillTileMap
-                0x0000000000003dbe                VDP_fillTileMapRectByIndex
-                0x0000000000003de8                VDP_fillTileMapRect
-                0x0000000000003e8e                VDP_clearTileMap
-                0x0000000000003ee2                VDP_clearTileMapRectByIndex
-                0x0000000000003f0c                VDP_clearTileMapRect
-                0x0000000000003f40                VDP_fillTileMapInc
-                0x000000000000400a                VDP_fillTileMapRectIncByIndex
-                0x0000000000004034                VDP_fillTileMapRectInc
-                0x00000000000040e0                VDP_setTileMapData
-                0x00000000000041c4                VDP_setTileMapRectByIndex
-                0x00000000000041f2                VDP_setTileMapDataRect
-                0x00000000000042aa                VDP_setTileMapDataEx
-                0x000000000000439c                VDP_setTileMapRectExByIndex
-                0x00000000000043ce                VDP_setTileMapDataRectEx
-                0x00000000000044b4                VDP_setTileMapRectEx
-                0x00000000000044f8                VDP_setMapEx
-                0x00000000000045c0                VDP_setMap
- .text          0x0000000000004604      0x5f2 /opt/toolchains/gen//m68k-elf/lib/libmd.a(z80_ctrl.o)
-                0x0000000000004604                Z80_isBusTaken
-                0x0000000000004616                Z80_requestBus
-                0x000000000000463c                Z80_releaseBus
-                0x0000000000004646                Z80_startReset
-                0x0000000000004650                Z80_endReset
-                0x000000000000465a                Z80_setBank
-                0x000000000000466e                Z80_init
-                0x000000000000468c                Z80_read
-                0x000000000000469e                Z80_write
-                0x00000000000046b2                Z80_clear
-                0x000000000000472a                Z80_upload
-                0x000000000000479e                Z80_download
-                0x00000000000047f6                Z80_getLoadedDriver
-                0x00000000000047fe                Z80_unloadDriver
-                0x0000000000004830                Z80_loadCustomDriver
-                0x0000000000004874                Z80_isDriverReady
-                0x00000000000048aa                Z80_loadDriver
- *fill*         0x0000000000004bf6        0x2 
- .text          0x0000000000004bf8      0xf5c /opt/toolchains/gen//m68k-elf/lib/libmd.a(sound.o)
-                0x0000000000004bf8                SND_isPlaying_PCM
-                0x0000000000004c2c                SND_startPlay_PCM
-                0x0000000000004cd0                SND_stopPlay_PCM
-                0x0000000000004d3a                SND_isPlaying_2ADPCM
-                0x0000000000004d70                SND_startPlay_2ADPCM
-                0x0000000000004e30                SND_stopPlay_2ADPCM
-                0x0000000000004eaa                SND_isPlaying_4PCM_ENV
-                0x0000000000004ee0                SND_startPlay_4PCM_ENV
-                0x0000000000004fba                SND_stopPlay_4PCM_ENV
-                0x0000000000005034                SND_setVolume_4PCM_ENV
-                0x000000000000507c                SND_getVolume_4PCM_ENV
-                0x00000000000050be                SND_isPlaying_MVS
-                0x00000000000050f0                SND_startPlay_MVS
-                0x000000000000515a                SND_stopPlay_MVS
-                0x000000000000518c                SND_setTempo_MVS
-                0x00000000000051bc                SND_startDAC_MVS
-                0x000000000000521e                SND_stopDAC_MVS
-                0x0000000000005248                SND_isPlayingPSG_MVS
-                0x0000000000005276                SND_startPSG_MVS
-                0x00000000000052c2                SND_stopPSG_MVS
-                0x00000000000052ec                SND_enablePSG_MVS
-                0x000000000000532c                SND_disablePSG_MVS
-                0x000000000000536c                SND_startPlay_TFM
-                0x00000000000053e0                SND_stopPlay_TFM
-                0x00000000000053e8                SND_stopPlay_VGM
-                0x0000000000005414                SND_resumePlay_VGM
-                0x0000000000005440                SND_isPlaying_VGM
-                0x0000000000005470                SND_startPlay_VGM
-                0x00000000000054ec                SND_playSfx_VGM
-                0x000000000000554e                SND_isPlaying_XGM
-                0x0000000000005582                SND_startPlay_XGM
-                0x000000000000569a                SND_stopPlay_XGM
-                0x0000000000005702                SND_pausePlay_XGM
-                0x0000000000005734                SND_resumePlay_XGM
-                0x000000000000576e                SND_isPlayingPCM_XGM
-                0x00000000000057a4                SND_setPCMFast_XGM
-                0x00000000000057e2                SND_setPCM_XGM
-                0x0000000000005822                SND_startPlayPCM_XGM
-                0x0000000000005884                SND_stopPlayPCM_XGM
-                0x00000000000058da                SND_set68KBUSProtection_XGM
-                0x0000000000005902                SND_nextXFrame_XGM
-                0x000000000000594a                SND_getManualSync_XGM
-                0x0000000000005956                SND_setManualSync_XGM
-                0x000000000000599c                SND_getForceDelayDMA_XGM
-                0x00000000000059a8                SND_setForceDelayDMA_XGM
-                0x00000000000059ce                SND_getMusicTempo_XGM
-                0x00000000000059d6                SND_setMusicTempo_XGM
-                0x00000000000059fe                SND_getCPULoad_XGM
-                0x0000000000005abe                XGM_resetLoadCalculation
-                0x0000000000005aec                XGM_doVBlankProcess
- .text          0x0000000000005b54      0x1f2 /opt/toolchains/gen//m68k-elf/lib/libmd.a(ym2612.o)
-                0x0000000000005b54                YM2612_read
-                0x0000000000005b6e                YM2612_write
-                0x0000000000005b92                YM2612_reset
-                0x0000000000005c7c                YM2612_writeSafe
-                0x0000000000005c94                YM2612_writeReg
-                0x0000000000005ce6                YM2612_writeRegSafe
-                0x0000000000005d08                YM2612_enableDAC
-                0x0000000000005d28                YM2612_disableDAC
- *fill*         0x0000000000005d46        0x2 
- .text          0x0000000000005d48      0x618 /opt/toolchains/gen//m68k-elf/lib/libmd.a(vdp_pal.o)
-                0x0000000000005e00                VDP_getPaletteColor
-                0x0000000000005e34                VDP_setPaletteColor
-                0x0000000000005e72                VDP_doStepFading
-                0x0000000000005f4c                VDP_initFading
-                0x0000000000006078                VDP_interruptFade
-                0x000000000000608a                VDP_fade
-                0x00000000000060fa                VDP_fadeTo
-                0x000000000000615a                VDP_fadeOut
-                0x000000000000618a                VDP_fadeIn
-                0x00000000000061be                VDP_fadePal
-                0x00000000000061fa                VDP_fadePalTo
-                0x0000000000006232                VDP_fadePalOut
-                0x000000000000626c                VDP_fadePalIn
-                0x00000000000062aa                VDP_fadeAll
-                0x00000000000062d2                VDP_fadeAllTo
-                0x00000000000062f6                VDP_fadeOutAll
-                0x000000000000631c                VDP_fadeInAll
-                0x0000000000006346                VDP_isDoingFade
-                0x0000000000006352                VDP_waitFadeCompletion
- .text          0x0000000000006360      0x114 /opt/toolchains/gen//m68k-elf/lib/libmd.a(psg.o)
-                0x0000000000006360                PSG_init
-                0x000000000000638c                PSG_write
-                0x0000000000006396                PSG_setEnvelope
-                0x00000000000063b6                PSG_setTone
-                0x00000000000063e6                PSG_setFrequency
-                0x000000000000644c                PSG_setNoise
- .text          0x0000000000006474        0x0 /opt/toolchains/gen//m68k-elf/lib/libmd.a(z80_vgm.o)
- .text          0x0000000000006474      0x3ec /opt/toolchains/gen//m68k-elf/lib/libmd.a(vdp_spr.o)
-                0x0000000000006474                VDP_resetSprites
-                0x000000000000648c                VDP_resetSpritesDirect
-                0x00000000000064ce                VDP_setSprite
-                0x000000000000652a                VDP_setSpriteP
-                0x0000000000006576                VDP_setSpriteDirect
-                0x00000000000065f8                VDP_setSpriteDirectP
-                0x000000000000667a                VDP_setSpritePosition
-                0x00000000000066ba                VDP_setSpritesDirect
-                0x000000000000674c                VDP_setSprites
-                0x00000000000067be                VDP_updateSprites
- .text          0x0000000000006860        0x0 /opt/toolchains/gen//m68k-elf/lib/libmd.a(tab_cnv.o)
- .text          0x0000000000006860      0x266 /opt/toolchains/gen//m68k-elf/lib/libmd.a(vdp_dma.o)
-                0x0000000000006860                VDP_doDMAEx
-                0x00000000000069b0                VDP_doDMA
-                0x00000000000069da                VDP_doVRamDMAFill
-                0x0000000000006a4e                VDP_doVRamDMACopy
- *fill*         0x0000000000006ac6        0x2 
- .text          0x0000000000006ac8     0x111e /opt/toolchains/gen//m68k-elf/lib/libmd.a(bmp.o)
-                0x0000000000006c1c                BMP_end
-                0x0000000000006c80                BMP_hasFlipRequestPending
-                0x0000000000006c8e                BMP_waitWhileFlipRequestPending
-                0x0000000000006c9e                BMP_hasFlipInProgess
-                0x0000000000006caa                BMP_waitFlipComplete
-                0x0000000000006cba                BMP_flip
-                0x0000000000006d0e                BMP_drawText
-                0x0000000000006d6c                BMP_clearText
-                0x0000000000006dc8                BMP_clearTextLine
-                0x0000000000006e08                BMP_showFPS
-                0x0000000000006eda                BMP_clear
-                0x0000000000006eea                BMP_reset
-                0x000000000000700c                BMP_init
-                0x000000000000704a                BMP_getWritePointer
-                0x0000000000007070                BMP_getReadPointer
-                0x0000000000007096                BMP_getPixel
-                0x00000000000070ce                BMP_setPixel
-                0x0000000000007106                BMP_setPixels_V2D
-                0x0000000000007156                BMP_setPixels
-                0x00000000000071b0                BMP_drawBitmapData
-                0x0000000000007252                BMP_drawBitmap
-                0x0000000000007326                BMP_loadBitmapData
-                0x0000000000007358                BMP_loadBitmap
-                0x000000000000737e                BMP_getBitmapPalette
-                0x000000000000739a                BMP_scale
-                0x0000000000007474                BMP_drawBitmapScaled
-                0x000000000000757e                BMP_loadAndScaleBitmap
-                0x00000000000075b4                BMP_doVBlankProcess
-                0x00000000000075bc                BMP_doHBlankProcess
- *fill*         0x0000000000007be6        0x2 
- .text          0x0000000000007be8      0x1d4 /opt/toolchains/gen//m68k-elf/lib/libmd.a(timer.o)
-                0x0000000000007be8                getSubTick
-                0x0000000000007c3a                getTick
-                0x0000000000007c66                getTime
-                0x0000000000007c88                getTimeAsFix32
-                0x0000000000007c9c                startTimer
-                0x0000000000007cbe                getTimer
-                0x0000000000007d02                waitSubTick
-                0x0000000000007d4a                waitTick
-                0x0000000000007d8c                waitMs
- .text          0x0000000000007dbc      0x65c /opt/toolchains/gen//m68k-elf/lib/libmd.a(tile_cache.o)
-                0x0000000000007e5c                TC_init
-                0x0000000000007e94                TC_end
-                0x0000000000007ef6                TC_createCacheEx
-                0x0000000000007f3c                TC_createCache
-                0x0000000000007f5e                TC_releaseCache
-                0x0000000000007f70                TC_clearCache
-                0x0000000000007f82                TC_flushCache
-                0x0000000000007f8c                TC_alloc
-                0x0000000000008276                TC_reAlloc
-                0x0000000000008302                TC_free
-                0x000000000000837c                TC_getTileIndex
-                0x00000000000083ca                TC_uploadAtVBlank
-                0x00000000000083fe                TC_doVBlankProcess
- .text          0x0000000000008418      0x80c /opt/toolchains/gen//m68k-elf/lib/libmd.a(vdp_bg.o)
-                0x0000000000008418                VDP_setHorizontalScroll
-                0x0000000000008464                VDP_setHorizontalScrollTile
-                0x000000000000850a                VDP_setHorizontalScrollLine
-                0x00000000000085b0                VDP_setVerticalScroll
-                0x00000000000085ee                VDP_setVerticalScrollTile
-                0x0000000000008684                VDP_clearPlan
-                0x000000000000873a                VDP_getTextPlan
-                0x0000000000008756                VDP_getTextPalette
-                0x0000000000008766                VDP_getTextPriority
-                0x0000000000008772                VDP_setTextPlan
-                0x0000000000008796                VDP_setTextPalette
-                0x00000000000087b6                VDP_setTextPriority
-                0x00000000000087d4                VDP_drawTextBG
-                0x0000000000008880                VDP_clearTextBG
-                0x00000000000088b2                VDP_clearTextLineBG
-                0x00000000000088e8                VDP_drawText
-                0x000000000000891c                VDP_clearText
-                0x000000000000894a                VDP_clearTextLine
-                0x0000000000008966                VDP_drawBitmapEx
-                0x0000000000008a76                VDP_drawBitmap
-                0x0000000000008afe                VDP_drawImageEx
-                0x0000000000008ba6                VDP_drawImage
- *fill*         0x0000000000008c24       0xdc 
- .text          0x0000000000008d00       0x80 /opt/toolchains/gen//m68k-elf/lib/libmd.a(smp_null_pcm.o)
-                0x0000000000008d00                smp_null_pcm
- .text          0x0000000000008d80      0x102 /opt/toolchains/gen//m68k-elf/lib/libmd.a(vdp_tile_a.o)
-                0x0000000000008d80                VDP_loadTileData
-                0x0000000000008dfc                VDP_loadBMPTileData
- *fill*         0x0000000000008e82        0x2 
- .text          0x0000000000008e84      0x1b8 /opt/toolchains/gen//m68k-elf/lib/libmd.a(memory_a.o)
-                0x0000000000008e84                memset
-                0x0000000000008efc                memsetU16
-                0x0000000000008f5a                memsetU32
-                0x0000000000008f98                memcpy
- .text          0x000000000000903c      0x15c /opt/toolchains/gen//m68k-elf/lib/libmd.a(vdp_pal_a.o)
-                0x000000000000903c                VDP_getPaletteColors
-                0x00000000000090a2                VDP_setPaletteColors
-                0x0000000000009108                VDP_getPalette
-                0x0000000000009150                VDP_setPalette
- .text          0x0000000000009198       0x48 /opt/toolchains/gen//m68k-elf/lib/libmd.a(sys_a.o)
-                0x0000000000009198                SYS_assertReset
-                0x000000000000919c                SYS_reset
-                0x00000000000091aa                SYS_getInterruptMaskLevel
-                0x00000000000091b4                SYS_setInterruptMaskLevel
-                0x00000000000091c6                SYS_getAndSetInterruptMaskLevel
- .text          0x00000000000091e0       0x88 /opt/toolchains/gen//m68k-elf/lib/libmd.a(kdebug.o)
-                0x00000000000091e0                KDebug_Halt
-                0x00000000000091ea                KDebug_Alert
-                0x0000000000009206                KDebug_AlertNumber
-                0x0000000000009254                KDebug_StartTimer
-                0x000000000000925e                KDebug_StopTimer
- *fill*         0x0000000000009268       0x98 
- .text          0x0000000000009300      0x100 /opt/toolchains/gen//m68k-elf/lib/libmd.a(smp_null.o)
-                0x0000000000009300                smp_null
- .text          0x0000000000009400     0x13f8 /opt/toolchains/gen//m68k-elf/lib/libmd.a(bmp_a.o)
-                0x0000000000009400                clearBitmapBuffer
-                0x0000000000009542                BMP_clipLine
-                0x000000000000955e                BMP_drawLine
-                0x00000000000095ce                BMP_isPolygonCulled
-                0x0000000000009efc                BMP_drawPolygon
- .text          0x000000000000a7f8      0x10a /opt/toolchains/gen//m68k-elf/lib/libmd.a(tools_a.o)
-                0x000000000000a7f8                aplib_unpack
-                0x000000000000a7fe                aplib_decrunch
-                0x000000000000a8a0                uftc_unpack
- *fill*         0x000000000000a902        0x2 
- .text          0x000000000000a904      0xb26 /opt/toolchains/gen//m68k-elf/lib/libmd.a(z80_drv1.o)
-                0x000000000000a904                z80_drv1
- *fill*         0x000000000000b42a        0x2 
- .text          0x000000000000b42c      0xe00 /opt/toolchains/gen//m68k-elf/lib/libmd.a(z80_drv2.o)
-                0x000000000000b42c                z80_drv2
- .text          0x000000000000c22c      0xa5c /opt/toolchains/gen//m68k-elf/lib/libmd.a(z80_mvs.o)
-                0x000000000000c22c                z80_mvs
- .text          0x000000000000cc88      0xa64 /opt/toolchains/gen//m68k-elf/lib/libmd.a(z80_drv3.o)
-                0x000000000000cc88                z80_drv3
- .text          0x000000000000d6ec     0x1700 /opt/toolchains/gen//m68k-elf/lib/libmd.a(z80_xgm.o)
-                0x000000000000d6ec                z80_xgm
- .text          0x000000000000edec      0x69e /opt/toolchains/gen//m68k-elf/lib/libmd.a(z80_tfm.o)
-                0x000000000000edec                z80_tfm
- *fill*         0x000000000000f48a        0x2 
- .text          0x000000000000f48c        0x0 /opt/toolchains/gen//m68k-elf/lib/libmd.a(libres.o)
- .text          0x000000000000f48c        0x0 /opt/toolchains/gen//m68k-elf/lib/libmd.a(tab_vol.o)
- .text          0x000000000000f48c      0x656 /opt/toolchains/gen//m68k-elf/lib/libmd.a(maths.o)
-                0x000000000000f48c                random
-                0x000000000000f4ac                intToBCD
-                0x000000000000f540                distance_approx
-                0x000000000000f592                Partition_u8
-                0x000000000000f614                QSort_u8
-                0x000000000000f662                Partition_s8
-                0x000000000000f6e4                QSort_s8
-                0x000000000000f732                Partition_u16
-                0x000000000000f7c2                QSort_u16
-                0x000000000000f810                Partition_s16
-                0x000000000000f8a0                QSort_s16
-                0x000000000000f8ee                Partition_u32
-                0x000000000000f99a                QSort_u32
-                0x000000000000f9e8                Partition_s32
-                0x000000000000fa94                QSort_s32
- *fill*         0x000000000000fae2        0x2 
- .text          0x000000000000fae4      0x8d2 /opt/toolchains/gen//m68k-elf/lib/libmd.a(string.o)
-                0x000000000000fae4                strlen
-                0x000000000000fbd0                strnlen
-                0x000000000000fc0e                strcmp
-                0x000000000000fc2e                strclr
-                0x000000000000fc38                strcpy
-                0x000000000000fc4a                strcat
-                0x000000000000fc64                strreplace
-                0x000000000000fc88                intToStr
-                0x000000000000fcb6                uintToStr
-                0x000000000000fcd2                intToHex
-                0x000000000000fd86                fix32ToStr
-                0x000000000000fe06                fix16ToStr
-                0x000000000000fe80                sprintf
- *fill*         0x00000000000103b6        0x2 
- .text          0x00000000000103b8     0x1804 /opt/toolchains/gen//m68k-elf/lib/libmd.a(joy.o)
-                0x0000000000010e50                JOY_setEventHandler
-                0x0000000000010e5a                JOY_setSupport
-                0x0000000000011292                JOY_init
-                0x00000000000115d2                JOY_getPortType
-                0x00000000000115f2                JOY_getJoypadType
-                0x0000000000011612                JOY_readJoypad
-                0x0000000000011662                JOY_readJoypadX
-                0x0000000000011684                JOY_readJoypadY
-                0x00000000000116a6                JOY_update
-                0x0000000000011ac8                JOY_waitPressTime
-                0x0000000000011b6e                JOY_waitPressBtn
-                0x0000000000011b84                JOY_waitPressBtnTime
-                0x0000000000011ba0                JOY_waitPress
- .text          0x0000000000011bbc        0xc /opt/toolchains/gen//m68k-elf/lib/libmd.a(types.o)
-                0x0000000000011bbc                getZeroU8
-                0x0000000000011bc0                getZeroU16
-                0x0000000000011bc4                getZeroU32
- .text          0x0000000000011bc8       0x22 /opt/toolchains/gen//m68k-elf/lib/gcc/m68k-elf/4.8.2/libgcc.a(_mulsi3.o)
-                0x0000000000011bc8                __mulsi3
- *fill*         0x0000000000011bea        0x2 
- .text          0x0000000000011bec       0x5c /opt/toolchains/gen//m68k-elf/lib/gcc/m68k-elf/4.8.2/libgcc.a(_udivsi3.o)
-                0x0000000000011bec                __udivsi3
- .text          0x0000000000011c48       0x2e /opt/toolchains/gen//m68k-elf/lib/gcc/m68k-elf/4.8.2/libgcc.a(_divsi3.o)
-                0x0000000000011c48                __divsi3
- *fill*         0x0000000000011c76        0x2 
- .text          0x0000000000011c78       0x2e /opt/toolchains/gen//m68k-elf/lib/gcc/m68k-elf/4.8.2/libgcc.a(_umodsi3.o)
-                0x0000000000011c78                __umodsi3
- *fill*         0x0000000000011ca6        0x2 
- .text          0x0000000000011ca8        0x0 res/testm.o
- .text          0x0000000000011ca8     0x124c main.o
-                0x0000000000011ca8                in_range
-                0x0000000000011cc4                gsrand
-                0x0000000000011cf0                tile_draw
-                0x0000000000011d78                sprite_set
-                0x0000000000011e16                redraw_tiles
-                0x0000000000011ea4                redraw_things
-                0x0000000000011f28                draw_health
-                0x0000000000011f60                draw_depth
-                0x0000000000011f9e                screen_game
-                0x0000000000011fac                screen_victory
-                0x0000000000011fce                screen_dead
-                0x0000000000011ff0                position_find_valid
-                0x000000000001206a                thing_make
-                0x0000000000012134                thing_put
-                0x00000000000121fa                things_generate
-                0x0000000000012340                thing_collide
-                0x000000000001243c                thing_destroy
-                0x00000000000124ba                thing_damage
-                0x00000000000124f0                level_generate_room
-                0x00000000000125a4                room_open_connections
-                0x000000000001265a                level_unconnected_rooms
-                0x0000000000012682                level_get_first_unconnected
-                0x00000000000126c6                level_connect_rooms
-                0x00000000000128bc                level_generate
-                0x0000000000012b5e                thing_interact
-                0x0000000000012bf8                thing_move
-                0x0000000000012c90                thing_move_toward
-                0x0000000000012e24                joypad_handle
- .text          0x0000000000012ef4      0x850 /opt/toolchains/gen//m68k-elf/lib/libmd.a(sprite_eng.o)
-                0x000000000001306e                SPR_isInitialized
-                0x000000000001307c                SPR_setPosition
-                0x00000000000130b4                SPR_setAttribut
-                0x00000000000130d6                SPR_setAnimAndFrame
-                0x0000000000013142                SPR_initSprite
-                0x00000000000131a2                SPR_setAnim
-                0x00000000000131fa                SPR_setFrame
-                0x0000000000013256                SPR_nextFrame
-                0x000000000001327c                SPR_setVRAMTileIndex
-                0x00000000000132a4                SPR_setAlwaysVisible
-                0x00000000000132ca                SPR_setNeverVisible
-                0x00000000000132f0                SPR_clear
-                0x0000000000013322                SPR_end
-                0x000000000001335a                SPR_init
-                0x00000000000133bc                SPR_update
-                0x0000000000013744                . = ALIGN (0x4)
-                0x0000000000013744                __CTOR_LIST__ = .
-                0x0000000000013744        0x4 LONG 0x0 (((__CTOR_END__ - __CTOR_LIST__) / 0x4) - 0x2)
+ *fill*         0x000000000000076e        0x2 
+ .text          0x0000000000000770        0x0 boot/sega.o
+ .text          0x0000000000000770      0x9d8 /opt/toolchains/gen//m68k-elf/lib/libmd.a(sys.o)
+                0x0000000000000770                _trace_callback
+                0x0000000000000772                _line1x1x_callback
+                0x0000000000000774                _int_callback
+                0x0000000000000776                _extint_callback
+                0x0000000000000b64                _buserror_callback
+                0x0000000000000b8c                _addresserror_callback
+                0x0000000000000c40                _illegalinst_callback
+                0x0000000000000c68                _chkinst_callback
+                0x0000000000000c90                _trapvinst_callback
+                0x0000000000000cb8                _vint_callback
+                0x0000000000000db6                _hint_callback
+                0x0000000000000eec                _zerodivide_callback
+                0x0000000000000f14                _privilegeviolation_callback
+                0x0000000000000f3c                _errorexception_callback
+                0x0000000000000f64                _start_entry
+                0x0000000000001018                _reset_entry
+                0x0000000000001028                SYS_disableInts
+                0x0000000000001058                SYS_enableInts
+                0x0000000000001084                SYS_setVIntPreCallback
+                0x000000000000108e                SYS_setVIntCallback
+                0x0000000000001098                SYS_setHIntCallback
+                0x00000000000010a2                SYS_setExtIntCallback
+                0x00000000000010ac                SYS_isInVIntCallback
+                0x00000000000010b8                SYS_isInHIntCallback
+                0x00000000000010c4                SYS_isInExtIntCallback
+                0x00000000000010d0                SYS_isInInterrupt
+                0x00000000000010d8                SYS_isNTSC
+                0x00000000000010e8                SYS_isPAL
+                0x00000000000010f4                SYS_die
+ .text          0x0000000000001148      0x886 /opt/toolchains/gen//m68k-elf/lib/libmd.a(vdp.o)
+                0x0000000000001148                VDP_getReg
+                0x0000000000001168                VDP_setReg
+                0x00000000000012c0                VDP_getEnable
+                0x00000000000012cc                VDP_setEnable
+                0x00000000000012f8                VDP_getScanlineNumber
+                0x000000000000130e                VDP_getScreenHeight
+                0x0000000000001316                VDP_setScreenHeight224
+                0x000000000000133c                VDP_setScreenHeight240
+                0x000000000000136e                VDP_getScreenWidth
+                0x0000000000001376                VDP_setScreenWidth256
+                0x000000000000139c                VDP_setScreenWidth320
+                0x00000000000013c2                VDP_getPlanWidth
+                0x00000000000013d6                VDP_getPlanHeight
+                0x00000000000013e8                VDP_setPlanSize
+                0x000000000000141c                VDP_getVerticalScrollingMode
+                0x000000000000142a                VDP_getHorizontalScrollingMode
+                0x0000000000001436                VDP_setScrollingMode
+                0x0000000000001468                VDP_getBackgroundColor
+                0x0000000000001470                VDP_setBackgroundColor
+                0x000000000000148e                VDP_getAutoInc
+                0x0000000000001496                VDP_setAutoInc
+                0x00000000000014b0                VDP_setHInterrupt
+                0x00000000000014dc                VDP_setHilightShadow
+                0x0000000000001508                VDP_getHIntCounter
+                0x0000000000001510                VDP_setHIntCounter
+                0x000000000000152a                VDP_getAPlanAddress
+                0x0000000000001532                VDP_getBPlanAddress
+                0x000000000000153a                VDP_getWindowAddress
+                0x0000000000001542                VDP_getWindowPlanAddress
+                0x000000000000154a                VDP_getSpriteListAddress
+                0x0000000000001552                VDP_getHScrollTableAddress
+                0x000000000000155a                VDP_setAPlanAddress
+                0x000000000000157e                VDP_setWindowAddress
+                0x00000000000015c0                VDP_setWindowPlanAddress
+                0x00000000000015d0                VDP_setBPlanAddress
+                0x00000000000015f4                VDP_setSpriteListAddress
+                0x0000000000001636                VDP_setHScrollTableAddress
+                0x000000000000165c                VDP_setScanMode
+                0x00000000000016a4                VDP_waitDMACompletion
+                0x00000000000016b2                VDP_init
+                0x00000000000018b4                VDP_waitFIFOEmpty
+                0x00000000000018c2                VDP_waitVSync
+                0x00000000000018dc                VDP_resetScreen
+                0x0000000000001950                VDP_showFPS
+ *fill*         0x00000000000019ce        0x2 
+ .text          0x00000000000019d0      0x5a8 /opt/toolchains/gen//m68k-elf/lib/libmd.a(dma.o)
+                0x00000000000019d0                DMA_getAutoFlush
+                0x00000000000019d8                DMA_setAutoFlush
+                0x00000000000019fe                DMA_getMaxTransferSize
+                0x0000000000001a06                DMA_setMaxTransferSize
+                0x0000000000001a10                DMA_clearQueue
+                0x0000000000001a2a                DMA_flushQueue
+                0x0000000000001aee                DMA_getQueueSize
+                0x0000000000001af6                DMA_getQueueTransferSize
+                0x0000000000001afe                DMA_queueDma
+                0x0000000000001ce8                DMA_waitCompletion
+                0x0000000000001cf6                DMA_doDma
+                0x0000000000001e46                DMA_doVRamFill
+                0x0000000000001ef2                DMA_doVRamCopy
+ .text          0x0000000000001f78     0x1860 /opt/toolchains/gen//m68k-elf/lib/libmd.a(tools.o)
+                0x0000000000001f78                getFPS
+                0x0000000000001fe0                getFPS_f
+                0x0000000000002062                KLog
+                0x0000000000002086                KLog_U1
+                0x00000000000020d2                KLog_U2
+                0x0000000000002140                KLog_U3
+                0x00000000000021cc                KLog_U4
+                0x0000000000002274                KLog_U1x
+                0x00000000000022c4                KLog_U2x
+                0x0000000000002334                KLog_U3x
+                0x00000000000023c0                KLog_U4x
+                0x0000000000002466                KLog_S1
+                0x00000000000024b2                KLog_S2
+                0x0000000000002520                KLog_S3
+                0x00000000000025ac                KLog_S4
+                0x0000000000002654                KLog_S1x
+                0x00000000000026a4                KLog_S2x
+                0x0000000000002714                KLog_S3x
+                0x00000000000027a0                KLog_S4x
+                0x0000000000002846                KLog_f1
+                0x0000000000002896                KLog_f2
+                0x000000000000290c                KLog_f3
+                0x00000000000029a4                KLog_f4
+                0x0000000000002a5c                KLog_f1x
+                0x0000000000002ab0                KLog_f2x
+                0x0000000000002b28                KLog_f3x
+                0x0000000000002bc0                KLog_f4x
+                0x0000000000002c76                KLog_F1
+                0x0000000000002cc2                KLog_F2
+                0x0000000000002d30                KLog_F3
+                0x0000000000002dbc                KLog_F4
+                0x0000000000002e64                KLog_F1x
+                0x0000000000002eb4                KLog_F2x
+                0x0000000000002f24                KLog_F3x
+                0x0000000000002fb0                KLog_F4x
+                0x0000000000003056                allocateBitmap
+                0x00000000000030b6                allocateBitmapEx
+                0x00000000000030f8                allocateTileSet
+                0x0000000000003142                allocateTileSetEx
+                0x000000000000316e                allocateMap
+                0x00000000000031b8                allocateMapEx
+                0x00000000000031e2                allocateImage
+                0x00000000000032a6                rle4b_unpack
+                0x0000000000003300                rlemap_unpack
+                0x0000000000003398                unpackEx
+                0x0000000000003446                getTileSet
+                0x0000000000003494                unpack
+                0x00000000000034b2                unpackBitmap
+                0x0000000000003544                unpackTileSet
+                0x00000000000035b6                unpackMap
+                0x000000000000362c                unpackImage
+                0x0000000000003682                rle4b_unpackVRam
+                0x000000000000370e                uftc_unpack_old
+ .text          0x00000000000037d8      0x236 /opt/toolchains/gen//m68k-elf/lib/libmd.a(memory.o)
+                0x00000000000037d8                MEM_init
+                0x0000000000003800                MEM_getFree
+                0x000000000000382a                MEM_free
+                0x000000000000383c                MEM_alloc
+                0x000000000000391a                memcpyU16
+                0x0000000000003938                memcpyU32
+                0x0000000000003958                fastMemset
+                0x0000000000003978                fastMemsetU16
+                0x0000000000003998                fastMemsetU32
+                0x00000000000039b4                fastMemcpy
+                0x00000000000039d0                fastMemcpyU16
+                0x00000000000039ee                fastMemcpyU32
+ *fill*         0x0000000000003a0e        0x2 
+ .text          0x0000000000003a10      0xb94 /opt/toolchains/gen//m68k-elf/lib/libmd.a(vdp_tile.o)
+                0x0000000000003a10                VDP_loadTileSet
+                0x0000000000003aba                VDP_loadFontData
+                0x0000000000003aea                VDP_loadFont
+                0x0000000000003b10                VDP_loadBMPTileDataEx
+                0x0000000000003b64                VDP_fillTileData
+                0x0000000000003c1e                VDP_setTileMap
+                0x0000000000003c5c                VDP_setTileMapXY
+                0x0000000000003cc2                VDP_fillTileMap
+                0x0000000000003d5e                VDP_fillTileMapRectByIndex
+                0x0000000000003d88                VDP_fillTileMapRect
+                0x0000000000003e2e                VDP_clearTileMap
+                0x0000000000003e82                VDP_clearTileMapRectByIndex
+                0x0000000000003eac                VDP_clearTileMapRect
+                0x0000000000003ee0                VDP_fillTileMapInc
+                0x0000000000003faa                VDP_fillTileMapRectIncByIndex
+                0x0000000000003fd4                VDP_fillTileMapRectInc
+                0x0000000000004080                VDP_setTileMapData
+                0x0000000000004164                VDP_setTileMapRectByIndex
+                0x0000000000004192                VDP_setTileMapDataRect
+                0x000000000000424a                VDP_setTileMapDataEx
+                0x000000000000433c                VDP_setTileMapRectExByIndex
+                0x000000000000436e                VDP_setTileMapDataRectEx
+                0x0000000000004454                VDP_setTileMapRectEx
+                0x0000000000004498                VDP_setMapEx
+                0x0000000000004560                VDP_setMap
+ .text          0x00000000000045a4      0x5f2 /opt/toolchains/gen//m68k-elf/lib/libmd.a(z80_ctrl.o)
+                0x00000000000045a4                Z80_isBusTaken
+                0x00000000000045b6                Z80_requestBus
+                0x00000000000045dc                Z80_releaseBus
+                0x00000000000045e6                Z80_startReset
+                0x00000000000045f0                Z80_endReset
+                0x00000000000045fa                Z80_setBank
+                0x000000000000460e                Z80_init
+                0x000000000000462c                Z80_read
+                0x000000000000463e                Z80_write
+                0x0000000000004652                Z80_clear
+                0x00000000000046ca                Z80_upload
+                0x000000000000473e                Z80_download
+                0x0000000000004796                Z80_getLoadedDriver
+                0x000000000000479e                Z80_unloadDriver
+                0x00000000000047d0                Z80_loadCustomDriver
+                0x0000000000004814                Z80_isDriverReady
+                0x000000000000484a                Z80_loadDriver
+ *fill*         0x0000000000004b96        0x2 
+ .text          0x0000000000004b98      0xf5c /opt/toolchains/gen//m68k-elf/lib/libmd.a(sound.o)
+                0x0000000000004b98                SND_isPlaying_PCM
+                0x0000000000004bcc                SND_startPlay_PCM
+                0x0000000000004c70                SND_stopPlay_PCM
+                0x0000000000004cda                SND_isPlaying_2ADPCM
+                0x0000000000004d10                SND_startPlay_2ADPCM
+                0x0000000000004dd0                SND_stopPlay_2ADPCM
+                0x0000000000004e4a                SND_isPlaying_4PCM_ENV
+                0x0000000000004e80                SND_startPlay_4PCM_ENV
+                0x0000000000004f5a                SND_stopPlay_4PCM_ENV
+                0x0000000000004fd4                SND_setVolume_4PCM_ENV
+                0x000000000000501c                SND_getVolume_4PCM_ENV
+                0x000000000000505e                SND_isPlaying_MVS
+                0x0000000000005090                SND_startPlay_MVS
+                0x00000000000050fa                SND_stopPlay_MVS
+                0x000000000000512c                SND_setTempo_MVS
+                0x000000000000515c                SND_startDAC_MVS
+                0x00000000000051be                SND_stopDAC_MVS
+                0x00000000000051e8                SND_isPlayingPSG_MVS
+                0x0000000000005216                SND_startPSG_MVS
+                0x0000000000005262                SND_stopPSG_MVS
+                0x000000000000528c                SND_enablePSG_MVS
+                0x00000000000052cc                SND_disablePSG_MVS
+                0x000000000000530c                SND_startPlay_TFM
+                0x0000000000005380                SND_stopPlay_TFM
+                0x0000000000005388                SND_stopPlay_VGM
+                0x00000000000053b4                SND_resumePlay_VGM
+                0x00000000000053e0                SND_isPlaying_VGM
+                0x0000000000005410                SND_startPlay_VGM
+                0x000000000000548c                SND_playSfx_VGM
+                0x00000000000054ee                SND_isPlaying_XGM
+                0x0000000000005522                SND_startPlay_XGM
+                0x000000000000563a                SND_stopPlay_XGM
+                0x00000000000056a2                SND_pausePlay_XGM
+                0x00000000000056d4                SND_resumePlay_XGM
+                0x000000000000570e                SND_isPlayingPCM_XGM
+                0x0000000000005744                SND_setPCMFast_XGM
+                0x0000000000005782                SND_setPCM_XGM
+                0x00000000000057c2                SND_startPlayPCM_XGM
+                0x0000000000005824                SND_stopPlayPCM_XGM
+                0x000000000000587a                SND_set68KBUSProtection_XGM
+                0x00000000000058a2                SND_nextXFrame_XGM
+                0x00000000000058ea                SND_getManualSync_XGM
+                0x00000000000058f6                SND_setManualSync_XGM
+                0x000000000000593c                SND_getForceDelayDMA_XGM
+                0x0000000000005948                SND_setForceDelayDMA_XGM
+                0x000000000000596e                SND_getMusicTempo_XGM
+                0x0000000000005976                SND_setMusicTempo_XGM
+                0x000000000000599e                SND_getCPULoad_XGM
+                0x0000000000005a5e                XGM_resetLoadCalculation
+                0x0000000000005a8c                XGM_doVBlankProcess
+ .text          0x0000000000005af4      0x1f2 /opt/toolchains/gen//m68k-elf/lib/libmd.a(ym2612.o)
+                0x0000000000005af4                YM2612_read
+                0x0000000000005b0e                YM2612_write
+                0x0000000000005b32                YM2612_reset
+                0x0000000000005c1c                YM2612_writeSafe
+                0x0000000000005c34                YM2612_writeReg
+                0x0000000000005c86                YM2612_writeRegSafe
+                0x0000000000005ca8                YM2612_enableDAC
+                0x0000000000005cc8                YM2612_disableDAC
+ *fill*         0x0000000000005ce6        0x2 
+ .text          0x0000000000005ce8      0x618 /opt/toolchains/gen//m68k-elf/lib/libmd.a(vdp_pal.o)
+                0x0000000000005da0                VDP_getPaletteColor
+                0x0000000000005dd4                VDP_setPaletteColor
+                0x0000000000005e12                VDP_doStepFading
+                0x0000000000005eec                VDP_initFading
+                0x0000000000006018                VDP_interruptFade
+                0x000000000000602a                VDP_fade
+                0x000000000000609a                VDP_fadeTo
+                0x00000000000060fa                VDP_fadeOut
+                0x000000000000612a                VDP_fadeIn
+                0x000000000000615e                VDP_fadePal
+                0x000000000000619a                VDP_fadePalTo
+                0x00000000000061d2                VDP_fadePalOut
+                0x000000000000620c                VDP_fadePalIn
+                0x000000000000624a                VDP_fadeAll
+                0x0000000000006272                VDP_fadeAllTo
+                0x0000000000006296                VDP_fadeOutAll
+                0x00000000000062bc                VDP_fadeInAll
+                0x00000000000062e6                VDP_isDoingFade
+                0x00000000000062f2                VDP_waitFadeCompletion
+ .text          0x0000000000006300      0x114 /opt/toolchains/gen//m68k-elf/lib/libmd.a(psg.o)
+                0x0000000000006300                PSG_init
+                0x000000000000632c                PSG_write
+                0x0000000000006336                PSG_setEnvelope
+                0x0000000000006356                PSG_setTone
+                0x0000000000006386                PSG_setFrequency
+                0x00000000000063ec                PSG_setNoise
+ .text          0x0000000000006414        0x0 /opt/toolchains/gen//m68k-elf/lib/libmd.a(z80_vgm.o)
+ .text          0x0000000000006414      0x3ec /opt/toolchains/gen//m68k-elf/lib/libmd.a(vdp_spr.o)
+                0x0000000000006414                VDP_resetSprites
+                0x000000000000642c                VDP_resetSpritesDirect
+                0x000000000000646e                VDP_setSprite
+                0x00000000000064ca                VDP_setSpriteP
+                0x0000000000006516                VDP_setSpriteDirect
+                0x0000000000006598                VDP_setSpriteDirectP
+                0x000000000000661a                VDP_setSpritePosition
+                0x000000000000665a                VDP_setSpritesDirect
+                0x00000000000066ec                VDP_setSprites
+                0x000000000000675e                VDP_updateSprites
+ .text          0x0000000000006800        0x0 /opt/toolchains/gen//m68k-elf/lib/libmd.a(tab_cnv.o)
+ .text          0x0000000000006800      0x266 /opt/toolchains/gen//m68k-elf/lib/libmd.a(vdp_dma.o)
+                0x0000000000006800                VDP_doDMAEx
+                0x0000000000006950                VDP_doDMA
+                0x000000000000697a                VDP_doVRamDMAFill
+                0x00000000000069ee                VDP_doVRamDMACopy
+ *fill*         0x0000000000006a66        0x2 
+ .text          0x0000000000006a68     0x111e /opt/toolchains/gen//m68k-elf/lib/libmd.a(bmp.o)
+                0x0000000000006bbc                BMP_end
+                0x0000000000006c20                BMP_hasFlipRequestPending
+                0x0000000000006c2e                BMP_waitWhileFlipRequestPending
+                0x0000000000006c3e                BMP_hasFlipInProgess
+                0x0000000000006c4a                BMP_waitFlipComplete
+                0x0000000000006c5a                BMP_flip
+                0x0000000000006cae                BMP_drawText
+                0x0000000000006d0c                BMP_clearText
+                0x0000000000006d68                BMP_clearTextLine
+                0x0000000000006da8                BMP_showFPS
+                0x0000000000006e7a                BMP_clear
+                0x0000000000006e8a                BMP_reset
+                0x0000000000006fac                BMP_init
+                0x0000000000006fea                BMP_getWritePointer
+                0x0000000000007010                BMP_getReadPointer
+                0x0000000000007036                BMP_getPixel
+                0x000000000000706e                BMP_setPixel
+                0x00000000000070a6                BMP_setPixels_V2D
+                0x00000000000070f6                BMP_setPixels
+                0x0000000000007150                BMP_drawBitmapData
+                0x00000000000071f2                BMP_drawBitmap
+                0x00000000000072c6                BMP_loadBitmapData
+                0x00000000000072f8                BMP_loadBitmap
+                0x000000000000731e                BMP_getBitmapPalette
+                0x000000000000733a                BMP_scale
+                0x0000000000007414                BMP_drawBitmapScaled
+                0x000000000000751e                BMP_loadAndScaleBitmap
+                0x0000000000007554                BMP_doVBlankProcess
+                0x000000000000755c                BMP_doHBlankProcess
+ *fill*         0x0000000000007b86        0x2 
+ .text          0x0000000000007b88      0x1d4 /opt/toolchains/gen//m68k-elf/lib/libmd.a(timer.o)
+                0x0000000000007b88                getSubTick
+                0x0000000000007bda                getTick
+                0x0000000000007c06                getTime
+                0x0000000000007c28                getTimeAsFix32
+                0x0000000000007c3c                startTimer
+                0x0000000000007c5e                getTimer
+                0x0000000000007ca2                waitSubTick
+                0x0000000000007cea                waitTick
+                0x0000000000007d2c                waitMs
+ .text          0x0000000000007d5c      0x65c /opt/toolchains/gen//m68k-elf/lib/libmd.a(tile_cache.o)
+                0x0000000000007dfc                TC_init
+                0x0000000000007e34                TC_end
+                0x0000000000007e96                TC_createCacheEx
+                0x0000000000007edc                TC_createCache
+                0x0000000000007efe                TC_releaseCache
+                0x0000000000007f10                TC_clearCache
+                0x0000000000007f22                TC_flushCache
+                0x0000000000007f2c                TC_alloc
+                0x0000000000008216                TC_reAlloc
+                0x00000000000082a2                TC_free
+                0x000000000000831c                TC_getTileIndex
+                0x000000000000836a                TC_uploadAtVBlank
+                0x000000000000839e                TC_doVBlankProcess
+ .text          0x00000000000083b8      0x80c /opt/toolchains/gen//m68k-elf/lib/libmd.a(vdp_bg.o)
+                0x00000000000083b8                VDP_setHorizontalScroll
+                0x0000000000008404                VDP_setHorizontalScrollTile
+                0x00000000000084aa                VDP_setHorizontalScrollLine
+                0x0000000000008550                VDP_setVerticalScroll
+                0x000000000000858e                VDP_setVerticalScrollTile
+                0x0000000000008624                VDP_clearPlan
+                0x00000000000086da                VDP_getTextPlan
+                0x00000000000086f6                VDP_getTextPalette
+                0x0000000000008706                VDP_getTextPriority
+                0x0000000000008712                VDP_setTextPlan
+                0x0000000000008736                VDP_setTextPalette
+                0x0000000000008756                VDP_setTextPriority
+                0x0000000000008774                VDP_drawTextBG
+                0x0000000000008820                VDP_clearTextBG
+                0x0000000000008852                VDP_clearTextLineBG
+                0x0000000000008888                VDP_drawText
+                0x00000000000088bc                VDP_clearText
+                0x00000000000088ea                VDP_clearTextLine
+                0x0000000000008906                VDP_drawBitmapEx
+                0x0000000000008a16                VDP_drawBitmap
+                0x0000000000008a9e                VDP_drawImageEx
+                0x0000000000008b46                VDP_drawImage
+ *fill*         0x0000000000008bc4       0x3c 
+ .text          0x0000000000008c00       0x80 /opt/toolchains/gen//m68k-elf/lib/libmd.a(smp_null_pcm.o)
+                0x0000000000008c00                smp_null_pcm
+ .text          0x0000000000008c80      0x102 /opt/toolchains/gen//m68k-elf/lib/libmd.a(vdp_tile_a.o)
+                0x0000000000008c80                VDP_loadTileData
+                0x0000000000008cfc                VDP_loadBMPTileData
+ *fill*         0x0000000000008d82        0x2 
+ .text          0x0000000000008d84      0x1b8 /opt/toolchains/gen//m68k-elf/lib/libmd.a(memory_a.o)
+                0x0000000000008d84                memset
+                0x0000000000008dfc                memsetU16
+                0x0000000000008e5a                memsetU32
+                0x0000000000008e98                memcpy
+ .text          0x0000000000008f3c      0x15c /opt/toolchains/gen//m68k-elf/lib/libmd.a(vdp_pal_a.o)
+                0x0000000000008f3c                VDP_getPaletteColors
+                0x0000000000008fa2                VDP_setPaletteColors
+                0x0000000000009008                VDP_getPalette
+                0x0000000000009050                VDP_setPalette
+ .text          0x0000000000009098       0x48 /opt/toolchains/gen//m68k-elf/lib/libmd.a(sys_a.o)
+                0x0000000000009098                SYS_assertReset
+                0x000000000000909c                SYS_reset
+                0x00000000000090aa                SYS_getInterruptMaskLevel
+                0x00000000000090b4                SYS_setInterruptMaskLevel
+                0x00000000000090c6                SYS_getAndSetInterruptMaskLevel
+ .text          0x00000000000090e0       0x88 /opt/toolchains/gen//m68k-elf/lib/libmd.a(kdebug.o)
+                0x00000000000090e0                KDebug_Halt
+                0x00000000000090ea                KDebug_Alert
+                0x0000000000009106                KDebug_AlertNumber
+                0x0000000000009154                KDebug_StartTimer
+                0x000000000000915e                KDebug_StopTimer
+ *fill*         0x0000000000009168       0x98 
+ .text          0x0000000000009200      0x100 /opt/toolchains/gen//m68k-elf/lib/libmd.a(smp_null.o)
+                0x0000000000009200                smp_null
+ .text          0x0000000000009300     0x13f8 /opt/toolchains/gen//m68k-elf/lib/libmd.a(bmp_a.o)
+                0x0000000000009300                clearBitmapBuffer
+                0x0000000000009442                BMP_clipLine
+                0x000000000000945e                BMP_drawLine
+                0x00000000000094ce                BMP_isPolygonCulled
+                0x0000000000009dfc                BMP_drawPolygon
+ .text          0x000000000000a6f8      0x10a /opt/toolchains/gen//m68k-elf/lib/libmd.a(tools_a.o)
+                0x000000000000a6f8                aplib_unpack
+                0x000000000000a6fe                aplib_decrunch
+                0x000000000000a7a0                uftc_unpack
+ *fill*         0x000000000000a802        0x2 
+ .text          0x000000000000a804      0xb26 /opt/toolchains/gen//m68k-elf/lib/libmd.a(z80_drv1.o)
+                0x000000000000a804                z80_drv1
+ *fill*         0x000000000000b32a        0x2 
+ .text          0x000000000000b32c      0xe00 /opt/toolchains/gen//m68k-elf/lib/libmd.a(z80_drv2.o)
+                0x000000000000b32c                z80_drv2
+ .text          0x000000000000c12c      0xa5c /opt/toolchains/gen//m68k-elf/lib/libmd.a(z80_mvs.o)
+                0x000000000000c12c                z80_mvs
+ .text          0x000000000000cb88      0xa64 /opt/toolchains/gen//m68k-elf/lib/libmd.a(z80_drv3.o)
+                0x000000000000cb88                z80_drv3
+ .text          0x000000000000d5ec     0x1700 /opt/toolchains/gen//m68k-elf/lib/libmd.a(z80_xgm.o)
+                0x000000000000d5ec                z80_xgm
+ .text          0x000000000000ecec      0x69e /opt/toolchains/gen//m68k-elf/lib/libmd.a(z80_tfm.o)
+                0x000000000000ecec                z80_tfm
+ *fill*         0x000000000000f38a        0x2 
+ .text          0x000000000000f38c        0x0 /opt/toolchains/gen//m68k-elf/lib/libmd.a(libres.o)
+ .text          0x000000000000f38c        0x0 /opt/toolchains/gen//m68k-elf/lib/libmd.a(tab_vol.o)
+ .text          0x000000000000f38c      0x656 /opt/toolchains/gen//m68k-elf/lib/libmd.a(maths.o)
+                0x000000000000f38c                random
+                0x000000000000f3ac                intToBCD
+                0x000000000000f440                distance_approx
+                0x000000000000f492                Partition_u8
+                0x000000000000f514                QSort_u8
+                0x000000000000f562                Partition_s8
+                0x000000000000f5e4                QSort_s8
+                0x000000000000f632                Partition_u16
+                0x000000000000f6c2                QSort_u16
+                0x000000000000f710                Partition_s16
+                0x000000000000f7a0                QSort_s16
+                0x000000000000f7ee                Partition_u32
+                0x000000000000f89a                QSort_u32
+                0x000000000000f8e8                Partition_s32
+                0x000000000000f994                QSort_s32
+ *fill*         0x000000000000f9e2        0x2 
+ .text          0x000000000000f9e4      0x8d2 /opt/toolchains/gen//m68k-elf/lib/libmd.a(string.o)
+                0x000000000000f9e4                strlen
+                0x000000000000fad0                strnlen
+                0x000000000000fb0e                strcmp
+                0x000000000000fb2e                strclr
+                0x000000000000fb38                strcpy
+                0x000000000000fb4a                strcat
+                0x000000000000fb64                strreplace
+                0x000000000000fb88                intToStr
+                0x000000000000fbb6                uintToStr
+                0x000000000000fbd2                intToHex
+                0x000000000000fc86                fix32ToStr
+                0x000000000000fd06                fix16ToStr
+                0x000000000000fd80                sprintf
+ *fill*         0x00000000000102b6        0x2 
+ .text          0x00000000000102b8     0x1804 /opt/toolchains/gen//m68k-elf/lib/libmd.a(joy.o)
+                0x0000000000010d50                JOY_setEventHandler
+                0x0000000000010d5a                JOY_setSupport
+                0x0000000000011192                JOY_init
+                0x00000000000114d2                JOY_getPortType
+                0x00000000000114f2                JOY_getJoypadType
+                0x0000000000011512                JOY_readJoypad
+                0x0000000000011562                JOY_readJoypadX
+                0x0000000000011584                JOY_readJoypadY
+                0x00000000000115a6                JOY_update
+                0x00000000000119c8                JOY_waitPressTime
+                0x0000000000011a6e                JOY_waitPressBtn
+                0x0000000000011a84                JOY_waitPressBtnTime
+                0x0000000000011aa0                JOY_waitPress
+ .text          0x0000000000011abc        0xc /opt/toolchains/gen//m68k-elf/lib/libmd.a(types.o)
+                0x0000000000011abc                getZeroU8
+                0x0000000000011ac0                getZeroU16
+                0x0000000000011ac4                getZeroU32
+ .text          0x0000000000011ac8       0x22 /opt/toolchains/gen//m68k-elf/lib/gcc/m68k-elf/4.8.2/libgcc.a(_mulsi3.o)
+                0x0000000000011ac8                __mulsi3
+ *fill*         0x0000000000011aea        0x2 
+ .text          0x0000000000011aec       0x5c /opt/toolchains/gen//m68k-elf/lib/gcc/m68k-elf/4.8.2/libgcc.a(_udivsi3.o)
+                0x0000000000011aec                __udivsi3
+ .text          0x0000000000011b48       0x2e /opt/toolchains/gen//m68k-elf/lib/gcc/m68k-elf/4.8.2/libgcc.a(_divsi3.o)
+                0x0000000000011b48                __divsi3
+ *fill*         0x0000000000011b76        0x2 
+ .text          0x0000000000011b78       0x2e /opt/toolchains/gen//m68k-elf/lib/gcc/m68k-elf/4.8.2/libgcc.a(_umodsi3.o)
+                0x0000000000011b78                __umodsi3
+ *fill*         0x0000000000011ba6        0x2 
+ .text          0x0000000000011ba8        0x0 res/card.o
+ .text          0x0000000000011ba8        0x0 res/stairs.o
+ .text          0x0000000000011ba8        0x0 res/potion.o
+ .text          0x0000000000011ba8        0x0 res/testm.o
+ .text          0x0000000000011ba8        0x0 res/hero.o
+ .text          0x0000000000011ba8     0x1a92 main.o
+                0x0000000000011bce                in_range
+                0x0000000000011bea                gsrand
+                0x0000000000011c16                tile_draw
+                0x0000000000011c88                sprite_set
+                0x0000000000011e0e                move_player_light
+                0x0000000000011fdc                redraw_tiles
+                0x0000000000012054                redraw_things
+                0x000000000001210c                draw_health
+                0x0000000000012144                draw_depth
+                0x0000000000012182                draw_abilities
+                0x000000000001237e                screen_game
+                0x0000000000012392                screen_victory
+                0x00000000000123b4                screen_dead
+                0x00000000000123d6                position_find_valid
+                0x0000000000012450                ability_get
+                0x00000000000124b6                ability_get_random
+                0x0000000000012526                thing_make
+                0x0000000000012622                thing_put
+                0x0000000000012718                things_generate
+                0x000000000001289e                thing_collide
+                0x000000000001299a                thing_destroy
+                0x0000000000012a4e                thing_damage
+                0x0000000000012a5e                level_generate_room
+                0x0000000000012b12                room_open_connections
+                0x0000000000012bc8                level_unconnected_rooms
+                0x0000000000012bf0                level_get_first_unconnected
+                0x0000000000012c34                level_connect_rooms
+                0x0000000000012e2a                level_generate
+                0x00000000000130d0                ability_use
+                0x00000000000131ca                thing_interact
+                0x000000000001328c                thing_move
+                0x0000000000013342                thing_move_toward
+                0x00000000000134d6                joypad_handle
+ *fill*         0x000000000001363a        0x2 
+ .text          0x000000000001363c      0x850 /opt/toolchains/gen//m68k-elf/lib/libmd.a(sprite_eng.o)
+                0x00000000000137b6                SPR_isInitialized
+                0x00000000000137c4                SPR_setPosition
+                0x00000000000137fc                SPR_setAttribut
+                0x000000000001381e                SPR_setAnimAndFrame
+                0x000000000001388a                SPR_initSprite
+                0x00000000000138ea                SPR_setAnim
+                0x0000000000013942                SPR_setFrame
+                0x000000000001399e                SPR_nextFrame
+                0x00000000000139c4                SPR_setVRAMTileIndex
+                0x00000000000139ec                SPR_setAlwaysVisible
+                0x0000000000013a12                SPR_setNeverVisible
+                0x0000000000013a38                SPR_clear
+                0x0000000000013a6a                SPR_end
+                0x0000000000013aa2                SPR_init
+                0x0000000000013b04                SPR_update
+                0x0000000000013e8c                . = ALIGN (0x4)
+                0x0000000000013e8c                __CTOR_LIST__ = .
+                0x0000000000013e8c        0x4 LONG 0x0 (((__CTOR_END__ - __CTOR_LIST__) / 0x4) - 0x2)
  *(.ctors)
-                0x0000000000013748        0x4 LONG 0x0
-                0x000000000001374c                __CTOR_END__ = .
-                0x000000000001374c                __DTOR_LIST__ = .
-                0x000000000001374c        0x4 LONG 0x0 (((__DTOR_END__ - __DTOR_LIST__) / 0x4) - 0x2)
+                0x0000000000013e90        0x4 LONG 0x0
+                0x0000000000013e94                __CTOR_END__ = .
+                0x0000000000013e94                __DTOR_LIST__ = .
+                0x0000000000013e94        0x4 LONG 0x0 (((__DTOR_END__ - __DTOR_LIST__) / 0x4) - 0x2)
  *(.dtors)
-                0x0000000000013750        0x4 LONG 0x0
-                0x0000000000013754                __DTOR_END__ = .
+                0x0000000000013e98        0x4 LONG 0x0
+                0x0000000000013e9c                __DTOR_END__ = .
  *(.rodata .rodata.*)
  .rodata.str1.1
-                0x0000000000013754      0x13c /opt/toolchains/gen//m68k-elf/lib/libmd.a(sys.o)
+                0x0000000000013e9c      0x13c /opt/toolchains/gen//m68k-elf/lib/libmd.a(sys.o)
                                         0x13e (size before relaxing)
  .rodata.str1.1
-                0x0000000000013890       0x21 /opt/toolchains/gen//m68k-elf/lib/libmd.a(vdp.o)
+                0x0000000000013fd8       0x21 /opt/toolchains/gen//m68k-elf/lib/libmd.a(vdp.o)
                                          0x4c (size before relaxing)
- *fill*         0x00000000000138b1        0x1 
- .rodata        0x00000000000138b2        0x4 /opt/toolchains/gen//m68k-elf/lib/libmd.a(vdp.o)
-                0x00000000000138b2                PLAN_A
-                0x00000000000138b4                PLAN_B
+ *fill*         0x0000000000013ff9        0x1 
+ .rodata        0x0000000000013ffa        0x4 /opt/toolchains/gen//m68k-elf/lib/libmd.a(vdp.o)
+                0x0000000000013ffa                PLAN_A
+                0x0000000000013ffc                PLAN_B
  .rodata.str1.1
                 0x0000000000000000        0x2 /opt/toolchains/gen//m68k-elf/lib/libmd.a(tools.o)
- .rodata        0x00000000000138b6      0x104 /opt/toolchains/gen//m68k-elf/lib/libmd.a(vdp_pal.o)
-                0x00000000000138b6                palette_blue
-                0x00000000000138d6                palette_green
-                0x00000000000138f6                palette_red
-                0x0000000000013916                palette_grey
-                0x0000000000013936                palette_black
-                0x000000000001393a                palette_black_all
- .rodata        0x00000000000139ba      0xe40 /opt/toolchains/gen//m68k-elf/lib/libmd.a(z80_vgm.o)
-                0x00000000000139ba                z80_vgm
- .rodata        0x00000000000147fa      0x6f4 /opt/toolchains/gen//m68k-elf/lib/libmd.a(tab_cnv.o)
-                0x00000000000147fa                cnv_bcd_tab
-                0x000000000001485e                cnv_8to32_tab
-                0x0000000000014c5e                cnv_8to16_tab
-                0x0000000000014e5e                cnv_4to32_tab
-                0x0000000000014e9e                cnv_4to16_tab
-                0x0000000000014ebe                cnv_4to8_tab
-                0x0000000000014ece                cnv_2to32_tab
-                0x0000000000014ede                cnv_2to16_tab
-                0x0000000000014ee6                cnv_2to8_tab
-                0x0000000000014eea                cnv_2to4_tab
- .rodata        0x0000000000014eee      0xcec /opt/toolchains/gen//m68k-elf/lib/libmd.a(libres.o)
-                0x0000000000015894                logo_lib
-                0x0000000000015afe                font_lib
-                0x0000000000015b26                font_pal_lib
-                0x0000000000015b2e                stop_xgm
- .rodata        0x0000000000015bda     0x1000 /opt/toolchains/gen//m68k-elf/lib/libmd.a(tab_vol.o)
-                0x0000000000015bda                tab_vol
+ .rodata        0x0000000000013ffe      0x104 /opt/toolchains/gen//m68k-elf/lib/libmd.a(vdp_pal.o)
+                0x0000000000013ffe                palette_blue
+                0x000000000001401e                palette_green
+                0x000000000001403e                palette_red
+                0x000000000001405e                palette_grey
+                0x000000000001407e                palette_black
+                0x0000000000014082                palette_black_all
+ .rodata        0x0000000000014102      0xe40 /opt/toolchains/gen//m68k-elf/lib/libmd.a(z80_vgm.o)
+                0x0000000000014102                z80_vgm
+ .rodata        0x0000000000014f42      0x6f4 /opt/toolchains/gen//m68k-elf/lib/libmd.a(tab_cnv.o)
+                0x0000000000014f42                cnv_bcd_tab
+                0x0000000000014fa6                cnv_8to32_tab
+                0x00000000000153a6                cnv_8to16_tab
+                0x00000000000155a6                cnv_4to32_tab
+                0x00000000000155e6                cnv_4to16_tab
+                0x0000000000015606                cnv_4to8_tab
+                0x0000000000015616                cnv_2to32_tab
+                0x0000000000015626                cnv_2to16_tab
+                0x000000000001562e                cnv_2to8_tab
+                0x0000000000015632                cnv_2to4_tab
+ .rodata        0x0000000000015636      0xcec /opt/toolchains/gen//m68k-elf/lib/libmd.a(libres.o)
+                0x0000000000015fdc                logo_lib
+                0x0000000000016246                font_lib
+                0x000000000001626e                font_pal_lib
+                0x0000000000016276                stop_xgm
+ .rodata        0x0000000000016322     0x1000 /opt/toolchains/gen//m68k-elf/lib/libmd.a(tab_vol.o)
+                0x0000000000016322                tab_vol
  .rodata.str1.1
-                0x0000000000016bda       0x29 /opt/toolchains/gen//m68k-elf/lib/libmd.a(string.o)
- *fill*         0x0000000000016c03        0x1 
- .rodata        0x0000000000016c04       0x18 /opt/toolchains/gen//m68k-elf/lib/libmd.a(joy.o)
- .rodata        0x0000000000016c1c       0x94 res/testm.o
-                0x0000000000016ca6                testm
+                0x0000000000017322       0x29 /opt/toolchains/gen//m68k-elf/lib/libmd.a(string.o)
+ *fill*         0x000000000001734b        0x1 
+ .rodata        0x000000000001734c       0x18 /opt/toolchains/gen//m68k-elf/lib/libmd.a(joy.o)
+ .rodata        0x0000000000017364       0x94 res/card.o
+                0x00000000000173ee                card
+ .rodata        0x00000000000173f8       0x94 res/stairs.o
+                0x0000000000017482                stairs
+ .rodata        0x000000000001748c       0x94 res/potion.o
+                0x0000000000017516                potion
+ .rodata        0x0000000000017520       0x94 res/testm.o
+                0x00000000000175aa                testm
+ .rodata        0x00000000000175b4       0x94 res/hero.o
+                0x000000000001763e                hero
  .rodata.str1.1
-                0x0000000000016cb0       0x37 main.o
- *fill*         0x0000000000016ce7        0x1 
- .rodata        0x0000000000016ce8      0x12c main.o
-                0x0000000000016d08                roomsize
-                0x0000000000016d0c                maparraysize
-                0x0000000000016d10                mapsize
-                0x0000000000016d14                tile_scroll
-                0x0000000000016d34                tile_ptn
-                0x0000000000016d54                tile_wpn
-                0x0000000000016d74                tile_hero
-                0x0000000000016d94                tile_stairs
-                0x0000000000016db4                tile_floor
-                0x0000000000016dd4                tile_wall
-                0x0000000000016df4                tile_null
+                0x0000000000017648       0xb8 main.o
+ .rodata        0x0000000000017700       0x8c main.o
+                0x0000000000017720                roomsize
+                0x0000000000017724                maparraysize
+                0x0000000000017728                mapsize
+                0x000000000001772c                tile_floor
+                0x000000000001774c                tile_wall
+                0x000000000001776c                tile_null
  *(.gcc_except_table .gcc_except_table.*)
-                0x0000000000016e14                . = ALIGN (0x4)
-                0x0000000000016e14                __INIT_SECTION__ = .
+                0x000000000001778c                . = ALIGN (0x4)
+                0x000000000001778c                __INIT_SECTION__ = .
  *(.init)
-                0x0000000000016e14        0x2 SHORT 0x4e75
-                0x0000000000016e16                __FINI_SECTION__ = .
+                0x000000000001778c        0x2 SHORT 0x4e75
+                0x000000000001778e                __FINI_SECTION__ = .
  *(.fini)
-                0x0000000000016e16        0x2 SHORT 0x4e75
-                0x0000000000016e18                _etext = .
+                0x000000000001778e        0x2 SHORT 0x4e75
+                0x0000000000017790                _etext = .
  *(.lit)
-                0x0000000000016e18                _stext = SIZEOF (.text)
+                0x0000000000017790                _stext = SIZEOF (.text)
 
-.data           0x0000000000ff0000        0x8 load address 0x0000000000016e18
+.data           0x0000000000ff0000        0x8 load address 0x0000000000017790
  *(.got.plt)
  *(.got)
  *(.shdata)
@@ -855,14 +868,18 @@ Linker script and memory map
  .data          0x0000000000ff0004        0x0 /opt/toolchains/gen//m68k-elf/lib/gcc/m68k-elf/4.8.2/libgcc.a(_udivsi3.o)
  .data          0x0000000000ff0004        0x0 /opt/toolchains/gen//m68k-elf/lib/gcc/m68k-elf/4.8.2/libgcc.a(_divsi3.o)
  .data          0x0000000000ff0004        0x0 /opt/toolchains/gen//m68k-elf/lib/gcc/m68k-elf/4.8.2/libgcc.a(_umodsi3.o)
+ .data          0x0000000000ff0004        0x0 res/card.o
+ .data          0x0000000000ff0004        0x0 res/stairs.o
+ .data          0x0000000000ff0004        0x0 res/potion.o
  .data          0x0000000000ff0004        0x0 res/testm.o
+ .data          0x0000000000ff0004        0x0 res/hero.o
  .data          0x0000000000ff0004        0x4 main.o
                 0x0000000000ff0004                maxdepth
  .data          0x0000000000ff0008        0x0 /opt/toolchains/gen//m68k-elf/lib/libmd.a(sprite_eng.o)
                 0x0000000000ff0008                _edata = .
                 0x0000000000000008                _sdata = SIZEOF (.data)
 
-.bss            0x0000000000ff0008     0x1f36 load address 0x0000000000016e20
+.bss            0x0000000000ff0008     0x1f42 load address 0x0000000000017798
                 0x0000000000ff0008                _start = .
  *(.shbss)
  *(.bss .bss.*)
@@ -914,75 +931,80 @@ Linker script and memory map
  .bss           0x0000000000ff0508        0x0 /opt/toolchains/gen//m68k-elf/lib/gcc/m68k-elf/4.8.2/libgcc.a(_udivsi3.o)
  .bss           0x0000000000ff0508        0x0 /opt/toolchains/gen//m68k-elf/lib/gcc/m68k-elf/4.8.2/libgcc.a(_divsi3.o)
  .bss           0x0000000000ff0508        0x0 /opt/toolchains/gen//m68k-elf/lib/gcc/m68k-elf/4.8.2/libgcc.a(_umodsi3.o)
+ .bss           0x0000000000ff0508        0x0 res/card.o
+ .bss           0x0000000000ff0508        0x0 res/stairs.o
+ .bss           0x0000000000ff0508        0x0 res/potion.o
  .bss           0x0000000000ff0508        0x0 res/testm.o
- .bss           0x0000000000ff0508       0x28 main.o
-                0x0000000000ff0508                depth
-                0x0000000000ff050c                connections
- .bss           0x0000000000ff0530       0x14 /opt/toolchains/gen//m68k-elf/lib/libmd.a(sprite_eng.o)
-                0x0000000000ff0530                VDPSpriteCache
+ .bss           0x0000000000ff0508        0x0 res/hero.o
+ .bss           0x0000000000ff0508       0x34 main.o
+                0x0000000000ff0508                abilities
+                0x0000000000ff0514                depth
+                0x0000000000ff0518                connections
+ .bss           0x0000000000ff053c       0x14 /opt/toolchains/gen//m68k-elf/lib/libmd.a(sprite_eng.o)
+                0x0000000000ff053c                VDPSpriteCache
  *(COMMON)
- COMMON         0x0000000000ff0544       0x94 /opt/toolchains/gen//m68k-elf/lib/libmd.a(sys.o)
-                0x0000000000ff0544                illegalInstCB
-                0x0000000000ff0548                errorExceptionCB
-                0x0000000000ff054c                trapvInstCB
-                0x0000000000ff0550                chkInstCB
-                0x0000000000ff0554                registerState
-                0x0000000000ff0594                srState
-                0x0000000000ff0596                line1x1xCB
-                0x0000000000ff059a                ext2State
-                0x0000000000ff059c                traceCB
-                0x0000000000ff05a0                intTrace
-                0x0000000000ff05a2                zeroDivideCB
-                0x0000000000ff05a6                internalExtIntCB
-                0x0000000000ff05aa                internalVIntCB
-                0x0000000000ff05ae                intCB
-                0x0000000000ff05b2                addressErrorCB
-                0x0000000000ff05b6                VIntProcess
-                0x0000000000ff05ba                ExtIntProcess
-                0x0000000000ff05be                HIntProcess
-                0x0000000000ff05c2                privilegeViolationCB
-                0x0000000000ff05c6                pcState
-                0x0000000000ff05ca                ext1State
-                0x0000000000ff05cc                busErrorCB
-                0x0000000000ff05d0                internalHIntCB
-                0x0000000000ff05d4                addrState
- COMMON         0x0000000000ff05d8        0xe /opt/toolchains/gen//m68k-elf/lib/libmd.a(vdp.o)
-                0x0000000000ff05d8                slist_adr
-                0x0000000000ff05da                hscrl_adr
-                0x0000000000ff05dc                screenHeight
-                0x0000000000ff05de                screenWidth
-                0x0000000000ff05e0                aplan_adr
-                0x0000000000ff05e2                bplan_adr
-                0x0000000000ff05e4                window_adr
- COMMON         0x0000000000ff05e6      0x200 /opt/toolchains/gen//m68k-elf/lib/libmd.a(dma.o)
-                0x0000000000ff05e6                dmaQueues
- COMMON         0x0000000000ff07e6        0x4 /opt/toolchains/gen//m68k-elf/lib/libmd.a(z80_ctrl.o)
-                0x0000000000ff07e6                driverFlags
-                0x0000000000ff07e8                currentDriver
- COMMON         0x0000000000ff07ea      0x282 /opt/toolchains/gen//m68k-elf/lib/libmd.a(vdp_spr.o)
-                0x0000000000ff07ea                spriteNum
-                0x0000000000ff07ec                vdpSpriteCache
- COMMON         0x0000000000ff0a6c        0x8 /opt/toolchains/gen//m68k-elf/lib/libmd.a(bmp.o)
-                0x0000000000ff0a6c                bmp_buffer_write
-                0x0000000000ff0a70                bmp_buffer_read
- COMMON         0x0000000000ff0a74        0x4 /opt/toolchains/gen//m68k-elf/lib/libmd.a(timer.o)
-                0x0000000000ff0a74                vtimer
- COMMON         0x0000000000ff0a78        0x4 /opt/toolchains/gen//m68k-elf/lib/libmd.a(tile_cache.o)
-                0x0000000000ff0a78                uploads
- COMMON         0x0000000000ff0a7c        0x8 /opt/toolchains/gen//m68k-elf/lib/libmd.a(vdp_bg.o)
-                0x0000000000ff0a7c                text_basetile
-                0x0000000000ff0a7e                curTileInd
-                0x0000000000ff0a80                text_plan
- COMMON         0x0000000000ff0a84        0x2 /opt/toolchains/gen//m68k-elf/lib/libmd.a(maths.o)
-                0x0000000000ff0a84                randbase
- COMMON         0x0000000000ff0a86     0x14b8 main.o
-                0x0000000000ff0a86                things
-                0x0000000000ff0e06                player
-                0x0000000000ff0e22                sprite
-                0x0000000000ff12c6                blocker
-                0x0000000000ff12e2                maparray
-                0x0000000000ff1f22                empty
-                0x0000000000ff1f3e                _bend = .
+ COMMON         0x0000000000ff0550       0x94 /opt/toolchains/gen//m68k-elf/lib/libmd.a(sys.o)
+                0x0000000000ff0550                illegalInstCB
+                0x0000000000ff0554                errorExceptionCB
+                0x0000000000ff0558                trapvInstCB
+                0x0000000000ff055c                chkInstCB
+                0x0000000000ff0560                registerState
+                0x0000000000ff05a0                srState
+                0x0000000000ff05a2                line1x1xCB
+                0x0000000000ff05a6                ext2State
+                0x0000000000ff05a8                traceCB
+                0x0000000000ff05ac                intTrace
+                0x0000000000ff05ae                zeroDivideCB
+                0x0000000000ff05b2                internalExtIntCB
+                0x0000000000ff05b6                internalVIntCB
+                0x0000000000ff05ba                intCB
+                0x0000000000ff05be                addressErrorCB
+                0x0000000000ff05c2                VIntProcess
+                0x0000000000ff05c6                ExtIntProcess
+                0x0000000000ff05ca                HIntProcess
+                0x0000000000ff05ce                privilegeViolationCB
+                0x0000000000ff05d2                pcState
+                0x0000000000ff05d6                ext1State
+                0x0000000000ff05d8                busErrorCB
+                0x0000000000ff05dc                internalHIntCB
+                0x0000000000ff05e0                addrState
+ COMMON         0x0000000000ff05e4        0xe /opt/toolchains/gen//m68k-elf/lib/libmd.a(vdp.o)
+                0x0000000000ff05e4                slist_adr
+                0x0000000000ff05e6                hscrl_adr
+                0x0000000000ff05e8                screenHeight
+                0x0000000000ff05ea                screenWidth
+                0x0000000000ff05ec                aplan_adr
+                0x0000000000ff05ee                bplan_adr
+                0x0000000000ff05f0                window_adr
+ COMMON         0x0000000000ff05f2      0x200 /opt/toolchains/gen//m68k-elf/lib/libmd.a(dma.o)
+                0x0000000000ff05f2                dmaQueues
+ COMMON         0x0000000000ff07f2        0x4 /opt/toolchains/gen//m68k-elf/lib/libmd.a(z80_ctrl.o)
+                0x0000000000ff07f2                driverFlags
+                0x0000000000ff07f4                currentDriver
+ COMMON         0x0000000000ff07f6      0x282 /opt/toolchains/gen//m68k-elf/lib/libmd.a(vdp_spr.o)
+                0x0000000000ff07f6                spriteNum
+                0x0000000000ff07f8                vdpSpriteCache
+ COMMON         0x0000000000ff0a78        0x8 /opt/toolchains/gen//m68k-elf/lib/libmd.a(bmp.o)
+                0x0000000000ff0a78                bmp_buffer_write
+                0x0000000000ff0a7c                bmp_buffer_read
+ COMMON         0x0000000000ff0a80        0x4 /opt/toolchains/gen//m68k-elf/lib/libmd.a(timer.o)
+                0x0000000000ff0a80                vtimer
+ COMMON         0x0000000000ff0a84        0x4 /opt/toolchains/gen//m68k-elf/lib/libmd.a(tile_cache.o)
+                0x0000000000ff0a84                uploads
+ COMMON         0x0000000000ff0a88        0x8 /opt/toolchains/gen//m68k-elf/lib/libmd.a(vdp_bg.o)
+                0x0000000000ff0a88                text_basetile
+                0x0000000000ff0a8a                curTileInd
+                0x0000000000ff0a8c                text_plan
+ COMMON         0x0000000000ff0a90        0x2 /opt/toolchains/gen//m68k-elf/lib/libmd.a(maths.o)
+                0x0000000000ff0a90                randbase
+ COMMON         0x0000000000ff0a92     0x14b8 main.o
+                0x0000000000ff0a92                things
+                0x0000000000ff0e12                player
+                0x0000000000ff0e2e                sprite
+                0x0000000000ff12d2                blocker
+                0x0000000000ff12ee                maparray
+                0x0000000000ff1f2e                empty
+                0x0000000000ff1f4a                _bend = .
 
 .stab
  *(.stab)
@@ -995,7 +1017,11 @@ Linker script and memory map
 LOAD boot/sega.o
 LOAD /opt/toolchains/gen//m68k-elf/lib/libmd.a
 LOAD /opt/toolchains/gen//m68k-elf/lib/gcc/m68k-elf/4.8.2/libgcc.a
+LOAD res/card.o
+LOAD res/stairs.o
+LOAD res/potion.o
 LOAD res/testm.o
+LOAD res/hero.o
 LOAD main.o
 LOAD /opt/toolchains/gen//m68k-elf/lib/libmd.a
 LOAD /opt/toolchains/gen//m68k-elf/m68k-elf/lib/libnosys.a
