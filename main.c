@@ -972,6 +972,24 @@ void level_generate() {
 		level_connect_rooms(rtcx, rtcty, rtctx, rtcty);
 	}
 
+	// Fourth part: remove silly doors
+	int c;
+	for (i = 0; i < maparraysize; ++i) {
+		if (maparray[i] == TIL_DOOR_EW || maparray[i] == TIL_DOOR_NS) {
+			// doors with more than 2 floors or corridors adjacent get turned into corridors
+			if (maparray[i - mapsize] <= TIL_FLOOR)
+				++c;				
+			if (maparray[i + 1] <= TIL_FLOOR)
+				++c;
+			if (maparray[i - 1] <= TIL_FLOOR)
+				++c;
+			if (maparray[i + mapsize] <= TIL_FLOOR)
+				++c;
+			if (c > 2)
+				maparray[i] = TIL_CORRIDOR;
+		}
+	}
+
 	// Put stuff
 	struct vect2d ppos = position_find_valid();
 	player.xpos = ppos.x;
