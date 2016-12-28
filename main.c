@@ -970,7 +970,7 @@ void level_generate() {
 	}
 
 	// Fourth part: remove silly doors
-	int c = 0;
+	/*int c = 0;
 	for (i = 0; i < maparraysize; ++i) {
 		if (maparray[i] == TIL_DOOR_EW || maparray[i] == TIL_DOOR_NS) {
 			// doors with more than 2 floors or corridors adjacent get turned into corridors
@@ -985,7 +985,7 @@ void level_generate() {
 			if (c != 2)
 				maparray[i] = TIL_CORRIDOR;
 		}
-	}
+	}*/
 
 	// Put stuff
 	struct vect2d ppos = position_find_valid();
