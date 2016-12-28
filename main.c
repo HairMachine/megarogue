@@ -237,67 +237,6 @@ void draw_depth() {
 	VDP_drawText(msg, 30, 1);
 }
 
-void draw_abilities() {
-	int i;
-	for (i = 2; i < 5; ++i) {
-		switch (i) {
-			case 2: VDP_drawText("A:        ", 30, i); break;
-			case 3: VDP_drawText("B:        ", 30, i); break;
-			case 4: VDP_drawText("C:        ", 30, i); break;
-		}
-		switch (abilities[i - 2]) {
-			case AB_NONE:
-				VDP_drawText("None", 33, i);
-				break;
-			case AB_APP:
-				VDP_drawText("Apport", 33, i);
-				break;
-			case AB_BLAST:
-				VDP_drawText("Blast", 33, i);
-				break;
-			case AB_BLINK:
-				VDP_drawText("Blink", 33, i);
-				break;
-			case AB_CLAIR:
-				VDP_drawText("Clairv.", 33, i);
-				break;
-			case AB_FADE:
-				VDP_drawText("Fade", 33, i);
-				break;
-			case AB_FAM:
-				VDP_drawText("Familiar", 33, i);
-				break;
-			case AB_FIRE:
-				VDP_drawText("Fire", 33, i);
-				break;
-			case AB_HEAL:
-				VDP_drawText("Heal", 33, i);
-				break;
-			case AB_INV:
-				VDP_drawText("Invis", 33, i);
-				break;
-			case AB_LEV:
-				VDP_drawText("Fly", 33, i);
-				break;
-			case AB_RAGE:
-				VDP_drawText("Rage", 33, i);
-				break;
-			case AB_SENSE:
-				VDP_drawText("Sense", 33, i);
-				break;
-			case AB_SHAFT:
-				VDP_drawText("Shaft", 33, i);
-				break;
-			case AB_SHIELD:
-				VDP_drawText("Shield", 33, i);
-				break;
-			default:
-				VDP_drawText("ERROR", 33, i);
-				break;
-		}
-	}
-}
-
 void screen_game() {
 	// main screen
 	redraw_tiles();
@@ -922,16 +861,10 @@ void joypad_handle(u16 joy, u16 changed, u16 state) {
 			thing_interact_at(&player);
 		}
 		else if (state & BUTTON_B) {
-			turn = ability_use(abilities[1]);
-			if (turn)
-				abilities[1] = AB_NONE;
-			draw_abilities();
+			
 		}
 		else if (state & BUTTON_C) {
-			turn = ability_use(abilities[2]);
-			if (turn)
-				abilities[2] = AB_NONE;
-			draw_abilities();
+			
 		}
 	}
 	if (turn == 1) {
