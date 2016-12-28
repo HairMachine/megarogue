@@ -337,7 +337,7 @@ struct Thing thing_make(enum tile t, int x, int y) {
 		case TIL_SHOT:
 			thing.flags = FL_IMMORTAL;
 		default:
-			thing.flags = FL_PASSTHRU;
+			thing.flags = FL_PASSTHRU | FL_IMMORTAL;
 			break;
 	}
 	return thing;
@@ -596,7 +596,7 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 	// do nothing if the thing isn't a thing
 	if (obj->til <= TIL_FLOOR)
 		return;
-	
+
 	// for bullets (make its own function - probably player, monsters, shot are own functions)
 	if (subj->til == TIL_SHOT) {
 		VDP_drawText("Hits:", 30, 5);
