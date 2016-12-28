@@ -826,20 +826,32 @@ void level_connect_rooms(int rtcx, int rtcy, int rtctx, int rtcty) {
 	}
 	else if (tsy > tey) {
 		for (c = tsy; c > tey; c--) {
-			if (maparray[c * mapsize + tsx] == TIL_WALL)	
-				maparray[c * mapsize + tsx] = TIL_CORRIDOR;
+			if (maparray[c * mapsize + tsx] == TIL_WALL) {
+				if (gsrand(0, 1) == 0)
+					maparray[c * mapsize + tsx] = TIL_DOOR_NS;
+				else	
+					maparray[c * mapsize + tsx] = TIL_CORRIDOR;
+			}
 		}
 	}
 	if (tsx < tex) {
 		for (c = tsx; c < tex; c++) {
-			if (maparray[tey * mapsize + c] == TIL_WALL)
-				maparray[tey * mapsize + c] = TIL_CORRIDOR;
+			if (maparray[tey * mapsize + c] == TIL_WALL) {
+				if (gsrand(0, 1) == 0)
+					maparray[tey * mapsize + c] = TIL_DOOR_NS;
+				else
+					maparray[tey * mapsize + c] = TIL_CORRIDOR;
+			}
 		}
 	}
 	else if (tsx > tex) {
 		for (c = tsx; c > tex; c--) {
-			if (maparray[tey * mapsize + c] == TIL_WALL)
-				maparray[tey * mapsize + c] = TIL_CORRIDOR;
+			if (maparray[tey * mapsize + c] == TIL_WALL) {
+				if (gsrand(0, 1) == 0)
+					maparray[tey * mapsize + c] = TIL_DOOR_NS;
+				else
+					maparray[tey * mapsize + c] = TIL_CORRIDOR;
+			}
 		}
 	}
 	connections[rtcy * 3 + rtcx] = 1;
