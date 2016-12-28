@@ -957,11 +957,13 @@ void level_generate() {
 	int doornum = gsrand(0, 3);
 	int doorx = gsrand(0, maparraysize - 1);
 	int doory = gsrand(0, maparraysize - 1);
-	while (maparray[doory * maparraysize + doorx] != TIL_CORRIDOR) {
-		doorx = gsrand(0, maparraysize - 1);
-		doory = gsrand(0, maparraysize - 1);
+	for (i = 0; i < doornum; ++i) {	
+		while (maparray[doory * maparraysize + doorx] != TIL_CORRIDOR) {
+			doorx = gsrand(0, maparraysize - 1);
+			doory = gsrand(0, maparraysize - 1);
+		}
+		maparray[doory * maparraysize + doorx] = TIL_DOOR_NS;
 	}
-	maparray[doory * maparraysize + doorx] = TIL_DOOR_NS;
 
 	// Put stuff
 	struct vect2d ppos = position_find_valid();
