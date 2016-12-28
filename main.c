@@ -404,10 +404,9 @@ struct Thing *thing_collide(struct Thing *t, enum direction dir) {
 	return &empty;
 }
 
-void thing_destroy(struct Thing *t) {
+void thing_disable(struct Thing *t) {
 	if (t->til == TIL_PLAYER)
 		screen_dead();
-	tile_draw(TIL_FLOOR, t->xpos, t->ypos);
 	*t = thing_make(TIL_NULL, 0, 0);
 }
 
@@ -418,7 +417,7 @@ void thing_damage(struct Thing *t, int damage) {
 	t->hp -= damage;
 	if (t->til == TIL_PLAYER)
 		draw_health();
-	if (t->hp <= 0) thing_destroy(t);
+	if (t->hp <= 0) thing_disable(t);
 }
 
 void thing_move(struct Thing *t, enum direction d) {
@@ -595,7 +594,7 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 				level_generate();
 			}
 			else {
-				thing_destroy(subj);
+				thing_disable(subj);
 			}
 			break;
 		case TIL_MACGUFFIN:
@@ -604,15 +603,17 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 			break;
 		case TIL_POTION:
 			thing_damage(subj, -5);
-			thing_destroy(obj);
+			thing_disable(obj);
 			break;
 		case TIL_ABILITY:
 			if (ability_get_random() == 1) {
-				thing_destroy(obj);
+				thing_disable(obj);
 			}
 			break;
 		case TIL_SHOT:
 			thing_damage(obj, 2);
+			thing_disable(subj);
+			break;
 		default:
 			break;
 	}
@@ -631,7 +632,9 @@ void shoot_direction(struct Thing* subj, enum SHOTTYPE st, enum direction dir) {
 	shot.xpos = subj->xpos;
 	shot.ypos = subj->ypos;
 	shot.st = st;
-	thing_move(&shot, dir);
+	while (shot.til == TIL_SHOT)
+		thing_move(&shot, dir);
+	shot.til = TIL_SHOT;
 }
 
 
