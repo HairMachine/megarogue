@@ -245,7 +245,6 @@ void screen_game() {
 	// sidebar
 	draw_health();
 	draw_depth();
-	draw_abilities();
 }
 
 void screen_victory() {
@@ -593,7 +592,6 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 			if (ability_get_random() == 1) {
 				thing_destroy(obj);
 			}
-			draw_abilities();
 			break;
 		default:
 			break;
