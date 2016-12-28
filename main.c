@@ -941,9 +941,6 @@ void level_generate() {
 
 		level_connect_rooms(rtcx, rtcy, rtctx, rtcty);
 
-		// Third part: create some locked doors in corridors.
-		int doornum = gsrand(0, 3);
-
 	}
 
 	// Third part: some random connections
@@ -955,6 +952,16 @@ void level_generate() {
 		rtcty = gsrand(0, 2);
 		level_connect_rooms(rtcx, rtcty, rtctx, rtcty);
 	}
+
+	// Fourth part: create some locked doors in corridors
+	int doornum = gsrand(0, 3);
+	int doorx = gsrand(0, maparraysize - 1);
+	int doory = gsrand(0, maparraysize - 1);
+	while (maparray[doory * maparraysize + doorx] != TIL_CORRIDOR) {
+		doorx = gsrand(0, maparraysize - 1);
+		doory = gsrand(0, maparraysize - 1);
+	}
+	maparray[doory * maparraysize + doorx] = TIL_DOOR_NS;
 
 	// Put stuff
 	struct vect2d ppos = position_find_valid();
