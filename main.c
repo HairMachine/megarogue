@@ -632,11 +632,14 @@ void thing_interact_at(struct Thing* subj) {
 }
 
 void shoot_direction(struct Thing* subj, enum SHOTTYPE st, enum direction dir) {
+	int mshot = 0;
 	shot.xpos = subj->xpos;
 	shot.ypos = subj->ypos;
 	shot.st = st;
-	while (shot.til == TIL_SHOT)
+	while (shot.til == TIL_SHOT && mshot <= subj->range) {
 		thing_move(&shot, dir);
+		++mshot;
+	}
 	shot.til = TIL_SHOT;
 }
 
