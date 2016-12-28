@@ -16,7 +16,7 @@ enum tile {
 
 enum SHOTTYPE {
 	SH_NONE, SH_NORMAL, SH_FIRE, SH_WATER, SH_ACID, SH_WEB, SH_SOLID, SH_CONDENSER, SH_EXPLOSIVE
-}
+};
 
 const u32 tile_null[8] = {
 		0x00000000,
