@@ -659,7 +659,7 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 	}
 }
 
-void thing_interact_at(Thing* subj) {
+void thing_interact_at(struct Thing* subj) {
 	int i;
 	for (i = 0; i < 32; ++i) {
 		if (things[i].xpos == subj->xpos && things[i].ypos == subj->ypos) {
