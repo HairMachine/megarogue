@@ -316,7 +316,7 @@ void draw_weapon() {
 
 void draw_ammo() {
 	char msg[15];
-	sprintf(msg, "Ammo: %d ", ammo[0]);
+	sprintf(msg, "Ammo: %d ", ammo[1]);
 	VDP_drawText(msg, 30, 5);
 }
 
