@@ -978,14 +978,14 @@ void level_generate() {
 		if (maparray[i] == TIL_DOOR_EW || maparray[i] == TIL_DOOR_NS) {
 			// doors with more than 2 floors or corridors adjacent get turned into corridors
 			if (maparray[i - mapsize] <= TIL_FLOOR)
-				++c;				
+				++c;
 			if (maparray[i + 1] <= TIL_FLOOR)
 				++c;
 			if (maparray[i - 1] <= TIL_FLOOR)
 				++c;
 			if (maparray[i + mapsize] <= TIL_FLOOR)
 				++c;
-			if (c > 2)
+			if (c > 3)
 				maparray[i] = TIL_CORRIDOR;
 		}
 	}
