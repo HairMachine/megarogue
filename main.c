@@ -121,6 +121,7 @@ int shot_mode = 0;
 int food = 512;
 int keys = 5;
 int ammo[8] = {0, 10, 0, 0, 0, 0, 0, 0, 0};
+int current_ammo = 1;
 
 
 void level_generate();
@@ -316,8 +317,16 @@ void draw_weapon() {
 
 void draw_ammo() {
 	char msg[15];
-	sprintf(msg, "Ammo: %d ", ammo[1]);
+	sprintf(msg, "Ammo: %d ", ammo[current_ammo]);
 	VDP_drawText(msg, 30, 5);
+	switch (current_ammo) {
+		case SH_NORMAL:
+			VDP_drawText("AT: Norm.", 30, 6);
+			break;
+		default:
+			VDP_drawtText("AT: null", 30, 6);
+			break;
+	}
 }
 
 void screen_game() {
@@ -1078,7 +1087,11 @@ void joypad_handle(u16 joy, u16 changed, u16 state) {
 			draw_weapon();
 		}
 		else if (state & BUTTON_C) {
-			
+			++curent_ammo;
+			if (current_ammo > 8) {
+				current_ammo = 1;
+			}
+			draw_ammo();
 		}
 	}
 	if (turn == 1) {
