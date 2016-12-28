@@ -723,6 +723,7 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 			if (subj->til == TIL_PLAYER) {
 				ammo[SH_NORMAL] += 4;
 				thing_disable(obj);
+				draw_ammo();
 			}
 			break;
 		case TIL_KEY:
@@ -1085,7 +1086,7 @@ void joypad_handle(u16 joy, u16 changed, u16 state) {
 			thing_interact_at(&player);
 		}
 		else if (state & BUTTON_B) {
-			shot_mode = abs(1 - shot_mode);
+			shot_mode = 1;
 			draw_weapon();
 		}
 		else if (state & BUTTON_C) {
@@ -1095,6 +1096,10 @@ void joypad_handle(u16 joy, u16 changed, u16 state) {
 			}
 			draw_ammo();
 		}
+		// key releases
+		else if (changed & BUTTON_B) {
+			shot_mode = 0;
+    }
 	}
 	if (turn == 1) {
 		hunger_clock();
