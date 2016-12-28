@@ -648,10 +648,12 @@ void shoot_direction(struct Thing* subj, enum SHOTTYPE st, enum direction dir) {
 	shot.xpos = subj->xpos;
 	shot.ypos = subj->ypos;
 	shot.st = st;
-	while (mshot <= subj->range) {
+	while (shot.til == TIL_SHOT && mshot <= subj->range) {
 		thing_move(&shot, dir);
 		++mshot;
 	}
+	// reset the bullet
+	shot = thing_make(TIL_SHOT, 0, 0);
 }
 
 
