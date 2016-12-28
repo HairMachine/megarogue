@@ -959,7 +959,6 @@ void level_generate() {
 		}
 
 		level_connect_rooms(rtcx, rtcy, rtctx, rtcty);
-
 	}
 
 	// Third part: some random connections
@@ -1075,9 +1074,9 @@ int main() {
 
 	VDP_loadTileData((const u32 *) tile_null, 8, 1, 0);
 	VDP_loadTileData((const u32 *) tile_wall, 1, 1, 0);
-	VDP_loadTileData((const u32 *) tile_floor, 3, 1, 0);
-	VDP_loadTileData((const u32 *) tile_door_ns, 4, 1, 0);
-	VDP_loadTileData((const u32 *) tile_door_ew, 5, 1, 0);
+	VDP_loadTileData((const u32 *) tile_floor, 5, 1, 0);
+	VDP_loadTileData((const u32 *) tile_door_ns, 3, 1, 0);
+	VDP_loadTileData((const u32 *) tile_door_ew, 4, 1, 0);
 
 	// Initialise basic stuff
 	empty = thing_make(TIL_NULL, 0, 0);
