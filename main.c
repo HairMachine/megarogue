@@ -157,10 +157,10 @@ void tile_draw(enum tile tilenum, int x, int y) {
 			VDP_setTileMapXY(APLAN, 1, x, y);
 			break;
 		case TIL_DOOR_NS:
-			VDP_setTileMapXY(APLAN, 4, x, y);
+			VDP_setTileMapXY(APLAN, 3, x, y);
 			break;
 		case TIL_DOOR_EW:
-			VDP_setTileMapXY(APLAN, 5, x, y);
+			VDP_setTileMapXY(APLAN, 4, x, y);
 			break;	
 	}
 }
@@ -1072,11 +1072,11 @@ int main() {
 		random();
 	}
 
-	VDP_loadTileData((const u32 *) tile_null, 8, 1, 0);
-	VDP_loadTileData((const u32 *) tile_wall, 1, 1, 0);
-	VDP_loadTileData((const u32 *) tile_floor, 5, 1, 0);
-	VDP_loadTileData((const u32 *) tile_door_ns, 3, 1, 0);
-	VDP_loadTileData((const u32 *) tile_door_ew, 4, 1, 0);
+	VDP_loadTileData((const u32 *) tile_null, TIL_NULL, 1, 0);
+	VDP_loadTileData((const u32 *) tile_wall, TIL_WALL, 1, 0);
+	VDP_loadTileData((const u32 *) tile_floor, TIL_FLOOR, 1, 0);
+	VDP_loadTileData((const u32 *) tile_door_ns, TIL_DOOR_NS, 1, 0);
+	VDP_loadTileData((const u32 *) tile_door_ew, TIL_DOOR_EW, 1, 0);
 
 	// Initialise basic stuff
 	empty = thing_make(TIL_NULL, 0, 0);
