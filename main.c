@@ -459,6 +459,7 @@ struct Thing *thing_collide(struct Thing *t, enum direction dir) {
 			--keys;
 			maparray[til_i] = TIL_CORRIDOR;
 			tile_draw(TIL_CORRIDOR, t->xpos + xm, t->ypos + ym);
+			draw_keys();
 		}
 		return &blocker;
 	}
