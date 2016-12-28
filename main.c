@@ -420,6 +420,10 @@ void thing_damage(struct Thing *t, int damage) {
 	if (t->flags & FL_IMMORTAL)
 		return;
 
+	debug(t->til, 30, 6);
+	VDP_drawText("hit for", 30, 7);
+	debug(damage, 30, 8);
+
 	t->hp -= damage;
 	if (t->til == TIL_PLAYER)
 		draw_health();
