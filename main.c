@@ -1053,7 +1053,7 @@ void joypad_handle(u16 joy, u16 changed, u16 state) {
 	if (joy == JOY_1) {
 		if (state & BUTTON_UP) {
 			if (shot_mode)
-				shoot_direction(&player, SH_NORMAL, DIR_NORTH);
+				shoot_direction(&player, current_ammo, DIR_NORTH);
 			else
 				thing_move(&player, DIR_NORTH);
 			turn = 1;
