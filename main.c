@@ -144,23 +144,22 @@ int gsrand(int min, int max) {
 }
 
 void tile_draw(enum tile tilenum, int x, int y) {
-	//return;
 	switch (tilenum) {
 		case TIL_NULL:
-			VDP_setTileMapXY(APLAN, 8, x, y);
+			VDP_setTileMapXY(APLAN, TIL_NULL, x, y);
 			break;
 		case TIL_FLOOR:
 		case TIL_CORRIDOR:
-			VDP_setTileMapXY(APLAN, 3, x, y);
+			VDP_setTileMapXY(APLAN, TIL_FLOOR, x, y);
 			break;
 		case TIL_WALL:
-			VDP_setTileMapXY(APLAN, 1, x, y);
+			VDP_setTileMapXY(APLAN, TIL_WALL, x, y);
 			break;
 		case TIL_DOOR_NS:
-			VDP_setTileMapXY(APLAN, 3, x, y);
+			VDP_setTileMapXY(APLAN, TIL_DOOR_NS, x, y);
 			break;
 		case TIL_DOOR_EW:
-			VDP_setTileMapXY(APLAN, 4, x, y);
+			VDP_setTileMapXY(APLAN, TIL_DOOR_EW, x, y);
 			break;	
 	}
 }
