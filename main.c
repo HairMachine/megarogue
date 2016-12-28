@@ -466,7 +466,6 @@ void thing_damage(struct Thing *t, int damage) {
 }
 
 void thing_move(struct Thing *t, enum direction d) {
-	return;
 	struct Thing *collided = thing_collide(t, d);
 	// This looks weird but is for a reason: if a blocking thing is destroyed by an interaction we still want it to act
 	// as a blocker
@@ -918,7 +917,7 @@ void joypad_handle(u16 joy, u16 changed, u16 state) {
 			turn = 1;
 		}
 		else if (state & BUTTON_A) {
-			thing_interact_at(player.xpos, player,ypos);
+			thing_interact_at(player.xpos, player.ypos);
 		}
 		else if (state & BUTTON_B) {
 			turn = ability_use(abilities[1]);
