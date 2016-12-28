@@ -897,9 +897,9 @@ void level_generate() {
 
 void hunger_clock() {
 	--food;
-	if (food <= 0) {
+	draw_food();
+	if (food <= 0)
 		screen_dead();
-	}
 }
 
 void joypad_handle(u16 joy, u16 changed, u16 state) {
