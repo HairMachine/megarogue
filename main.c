@@ -721,7 +721,7 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 			break;
 		case TIL_AMMO:
 			if (subj->til == TIL_PLAYER) {
-				ammo[SH_NORMAL];
+				ammo[SH_NORMAL] += 4;
 				thing_disable(obj);
 			}
 			break;
