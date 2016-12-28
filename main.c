@@ -611,6 +611,8 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 				thing_destroy(obj);
 			}
 			break;
+		case TIL_SHOT:
+			thing_damage(obj, 2);
 		default:
 			break;
 	}
