@@ -10,7 +10,7 @@ enum direction {
 };
 
 enum tile {
-	TIL_NULL, TIL_CORRIDOR, TIL_FLOOR, TIL_WALL, TIL_PLAYER, TIL_GOBLIN, TIL_STAIRS, TIL_MACGUFFIN,
+	TIL_NULL, TIL_CORRIDOR, TIL_FLOOR, TIL_WALL, TIL_DOOR_NS, TIL_DOOR_EW, TIL_PLAYER, TIL_GOBLIN, TIL_STAIRS, TIL_MACGUFFIN,
 	TIL_WPN, TIL_POTION, TIL_FOOD, TIL_SCROLL, TIL_ABILITY, TIL_SHOT, TIL_KEY
 };
 
@@ -150,12 +150,18 @@ void tile_draw(enum tile tilenum, int x, int y) {
 			VDP_setTileMapXY(APLAN, 8, x, y);
 			break;
 		case TIL_FLOOR:
+		case TIL_CORRIDOR:
 			VDP_setTileMapXY(APLAN, 3, x, y);
 			break;
 		case TIL_WALL:
 			VDP_setTileMapXY(APLAN, 1, x, y);
 			break;
-
+		case TIL_DOOR_NS:
+			VDP_setTileMapXY(APLAN, 4, x, y);
+			break;
+		case TIL_DOOR_EW:
+			VDP_setTileMapXY(APLAN, 5, x, y);
+			break;	
 	}
 }
 
@@ -807,22 +813,26 @@ void level_connect_rooms(int rtcx, int rtcy, int rtctx, int rtcty) {
 	int c = 0;
 	if (tsy < tey) {
 		for (c = tsy; c < tey; c++) {
-			maparray[c * mapsize + tsx] = TIL_CORRIDOR;
+			if (maparray[c * mapsize + tsx] == TIL_WALL)
+				maparray[c * mapsize + tsx] = TIL_CORRIDOR;
 		}
 	}
 	else if (tsy > tey) {
 		for (c = tsy; c > tey; c--) {
-			maparray[c * mapsize + tsx] = TIL_CORRIDOR;
+			if (maparray[c * mapsize + tsx] == TIL_WALL)	
+				maparray[c * mapsize + tsx] = TIL_CORRIDOR;
 		}
 	}
 	if (tsx < tex) {
 		for (c = tsx; c < tex; c++) {
-			maparray[tey * mapsize + c] = TIL_CORRIDOR;
+			if (maparray[tey * mapsize + c] == TIL_WALL)
+				maparray[tey * mapsize + c] = TIL_CORRIDOR;
 		}
 	}
 	else if (tsx > tex) {
 		for (c = tsx; c > tex; c--) {
-			maparray[tey * mapsize + c] = TIL_CORRIDOR;
+			if (maparray[tey * mapsize + c] == TIL_WALL)
+				maparray[tey * mapsize + c] = TIL_CORRIDOR;
 		}
 	}
 	connections[rtcy * 3 + rtcx] = 1;
@@ -930,6 +940,10 @@ void level_generate() {
 		}
 
 		level_connect_rooms(rtcx, rtcy, rtctx, rtcty);
+
+		// Third part: create some locked doors in corridors.
+		int doornum = gsrand(0, 3);
+
 	}
 
 	// Third part: some random connections
