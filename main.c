@@ -810,11 +810,18 @@ void level_connect_rooms(int rtcx, int rtcy, int rtctx, int rtcty) {
 		te = tey * mapsize + tex;
 	}
 
+	int door_flag = 0;
+
 	int c = 0;
 	if (tsy < tey) {
 		for (c = tsy; c < tey; c++) {
-			if (maparray[c * mapsize + tsx] == TIL_WALL)
-				maparray[c * mapsize + tsx] = TIL_CORRIDOR;
+			if (maparray[c * mapsize + tsx] == TIL_WALL) {
+				if (gsrand(0, 1) == 0)
+					maparray[c * mapsize + tsx] = TIL_DOOR_NS;
+				else		
+					maparray[c * mapsize + tsx] = TIL_CORRIDOR;
+
+			}
 		}
 	}
 	else if (tsy > tey) {
@@ -951,21 +958,6 @@ void level_generate() {
 		rtcy = gsrand(0, 2);
 		rtcty = gsrand(0, 2);
 		level_connect_rooms(rtcx, rtcty, rtctx, rtcty);
-	}
-
-	// Fourth part: create some locked doors in corridors
-	int doornum = gsrand(0, 8);
-	int doorx = gsrand(0, maparraysize - 1);
-	int doory = gsrand(0, maparraysize - 1);
-	for (i = 0; i < doornum; ++i) {	
-		while (maparray[doory * maparraysize + doorx] != TIL_CORRIDOR) {
-			doorx = gsrand(0, maparraysize - 1);
-			doory = gsrand(0, maparraysize - 1);
-		}
-		if (maparray[(doory + 1) * maparraysize + doorx] <= TIL_FLOOR)	
-			maparray[doory * maparraysize + doorx] = TIL_DOOR_EW;
-		else
-			maparray[doory * maparraysize + doorx] = TIL_DOOR_NS;
 	}
 
 	// Put stuff
