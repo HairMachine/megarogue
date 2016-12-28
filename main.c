@@ -247,7 +247,7 @@ void draw_health() {
 
 void draw_food() {
 	char msg[15];
-	sprintf(msg, "Food: %d", food);
+	sprintf(msg, "Food: %d\% ", food);
 	VDP_drawText(msg, 30, 1);
 }
 
