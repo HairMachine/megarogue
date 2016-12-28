@@ -372,7 +372,7 @@ struct Thing thing_make(enum tile t, int x, int y) {
 			thing.flags = FL_NONE;
 			break;
 		case TIL_STAIRS:
-			thing.flags = FL_IMMORTAL;
+			thing.flags = FL_IMMORTAL | FL_PASSTHRU;
 			break;
 		default:
 			thing.flags = FL_PASSTHRU;
@@ -659,6 +659,15 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 	}
 }
 
+void thing_interact_at(int x, int y) {
+	int i;
+	for (i = 0; i < 32; ++i) {
+		if (things[i].xpos == x && things[i].ypos == y) {
+			thing_interact(&things[i]);
+		}
+	}
+}
+
 
 // LEVEL GENERATE
 
@@ -908,10 +917,7 @@ void joypad_handle(u16 joy, u16 changed, u16 state) {
 			turn = 1;
 		}
 		else if (state & BUTTON_A) {
-			turn = ability_use(abilities[0]);
-			if (turn)
-				abilities[0] = AB_NONE;
-			draw_abilities();
+			thing_interact_at(player.xpos, player,ypos);
 		}
 		else if (state & BUTTON_B) {
 			turn = ability_use(abilities[1]);
