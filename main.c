@@ -473,7 +473,9 @@ void thing_move(struct Thing *t, enum direction d) {
 		thing_interact(t, collided);
 		return;
 	}
-	else if (!(collided->flags & FL_OPTIONAL)) thing_interact(t, collided);
+	//else if (!(collided->flags & FL_OPTIONAL)) 
+		//thing_interact(t, collided);
+
 	// Move the object
 	switch (d) {
 		case DIR_NORTH:
