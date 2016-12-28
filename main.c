@@ -599,8 +599,6 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 
 	// for bullets (make its own function - probably player, monsters, shot are own functions)
 	if (subj->til == TIL_SHOT) {
-		VDP_drawText("Hits:", 30, 5);
-		debug(obj->til, 36, 5);
 		thing_damage(obj, 2);
 		thing_disable(subj);
 		return;
@@ -654,6 +652,7 @@ void shoot_direction(struct Thing* subj, enum SHOTTYPE st, enum direction dir) {
 	shot.st = st;
 	while (shot.til == TIL_SHOT && mshot <= subj->range) {
 		thing_move(&shot, dir);
+		redraw_things();
 		++mshot;
 	}
 	// reset the bullet
