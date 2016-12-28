@@ -324,7 +324,7 @@ void draw_ammo() {
 			VDP_drawText("AT: Norm.", 30, 6);
 			break;
 		default:
-			VDP_drawtText("AT: null", 30, 6);
+			VDP_drawText("AT: null", 30, 6);
 			break;
 	}
 }
