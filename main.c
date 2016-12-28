@@ -978,19 +978,20 @@ void level_generate() {
 	}
 
 	// Fourth part: remove silly doors
-	int c = 0;
+	int cx = 0;
+	int cy = 0;
 	for (i = 0; i < maparraysize; ++i) {
 		if (maparray[i] == TIL_DOOR_EW || maparray[i] == TIL_DOOR_NS) {
 			// doors with more than 2 floors or corridors adjacent get turned into corridors
 			if (i - mapsize >= 0 && maparray[i - mapsize] <= TIL_FLOOR)
-				++c;
+				++cy;
 			if (i + 1 < maparraysize && maparray[i + 1] <= TIL_FLOOR)
-				++c;
+				++cx;
 			if (i - 1 >= 0 && maparray[i - 1] <= TIL_FLOOR)
-				++c;
+				++cx;
 			if (i + mapsize < maparraysize && maparray[i + mapsize] <= TIL_FLOOR)
-				++c;
-			if (c > 2)
+				++cy;
+			if (cx > 1 || cy > 1 || (cx >= 1 && cy >= 1))
 				maparray[i] = TIL_CORRIDOR;
 		}
 		c = 0;
