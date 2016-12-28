@@ -106,6 +106,12 @@ int in_range(int v, int l, int u) {
 	return 0;
 }
 
+void debug(int x, int y, int val) {
+	char msg[15];
+	sprintf(msg, "%d", val);
+	VDP_drawText(msg, x, y);
+}
+
 int gsrand(int min, int max) {
 	u16 val = random() & 255;
 	while (in_range(val, min, max) == 0)
@@ -636,15 +642,10 @@ void shoot_direction(struct Thing* subj, enum SHOTTYPE st, enum direction dir) {
 	shot.xpos = subj->xpos;
 	shot.ypos = subj->ypos;
 	shot.st = st;
-	char msg[15];
-	while (shot.til == TIL_SHOT && mshot <= subj->range) {
+	while (mshot <= subj->range) {
 		thing_move(&shot, dir);
 		++mshot;
-		sprintf(msg, "%d  ", mshot);
-		VDP_drawText(msg, 30, 6);
 	}
-	VDP_drawText("OK shooting is done now", 30, 7);
-	shot.til = TIL_SHOT;
 }
 
 
