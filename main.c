@@ -95,6 +95,7 @@ int depth = 0;
 int maxdepth = 15;
 enum ABILITIES abilities[3] = {AB_NONE, AB_NONE, AB_NONE};
 int shot_mode = 0;
+int food = 100;
 
 void level_generate();
 
@@ -244,10 +245,16 @@ void draw_health() {
 	VDP_drawText(msg, 30, 0);
 }
 
+void draw_food() {
+	char msg[15];
+	sprintf(msg, "Food: %d", food);
+	VDP_drawText(msg, 30, 1);
+}
+
 void draw_depth() {
 	char msg[15];
 	sprintf(msg, "Depth: %d ", depth + 1);
-	VDP_drawText(msg, 30, 1);
+	VDP_drawText(msg, 30, 2);
 }
 
 void draw_weapon() {
@@ -264,6 +271,7 @@ void screen_game() {
 	//tile_draw(player.til, player.xpos, player.ypos);
 	// sidebar
 	draw_health();
+	draw_food();
 	draw_depth();
 	draw_weapon();
 }
@@ -887,6 +895,13 @@ void level_generate() {
 	screen_game();
 }
 
+void hunger_clock() {
+	--food;
+	if (food <= 0) {
+		screen_dead();
+	}
+}
+
 void joypad_handle(u16 joy, u16 changed, u16 state) {
 	int turn = 0;
 	if (joy == JOY_1) {
@@ -930,6 +945,7 @@ void joypad_handle(u16 joy, u16 changed, u16 state) {
 		}
 	}
 	if (turn == 1) {
+		hunger_clock();
 		int m = 0;
 		for (m = 0; m < 32; ++m) {
 			if (things[m].til > TIL_NULL) {
