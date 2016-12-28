@@ -977,11 +977,11 @@ void level_generate() {
 	for (i = 0; i < maparraysize; ++i) {
 		if (maparray[i] == TIL_DOOR_EW || maparray[i] == TIL_DOOR_NS) {
 			// doors with more than 2 floors or corridors adjacent get turned into corridors
-			if (i - mapsize > 0 && maparray[i - mapsize] <= TIL_FLOOR)
+			if (i - mapsize >= 0 && maparray[i - mapsize] <= TIL_FLOOR)
 				++c;
 			if (i + 1 < maparraysize && maparray[i + 1] <= TIL_FLOOR)
 				++c;
-			if (i - 1 > 0 && maparray[i - 1] <= TIL_FLOOR)
+			if (i - 1 >= 0 && maparray[i - 1] <= TIL_FLOOR)
 				++c;
 			if (i + mapsize < maparraysize && maparray[i + mapsize] <= TIL_FLOOR)
 				++c;
@@ -1069,7 +1069,7 @@ int main() {
 
 	// Temp: randomise
 	int rs;
-	for (rs = 0; rs < 11; ++rs) {
+	for (rs = 0; rs < 25; ++rs) {
 		random();
 	}
 
