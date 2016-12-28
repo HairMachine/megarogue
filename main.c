@@ -455,11 +455,16 @@ struct Thing *thing_collide(struct Thing *t, enum direction dir) {
 		return &blocker;
 	else if (maparray[til_i] > TIL_FLOOR) {
 		// if the player has a key, open the door
-		if (keys > 0) {
+		if (t->til == TIL_PLAYER && keys > 0) {
 			--keys;
 			maparray[til_i] = TIL_CORRIDOR;
 			tile_draw(TIL_CORRIDOR, t->xpos + xm, t->ypos + ym);
 			draw_keys();
+		}
+		// this suggests the doors should be things
+		else if (t->til == TIL_SHOT) {
+			maparray[til_i] = TIL_CORRIDOR;
+			tile_draw(TIL_CORRIDOR, t->xpos + xm, t->ypos + ym);
 		}
 		return &blocker;
 	}
