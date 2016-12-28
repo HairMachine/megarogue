@@ -244,6 +244,13 @@ void draw_depth() {
 	VDP_drawText(msg, 30, 1);
 }
 
+void draw_weapon() {
+	if (shot_mode)
+		VDP_drawText("WPN: Gun    ", 30, 3);
+	else
+		VDP_drawText("WPN: Unarmed", 30, 3);
+}
+
 void screen_game() {
 	// main screen
 	redraw_tiles();
@@ -252,6 +259,7 @@ void screen_game() {
 	// sidebar
 	draw_health();
 	draw_depth();
+	draw_weapon();
 }
 
 void screen_victory() {
@@ -889,6 +897,7 @@ void joypad_handle(u16 joy, u16 changed, u16 state) {
 		}
 		else if (state & BUTTON_B) {
 			shot_mode = abs(1 - shot_mode);
+			draw_weapon();
 		}
 		else if (state & BUTTON_C) {
 			
