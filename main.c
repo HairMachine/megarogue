@@ -108,7 +108,7 @@ int in_range(int v, int l, int u) {
 
 void debug(int x, int y, int val) {
 	char msg[15];
-	sprintf(msg, "%d", val);
+	sprintf(msg, "%d - debug", val);
 	VDP_drawText(msg, x, y);
 }
 
