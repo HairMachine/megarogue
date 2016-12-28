@@ -246,9 +246,16 @@ void draw_health() {
 }
 
 void draw_food() {
-	char msg[15];
-	sprintf(msg, "Food: %d ", food >> 2);
-	VDP_drawText(msg, 30, 1);
+	if (food >= 256)
+		VDP_drawText("Full    ", 30, 1);
+	else if (food >= 128)
+		VDP_drawText("OK      ", 30, 1);
+	else if (food >= 64)
+		VDP_drawText("Hungry  ", 30, 1);
+	else if (food >= 32)
+		VDP_drawText("Starving", 30, 1);
+	else if (food >= 16)
+		VDP_drawText("Fainting", 30, 1);
 }
 
 void draw_depth() {
