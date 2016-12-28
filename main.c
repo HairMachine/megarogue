@@ -329,7 +329,7 @@ struct Thing thing_make(enum tile t, int x, int y) {
 			thing.damage = 1;
 			break;
 		case TIL_WALL:
-			thing.flags = FL_NONE;
+			thing.flags = FL_IMMORTAL;
 			break;
 		case TIL_STAIRS:
 			thing.flags = FL_IMMORTAL | FL_OPTIONAL;
@@ -652,7 +652,6 @@ void shoot_direction(struct Thing* subj, enum SHOTTYPE st, enum direction dir) {
 	shot.st = st;
 	while (shot.til == TIL_SHOT && mshot <= subj->range) {
 		thing_move(&shot, dir);
-		redraw_things();
 		++mshot;
 	}
 	// reset the bullet
