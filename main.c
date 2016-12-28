@@ -53,7 +53,7 @@ enum ABILITIES {
 };
 
 enum FLAGS {
-	FL_NONE = 0, FL_MOVES = 1, FL_PASSTHRU = 2, FL_IMMORTAL = 4
+	FL_NONE = 0, FL_MOVES = 1, FL_PASSTHRU = 2, FL_IMMORTAL = 4, FL_OPTIONAL = 8
 };
 
 struct Thing {
@@ -372,7 +372,7 @@ struct Thing thing_make(enum tile t, int x, int y) {
 			thing.flags = FL_NONE;
 			break;
 		case TIL_STAIRS:
-			thing.flags = FL_IMMORTAL | FL_PASSTHRU;
+			thing.flags = FL_IMMORTAL | FL_OPTIONAL;
 			break;
 		default:
 			thing.flags = FL_PASSTHRU;
@@ -466,7 +466,6 @@ void thing_damage(struct Thing *t, int damage) {
 }
 
 void thing_move(struct Thing *t, enum direction d) {
-	return;
 	struct Thing *collided = thing_collide(t, d);
 	// This looks weird but is for a reason: if a blocking thing is destroyed by an interaction we still want it to act
 	// as a blocker
@@ -474,7 +473,7 @@ void thing_move(struct Thing *t, enum direction d) {
 		thing_interact(t, collided);
 		return;
 	}
-	else thing_interact(t, collided);
+	else if (!(collided->flags & FL_OPTIONAL)) thing_interact(t, collided);
 	// Move the object
 	switch (d) {
 		case DIR_NORTH:
