@@ -11,8 +11,12 @@ enum direction {
 
 enum tile {
 	TIL_NULL, TIL_FLOOR, TIL_WALL, TIL_PLAYER, TIL_GOBLIN, TIL_STAIRS, TIL_MACGUFFIN,
-	TIL_WPN, TIL_POTION, TIL_SCROLL, TIL_ABILITY
+	TIL_WPN, TIL_POTION, TIL_SCROLL, TIL_ABILITY, TIL_SHOT
 };
+
+enum SHOTTYPE {
+	SH_NONE, SH_NORMAL, SH_FIRE, SH_WATER, SH_ACID, SH_WEB, SH_SOLID, SH_CONDENSER, SH_EXPLOSIVE
+}
 
 const u32 tile_null[8] = {
 		0x00000000,
@@ -62,6 +66,7 @@ struct Thing {
 	int hp;
 	enum FLAGS flags;
 	enum tile til;
+	enum SHOTTYPE st; // create bullet effets; mostly used for bullets obv
 	int damage;
 	int range;
 };
@@ -80,6 +85,7 @@ Sprite sprite[33];
 struct Thing player;
 struct Thing empty;
 struct Thing blocker;
+struct Thing shot;
 int connections[9] = {
 		0, 0, 0,
 		0, 0, 0,
@@ -88,6 +94,7 @@ int connections[9] = {
 int depth = 0;
 int maxdepth = 15;
 enum ABILITIES abilities[3] = {AB_NONE, AB_NONE, AB_NONE};
+int shot_mode = 0;
 
 void level_generate();
 
@@ -296,6 +303,7 @@ struct Thing thing_make(enum tile t, int x, int y) {
 	thing.xpos = x;
 	thing.ypos = y;
 	thing.range = 5;
+	thing.st = SH_NONE;
 	switch (t) {
 		case TIL_PLAYER:
 			thing.hp = 20;
@@ -312,6 +320,8 @@ struct Thing thing_make(enum tile t, int x, int y) {
 		case TIL_STAIRS:
 			thing.flags = FL_IMMORTAL | FL_OPTIONAL;
 			break;
+		case TIL_SHOT:
+			thing.flags = FL_IMMORTAL;
 		default:
 			thing.flags = FL_PASSTHRU;
 			break;
@@ -607,6 +617,13 @@ void thing_interact_at(struct Thing* subj) {
 	}
 }
 
+void shoot_direction(struct Thing* subj, enum SHOTTYPE st, enum direction dir) {
+	shot.xpos = subj->xpos;
+	shot.ypos = subj->ypos;
+	shot.st = st;
+	thing_move(&shot, dir);
+}
+
 
 // LEVEL GENERATE
 
@@ -840,26 +857,38 @@ void joypad_handle(u16 joy, u16 changed, u16 state) {
 	int turn = 0;
 	if (joy == JOY_1) {
 		if (state & BUTTON_UP) {
-			thing_move(&player, DIR_NORTH);
+			if (shot_mode)
+				shoot_direction(&player, SH_NORMAL, DIR_NORTH);
+			else
+				thing_move(&player, DIR_NORTH);
 			turn = 1;
 		}
 		else if (state & BUTTON_RIGHT) {
-			thing_move(&player, DIR_EAST);
+			if (shot_mode)
+				shoot_direction(&player, SH_NORMAL, DIR_EAST);
+			else	
+				thing_move(&player, DIR_EAST);
 			turn = 1;
 		}
 		else if (state & BUTTON_DOWN) {
-			thing_move(&player, DIR_SOUTH);
+			if (shot_mode)
+				shoot_direction(&player, SH_NORMAL, DIR_SOUTH);
+			else
+				thing_move(&player, DIR_SOUTH);
 			turn = 1;
 		}
 		else if (state & BUTTON_LEFT) {
-			thing_move(&player, DIR_WEST);
+			if (shot_mode)
+				shoot_direction(&player, SH_NORMAL, DIR_WEST);
+			else
+				thing_move(&player, DIR_WEST);
 			turn = 1;
 		}
 		else if (state & BUTTON_A) {
 			thing_interact_at(&player);
 		}
 		else if (state & BUTTON_B) {
-			
+			shot_mode = abs(1 - shot_mode);
 		}
 		else if (state & BUTTON_C) {
 			
@@ -902,8 +931,8 @@ int main() {
 	}
 
 	blocker = thing_make(TIL_WALL, 0, 0);
-
 	player = thing_make(TIL_PLAYER, 0, 0);
+	shot = thing_make(TIL_SHOT, 0, 0);
 
 	// Generate a level and place everything
 	level_generate();
