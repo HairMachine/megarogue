@@ -469,12 +469,12 @@ void thing_move(struct Thing *t, enum direction d) {
 	struct Thing *collided = thing_collide(t, d);
 	// This looks weird but is for a reason: if a blocking thing is destroyed by an interaction we still want it to act
 	// as a blocker
-	if (!(collided->flags & FL_PASSTHRU)) {
+	if (!(collided->flags & FL_PASSTHRU) && !(collided->flags & FL_OPTIONAL)) {
 		thing_interact(t, collided);
 		return;
 	}
-	//else if (!(collided->flags & FL_OPTIONAL)) 
-		//thing_interact(t, collided);
+	else if (!(collided->flags & FL_OPTIONAL)) 
+		thing_interact(t, collided);
 
 	// Move the object
 	switch (d) {
