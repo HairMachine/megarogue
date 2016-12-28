@@ -583,6 +583,13 @@ int ability_use(enum ABILITIES a) {
 }
 
 void thing_interact(struct Thing *subj, struct Thing *obj) {
+	// for bullets (make its own function - probably player, monsters, shot are own functions)
+	if (subj->til == TIL_SHOT) {
+		thing_damage(obj, 2);
+		thing_disable(subj);
+		return;
+	}
+
 	switch (obj->til) {
 		case TIL_GOBLIN:
 		case TIL_PLAYER:
@@ -609,10 +616,6 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 			if (ability_get_random() == 1) {
 				thing_disable(obj);
 			}
-			break;
-		case TIL_SHOT:
-			thing_damage(obj, 2);
-			thing_disable(subj);
 			break;
 		default:
 			break;
