@@ -98,6 +98,7 @@ struct vect2d {
 	int y;
 };
 
+// MOst of this needs a bit of a move around I think
 const int mapsize = 28;
 const int maparraysize = 784;
 const int roomsize = 8;
@@ -120,6 +121,7 @@ int shot_mode = 0;
 int food = 512;
 int keys = 5;
 int ammo[7];
+ammo[0] = 10;
 
 void level_generate();
 
