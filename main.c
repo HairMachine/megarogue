@@ -593,6 +593,10 @@ int ability_use(enum ABILITIES a) {
 }
 
 void thing_interact(struct Thing *subj, struct Thing *obj) {
+	// do nothing if the thing isn't a thing
+	if (obj->til <= TIL_FLOOR)
+		return;
+	
 	// for bullets (make its own function - probably player, monsters, shot are own functions)
 	if (subj->til == TIL_SHOT) {
 		VDP_drawText("Hits:", 30, 5);
