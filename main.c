@@ -425,11 +425,6 @@ void things_generate() {
 		else if (roll == 4)
 			things[i] = thing_put(TIL_KEY);
 	}
-	// third loop: permanent power ups.
-	for (i = 27; i < 31; ++i) {
-		// atm, nothing
-		things[i] = thing_put(TIL_ABILITY);
-	}
 
 	// finally the stairs or macguffin on last level
 	if (depth < maxdepth)
