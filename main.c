@@ -838,7 +838,7 @@ void level_connect_rooms(int rtcx, int rtcy, int rtctx, int rtcty) {
 		for (c = tsx; c < tex; c++) {
 			if (maparray[tey * mapsize + c] == TIL_WALL) {
 				if (gsrand(0, 1) == 0)
-					maparray[tey * mapsize + c] = TIL_DOOR_NS;
+					maparray[tey * mapsize + c] = TIL_DOOR_EW;
 				else
 					maparray[tey * mapsize + c] = TIL_CORRIDOR;
 			}
@@ -848,7 +848,7 @@ void level_connect_rooms(int rtcx, int rtcy, int rtctx, int rtcty) {
 		for (c = tsx; c > tex; c--) {
 			if (maparray[tey * mapsize + c] == TIL_WALL) {
 				if (gsrand(0, 1) == 0)
-					maparray[tey * mapsize + c] = TIL_DOOR_NS;
+					maparray[tey * mapsize + c] = TIL_DOOR_EW;
 				else
 					maparray[tey * mapsize + c] = TIL_CORRIDOR;
 			}
