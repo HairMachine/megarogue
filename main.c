@@ -1087,7 +1087,7 @@ void joypad_handle(u16 joy, u16 changed, u16 state) {
 			draw_weapon();
 		}
 		else if (state & BUTTON_C) {
-			++curent_ammo;
+			++current_ammo;
 			if (current_ammo > 8) {
 				current_ammo = 1;
 			}
