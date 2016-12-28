@@ -1069,7 +1069,7 @@ int main() {
 
 	// Temp: randomise
 	int rs;
-	for (rs = 0; rs < 13; ++rs) {
+	for (rs = 0; rs < 11; ++rs) {
 		random();
 	}
 
