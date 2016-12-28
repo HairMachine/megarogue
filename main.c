@@ -119,6 +119,7 @@ enum ABILITIES abilities[3] = {AB_NONE, AB_NONE, AB_NONE};
 int shot_mode = 0;
 int food = 512;
 int keys = 5;
+int ammo[7];
 
 void level_generate();
 
@@ -311,6 +312,12 @@ void draw_weapon() {
 		VDP_drawText("WPN: Unarmed", 30, 4);
 }
 
+void draw_ammo() {
+	char msg[15];
+	sprintf(msg, "Ammo: %d ", ammo[0]);
+	VDP_drawText(msg, 30, 5);
+}
+
 void screen_game() {
 	// main screen
 	redraw_tiles();
@@ -322,6 +329,7 @@ void screen_game() {
 	draw_depth();
 	draw_weapon();
 	draw_keys();
+	draw_ammo();
 }
 
 void screen_victory() {
@@ -454,17 +462,16 @@ struct Thing *thing_collide(struct Thing *t, enum direction dir) {
 	if (maparray[til_i] >= TIL_WALL)
 		return &blocker;
 	else if (maparray[til_i] > TIL_FLOOR) {
-		// if the player has a key, open the door
-		if (t->til == TIL_PLAYER && keys > 0) {
+		// Doors should be things
+		if (t->til == TIL_SHOT) {
+			maparray[til_i] = TIL_CORRIDOR;
+			tile_draw(TIL_CORRIDOR, t->xpos + xm, t->ypos + ym);
+		}
+		else if (t->til == TIL_PLAYER && keys > 0) {
 			--keys;
 			maparray[til_i] = TIL_CORRIDOR;
 			tile_draw(TIL_CORRIDOR, t->xpos + xm, t->ypos + ym);
 			draw_keys();
-		}
-		// this suggests the doors should be things
-		else if (t->til == TIL_SHOT) {
-			maparray[til_i] = TIL_CORRIDOR;
-			tile_draw(TIL_CORRIDOR, t->xpos + xm, t->ypos + ym);
 		}
 		return &blocker;
 	}
@@ -726,16 +733,21 @@ void thing_interact_at(struct Thing* subj) {
 }
 
 void shoot_direction(struct Thing* subj, enum SHOTTYPE st, enum direction dir) {
+	if (ammo[st] <= 0)
+		return;
+
 	int mshot = 0;
 	shot.xpos = subj->xpos;
 	shot.ypos = subj->ypos;
 	shot.st = st;
+	--ammo[st];
 	while (shot.til == TIL_SHOT && mshot <= subj->range) {
 		thing_move(&shot, dir);
 		++mshot;
 	}
 	// reset the bullet
 	shot = thing_make(TIL_SHOT, 0, 0);
+	draw_ammo();
 }
 
 
