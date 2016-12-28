@@ -643,6 +643,7 @@ void shoot_direction(struct Thing* subj, enum SHOTTYPE st, enum direction dir) {
 		sprintf(msg, "%d  ", mshot);
 		VDP_drawText(msg, 30, 6);
 	}
+	VDP_drawText("OK shooting is done now", 30, 7);
 	shot.til = TIL_SHOT;
 }
 
