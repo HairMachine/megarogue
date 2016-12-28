@@ -659,11 +659,11 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 	}
 }
 
-void thing_interact_at(int x, int y) {
+void thing_interact_at(Thing* subj) {
 	int i;
 	for (i = 0; i < 32; ++i) {
-		if (things[i].xpos == x && things[i].ypos == y) {
-			thing_interact(&things[i]);
+		if (things[i].xpos == subj->xpos && things[i].ypos == subj->ypos) {
+			thing_interact(subj, &things[i]);
 		}
 	}
 }
@@ -917,7 +917,7 @@ void joypad_handle(u16 joy, u16 changed, u16 state) {
 			turn = 1;
 		}
 		else if (state & BUTTON_A) {
-			thing_interact_at(player.xpos, player.ypos);
+			thing_interact_at(&player);
 		}
 		else if (state & BUTTON_B) {
 			turn = ability_use(abilities[1]);
