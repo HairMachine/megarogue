@@ -963,9 +963,9 @@ void level_generate() {
 			doory = gsrand(0, maparraysize - 1);
 		}
 		if (maparray[(doory + 1) * maparraysize + doorx] <= TIL_FLOOR)	
-			maparray[doory * maparraysize + doorx] = TIL_DOOR_NS;
-		else
 			maparray[doory * maparraysize + doorx] = TIL_DOOR_EW;
+		else
+			maparray[doory * maparraysize + doorx] = TIL_DOOR_NS;
 	}
 
 	// Put stuff
