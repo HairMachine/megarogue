@@ -954,7 +954,7 @@ void level_generate() {
 	}
 
 	// Fourth part: create some locked doors in corridors
-	int doornum = gsrand(0, 3);
+	int doornum = gsrand(0, 8);
 	int doorx = gsrand(0, maparraysize - 1);
 	int doory = gsrand(0, maparraysize - 1);
 	for (i = 0; i < doornum; ++i) {	
@@ -962,7 +962,10 @@ void level_generate() {
 			doorx = gsrand(0, maparraysize - 1);
 			doory = gsrand(0, maparraysize - 1);
 		}
-		maparray[doory * maparraysize + doorx] = TIL_DOOR_NS;
+		if (maparray[(doory + 1) * maparraysize + doorx] <= TIL_FLOOR)	
+			maparray[doory * maparraysize + doorx] = TIL_DOOR_NS;
+		else
+			maparray[doory * maparraysize + doorx] = TIL_DOOR_EW;
 	}
 
 	// Put stuff
