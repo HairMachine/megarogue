@@ -120,8 +120,8 @@ enum ABILITIES abilities[3] = {AB_NONE, AB_NONE, AB_NONE};
 int shot_mode = 0;
 int food = 512;
 int keys = 5;
-int ammo[7];
-ammo[0] = 10;
+int ammo[7] = {10, 0, 0, 0, 0, 0, 0, 0};
+
 
 void level_generate();
 
