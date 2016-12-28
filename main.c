@@ -994,7 +994,8 @@ void level_generate() {
 			if (cx > 1 || cy > 1 || (cx >= 1 && cy >= 1))
 				maparray[i] = TIL_CORRIDOR;
 		}
-		c = 0;
+		cx = 0;
+		cy = 0;
 	}
 
 	// Put stuff
