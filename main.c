@@ -287,17 +287,23 @@ void draw_food() {
 		VDP_drawText("Fainting", 30, 1);
 }
 
+void draw_keys() {
+	char msg[15];
+	sprintf(msg, "Keys: %d ", keys + 1);
+	VDP_drawText(msg, 30, 2);
+}
+
 void draw_depth() {
 	char msg[15];
 	sprintf(msg, "Depth: %d ", depth + 1);
-	VDP_drawText(msg, 30, 2);
+	VDP_drawText(msg, 30, 3);
 }
 
 void draw_weapon() {
 	if (shot_mode)
-		VDP_drawText("WPN: Gun    ", 30, 3);
+		VDP_drawText("WPN: Gun    ", 30, 4);
 	else
-		VDP_drawText("WPN: Unarmed", 30, 3);
+		VDP_drawText("WPN: Unarmed", 30, 4);
 }
 
 void screen_game() {
@@ -310,6 +316,7 @@ void screen_game() {
 	draw_food();
 	draw_depth();
 	draw_weapon();
+	draw_keys();
 }
 
 void screen_victory() {
@@ -470,10 +477,6 @@ void thing_disable(struct Thing *t) {
 void thing_damage(struct Thing *t, int damage) {
 	if (t->flags & FL_IMMORTAL)
 		return;
-
-	debug(t->til, 30, 6);
-	VDP_drawText("hit for", 30, 7);
-	debug(damage, 30, 8);
 
 	t->hp -= damage;
 	if (t->til == TIL_PLAYER)
@@ -691,6 +694,7 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 			if (subj->til == TIL_PLAYER) {
 				++keys;
 				thing_disable(obj);
+				draw_keys();
 			}
 		default:
 			break;
