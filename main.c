@@ -11,7 +11,7 @@ enum direction {
 
 enum tile {
 	TIL_NULL, TIL_CORRIDOR, TIL_FLOOR, TIL_DOOR_NS, TIL_DOOR_EW, TIL_WALL, TIL_PLAYER, TIL_GOBLIN, TIL_STAIRS, TIL_MACGUFFIN,
-	TIL_WPN, TIL_POTION, TIL_FOOD, TIL_SCROLL, TIL_ABILITY, TIL_SHOT, TIL_KEY
+	TIL_WPN, TIL_POTION, TIL_FOOD, TIL_SCROLL, TIL_AMMO, TIL_SHOT, TIL_KEY
 };
 
 enum SHOTTYPE {
@@ -191,7 +191,7 @@ void sprite_set(int id, enum tile tilenum, int x, int y) {
 		case TIL_KEY:
 			SPR_initSprite(&sprite[id], &potion, x * 8, y * 8, TILE_ATTR(PAL3, TRUE, FALSE, FALSE));
 			break;
-		case TIL_ABILITY:
+		case TIL_AMMO:
 			SPR_initSprite(&sprite[id], &card, x * 8, y * 8, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
 			break;
 		case TIL_SCROLL:
@@ -718,8 +718,9 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 			draw_food();
 			thing_disable(obj);
 			break;
-		case TIL_ABILITY:
-			if (ability_get_random() == 1) {
+		case TIL_AMMO:
+			if (subj->til == TIL_PLAYER) {
+				ammo[SH_NORMAL];
 				thing_disable(obj);
 			}
 			break;
