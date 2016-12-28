@@ -95,7 +95,7 @@ int depth = 0;
 int maxdepth = 15;
 enum ABILITIES abilities[3] = {AB_NONE, AB_NONE, AB_NONE};
 int shot_mode = 0;
-int food = 100;
+int food = 512;
 
 void level_generate();
 
@@ -247,7 +247,7 @@ void draw_health() {
 
 void draw_food() {
 	char msg[15];
-	sprintf(msg, "Food: %d ", food);
+	sprintf(msg, "Food: %d ", food >> 2);
 	VDP_drawText(msg, 30, 1);
 }
 
