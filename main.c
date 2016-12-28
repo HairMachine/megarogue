@@ -118,7 +118,7 @@ int maxdepth = 15;
 enum ABILITIES abilities[3] = {AB_NONE, AB_NONE, AB_NONE};
 int shot_mode = 0;
 int food = 512;
-int keys = 0;
+int keys = 5;
 
 void level_generate();
 
