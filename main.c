@@ -985,6 +985,7 @@ void level_generate() {
 			if (c > 2)
 				maparray[i] = TIL_WALL;
 		}
+		c = 0;
 	}
 
 	// Put stuff
