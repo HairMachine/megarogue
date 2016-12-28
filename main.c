@@ -11,7 +11,7 @@ enum direction {
 
 enum tile {
 	TIL_NULL, TIL_FLOOR, TIL_WALL, TIL_PLAYER, TIL_GOBLIN, TIL_STAIRS, TIL_MACGUFFIN,
-	TIL_WPN, TIL_POTION, TIL_FOOD, TIL_SCROLL, TIL_ABILITY, TIL_SHOT
+	TIL_WPN, TIL_POTION, TIL_FOOD, TIL_SCROLL, TIL_ABILITY, TIL_SHOT, TIL_KEY
 };
 
 enum SHOTTYPE {
@@ -49,6 +49,28 @@ const u32 tile_floor[8] = {
 		0x10000000,
 		0x10000000,
 		0x10000000
+};
+
+const u32 tile_door_ns[8] = {
+	0x00000000,
+	0x00000000,
+	0x00000000,
+	0x11111111,
+	0x11111111,
+	0x00000000,
+	0x00000000,
+	0x00000000,
+};
+
+const u32 tile_door_ew[8] = {
+	0x00011000,
+	0x00011000,
+	0x00011000,
+	0x00011000,
+	0x00011000,
+	0x00011000,
+	0x00011000,
+	0x00011000,
 };
 
 enum ABILITIES {
@@ -96,6 +118,7 @@ int maxdepth = 15;
 enum ABILITIES abilities[3] = {AB_NONE, AB_NONE, AB_NONE};
 int shot_mode = 0;
 int food = 512;
+int keys = 0;
 
 void level_generate();
 
@@ -155,6 +178,9 @@ void sprite_set(int id, enum tile tilenum, int x, int y) {
 			break;
 		case TIL_FOOD:
 			SPR_initSprite(&sprite[id], &potion, x * 8, y * 8, TILE_ATTR(PAL2, TRUE, FALSE, FALSE));
+			break;
+		case TIL_KEY:
+			SPR_initSprite(&sprite[id], &potion, x * 8, y * 8, TILE_ATTR(PAL3, TRUE, FALSE, FALSE));
 			break;
 		case TIL_ABILITY:
 			SPR_initSprite(&sprite[id], &card, x * 8, y * 8, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
@@ -354,6 +380,7 @@ struct Thing thing_make(enum tile t, int x, int y) {
 			break;
 		case TIL_SHOT:
 			thing.flags = FL_IMMORTAL;
+			break;
 		default:
 			thing.flags = FL_PASSTHRU | FL_IMMORTAL;
 			break;
@@ -378,11 +405,13 @@ void things_generate() {
 	}
 	// second loop: items.
 	for (i = 15; i < max_i; ++i) {
-		roll = gsrand(0, 1);
-		if (roll == 0)
+		roll = gsrand(0, 4);
+		if (roll >= 0  && roll <= 1)
 			things[i] = thing_put(TIL_POTION);
-		else if (roll == 1)
+		else if (roll >= 2 && roll <= 3)
 			things[i] = thing_put(TIL_FOOD);
+		else if (roll == 4)
+			things[i] = thing_put(TIL_KEY);
 	}
 	// third loop: permanent power ups.
 	for (i = 27; i < 31; ++i) {
@@ -649,7 +678,7 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 			thing_disable(obj);
 			break;
 		case TIL_FOOD:
-			food += 32; 
+			food += 64; 
 			draw_food();
 			thing_disable(obj);
 			break;
@@ -658,6 +687,11 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 				thing_disable(obj);
 			}
 			break;
+		case TIL_KEY:
+			if (subj->til == TIL_PLAYER) {
+				++keys;
+				thing_disable(obj);
+			}
 		default:
 			break;
 	}
@@ -987,10 +1021,11 @@ int main() {
 		random();
 	}
 
-	//we load our unique tile data at position 1 on VRAM
 	VDP_loadTileData((const u32 *) tile_null, 8, 1, 0);
 	VDP_loadTileData((const u32 *) tile_wall, 1, 1, 0);
 	VDP_loadTileData((const u32 *) tile_floor, 3, 1, 0);
+	VDP_loadTileData((const u32 *) tile_door_ns, 4, 1, 0);
+	VDP_loadTileData((const u32 *) tile_door_ew, 5, 1, 0);
 
 	// Initialise basic stuff
 	empty = thing_make(TIL_NULL, 0, 0);
