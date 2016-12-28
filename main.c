@@ -985,7 +985,7 @@ void level_generate() {
 				++c;
 			if (maparray[i + mapsize] <= TIL_FLOOR)
 				++c;
-			if (c > 3)
+			if (c != 2)
 				maparray[i] = TIL_CORRIDOR;
 		}
 	}
