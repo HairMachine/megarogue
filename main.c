@@ -814,9 +814,11 @@ void level_connect_rooms(int rtcx, int rtcy, int rtctx, int rtcty) {
 	int c = 0;
 	if (tsy < tey) {
 		for (c = tsy; c < tey; c++) {
-			if (maparray[c * mapsize + tsx] == TIL_WALL) {
-				if (gsrand(0, 1) == 0)
+			if (!door_flag && maparray[c * mapsize + tsx] == TIL_WALL) {
+				if (gsrand(0, 1) == 0) {
 					maparray[c * mapsize + tsx] = TIL_DOOR_NS;
+					door_flag = 1;
+				}
 				else		
 					maparray[c * mapsize + tsx] = TIL_CORRIDOR;
 			}
@@ -824,9 +826,11 @@ void level_connect_rooms(int rtcx, int rtcy, int rtctx, int rtcty) {
 	}
 	else if (tsy > tey) {
 		for (c = tsy; c > tey; c--) {
-			if (maparray[c * mapsize + tsx] == TIL_WALL) {
-				if (gsrand(0, 1) == 0)
+			if (!door_flag && maparray[c * mapsize + tsx] == TIL_WALL) {
+				if (gsrand(0, 1) == 0) {
 					maparray[c * mapsize + tsx] = TIL_DOOR_NS;
+					door_flag = 1;
+				}
 				else	
 					maparray[c * mapsize + tsx] = TIL_CORRIDOR;
 			}
@@ -834,9 +838,11 @@ void level_connect_rooms(int rtcx, int rtcy, int rtctx, int rtcty) {
 	}
 	if (tsx < tex) {
 		for (c = tsx; c < tex; c++) {
-			if (maparray[tey * mapsize + c] == TIL_WALL) {
-				if (gsrand(0, 1) == 0)
+			if (!door_flag && maparray[tey * mapsize + c] == TIL_WALL) {
+				if (gsrand(0, 1) == 0) {
 					maparray[tey * mapsize + c] = TIL_DOOR_EW;
+					door_flag = 1;
+				}
 				else
 					maparray[tey * mapsize + c] = TIL_CORRIDOR;
 			}
@@ -844,9 +850,11 @@ void level_connect_rooms(int rtcx, int rtcy, int rtctx, int rtcty) {
 	}
 	else if (tsx > tex) {
 		for (c = tsx; c > tex; c--) {
-			if (maparray[tey * mapsize + c] == TIL_WALL) {
-				if (gsrand(0, 1) == 0)
+			if (!door_flag && maparray[tey * mapsize + c] == TIL_WALL) {
+				if (gsrand(0, 1) == 0) {
 					maparray[tey * mapsize + c] = TIL_DOOR_EW;
+					door_flag = 1;
+				}
 				else
 					maparray[tey * mapsize + c] = TIL_CORRIDOR;
 			}
@@ -983,7 +991,7 @@ void level_generate() {
 			if (i + mapsize < maparraysize && maparray[i + mapsize] <= TIL_FLOOR)
 				++c;
 			if (c > 2)
-				maparray[i] = TIL_WALL;
+				maparray[i] = TIL_CORRIDOR;
 		}
 		c = 0;
 	}
