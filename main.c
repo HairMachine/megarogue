@@ -106,9 +106,9 @@ int in_range(int v, int l, int u) {
 	return 0;
 }
 
-void debug(int x, int y, int val) {
+void debug(int val, int x, int y) {
 	char msg[15];
-	sprintf(msg, "%d - debug", val);
+	sprintf(msg, "%d", val);
 	VDP_drawText(msg, x, y);
 }
 
