@@ -633,28 +633,28 @@ void things_generate() {
 	// second loop: items.
 	// TODO: a better system for deciding what to generate
 	for (i = 15; i < max_i; ++i) {
-		roll = gsrand(0, 12);
-		// if (roll >= 0  && roll <= 1)
-		// 	things[i] = thing_put(TIL_POTION);
-		// else if (roll >= 2 && roll <= 3)
-		// 	things[i] = thing_put(TIL_FOOD);
-		// else if (roll == 4)
-		// 	things[i] = thing_put(TIL_KEY);
-		// else if (roll >= 5 && roll <= 6)
-		// 	things[i] = thing_put(TIL_AMMO);
-		// else if (roll == 7)
-		// 	things[i] = thing_put(TIL_PIT);
-		// else if (roll == 8)	
-		// 	things[i] = thing_put(TIL_RAGE);
-		// else if (roll == 9)
-		// 	things[i] = thing_put(TIL_TELE);
-		// else if (roll == 10)
-		// 	things[i] = thing_put(TIL_GODMODE);
-		// else if (roll == 11)
-		// 	things[i] = thing_put(TIL_SUPER);
-		// else if (roll == 12)
-		// 	things[i] = thing_put(TIL_LEVITATE);
-		// else if (roll == 13)
+		roll = gsrand(0, 13);
+		if (roll >= 0  && roll <= 1)
+			things[i] = thing_put(TIL_POTION);
+		else if (roll >= 2 && roll <= 3)
+			things[i] = thing_put(TIL_FOOD);
+		else if (roll == 4)
+			things[i] = thing_put(TIL_KEY);
+		else if (roll >= 5 && roll <= 6)
+			things[i] = thing_put(TIL_AMMO);
+		else if (roll == 7)
+			things[i] = thing_put(TIL_PIT);
+		else if (roll == 8)	
+			things[i] = thing_put(TIL_RAGE);
+		else if (roll == 9)
+			things[i] = thing_put(TIL_TELE);
+		else if (roll == 10)
+			things[i] = thing_put(TIL_GODMODE);
+		else if (roll == 11)
+			things[i] = thing_put(TIL_SUPER);
+		else if (roll == 12)
+			things[i] = thing_put(TIL_LEVITATE);
+		else if (roll == 13)
 			things[i] = thing_put(TIL_POWER);
 	}
 	// finally the stairs or macguffin on last level
@@ -1011,7 +1011,7 @@ void shoot_direction(struct Thing* subj, enum SHOTTYPE st, enum direction dir) {
 	shot.xpos = subj->xpos;
 	shot.ypos = subj->ypos;
 	shot.st = st;
-	shot.damage = 2 * (thing_status_has(subj, ST_POWER) + 1);
+	shot.damage = 2 * (thing_status_has(subj, ST_POWER) << 2);
 	--ammo[st];
 	while (shot.til == TIL_SHOT && mshot <= subj->range) {
 		thing_move(&shot, dir);
