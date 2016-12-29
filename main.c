@@ -717,7 +717,8 @@ void thing_disable(struct Thing *t) {
 }
 
 void thing_damage(struct Thing *t, int damage) {
-	if (/*(t->flags & FL_IMMORTAL) || */thing_status_has(t, ST_GODMODE))
+	debug(t->flags & FL_IMMORTAL, 30, 10);
+	if ((t->flags & FL_IMMORTAL) || thing_status_has(t, ST_GODMODE))
 		return;
 
 	t->hp -= damage;
