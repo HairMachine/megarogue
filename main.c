@@ -309,7 +309,7 @@ void draw_depth() {
 }
 
 void draw_weapon() {
-	if (shot_mode)
+	if (shot_mode == 1)
 		VDP_drawText("WPN: Gun    ", 30, 4);
 	else
 		VDP_drawText("WPN: Unarmed", 30, 4);
@@ -1099,6 +1099,7 @@ void joypad_handle(u16 joy, u16 changed, u16 state) {
 		// key releases
 		else if (changed & BUTTON_B) {
 			shot_mode = 0;
+			draw_weapon();
     }
 	}
 	if (turn == 1) {
