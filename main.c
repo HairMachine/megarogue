@@ -12,7 +12,7 @@ enum direction {
 enum tile {
 	TIL_NULL, TIL_CORRIDOR, TIL_FLOOR, TIL_DOOR_NS, TIL_DOOR_EW, TIL_WALL, TIL_PLAYER, TIL_GOBLIN, TIL_STAIRS, TIL_MACGUFFIN,
 	TIL_WPN, TIL_POTION, TIL_FOOD, TIL_SCROLL, TIL_AMMO, TIL_SHOT, TIL_KEY, TIL_PIT, TIL_RAGE, TIL_TELE, TIL_GODMODE, TIL_SUPER,
-	TIL_LEVITATE
+	TIL_LEVITATE, TIL_POWER
 };
 
 enum SHOTTYPE {
@@ -88,7 +88,7 @@ enum FLAGS {
 };
 
 enum STATUS_ID {
-	ST_NONE = 0, ST_RAGE = 1, ST_GODMODE = 2, ST_FLYING = 4
+	ST_NONE = 0, ST_RAGE = 1, ST_GODMODE = 2, ST_FLYING = 4, ST_POWER = 8
 };
 
 struct Status {
@@ -234,6 +234,9 @@ void sprite_set(int id, enum tile tilenum, int x, int y) {
 			break;
 		case TIL_LEVITATE:
 			SPR_initSprite(&sprite[id], &potion, x * 8, y * 8, TILE_ATTR(PAL2, TRUE, TRUE, FALSE));
+			break;
+		case TIL_POWER:
+			SPR_initSprite(&sprite[id], &potion, x * 8, y * 8, TILE_ATTR(PAL3, TRUE, TRUE, FALSE));
 			break;
 		default:
 			// actually should de-initialise the sprite rather than drawing it offscreen
@@ -479,7 +482,10 @@ void thing_status_set_at(struct Thing* t, enum STATUS_ID id, int i) {
 			s->cur_time = 32;
 			break;
 		case ST_FLYING:
-			s->cur_time = 32;
+			s->cur_time = 64;
+			break;
+		case ST_POWER:
+			s->cur_time = 64;
 			break;
 		default:
 			s->cur_time = 0;
@@ -621,7 +627,7 @@ void things_generate() {
 	// second loop: items.
 	// TODO: a better system for deciding what to generate
 	for (i = 15; i < max_i; ++i) {
-		roll = gsrand(0, 11);
+		roll = gsrand(0, 12);
 		// if (roll >= 0  && roll <= 1)
 		// 	things[i] = thing_put(TIL_POTION);
 		// else if (roll >= 2 && roll <= 3)
@@ -641,7 +647,9 @@ void things_generate() {
 		// else if (roll == 11)
 		// 	things[i] = thing_put(TIL_SUPER);
 		// else if (roll == 12)
-			things[i] = thing_put(TIL_LEVITATE);
+		// 	things[i] = thing_put(TIL_LEVITATE);
+		// else if (roll == 13)
+			things[i] = thing_put(TIL_POWER);
 	}
 	// finally the stairs or macguffin on last level
 	if (depth < maxdepth)
@@ -687,7 +695,7 @@ struct Thing *thing_collide(struct Thing *t, enum direction dir) {
 			return &things[i];
 		}
 	}
-	
+
 	// check player
 	if (t->til != TIL_PLAYER && player.xpos == t->xpos + xm && player.ypos == t->ypos + ym) {
 		return &player;
@@ -881,7 +889,7 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 
 	// for bullets (make its own function - probably player, monsters, shot are own functions)
 	if (subj->til == TIL_SHOT) {
-		thing_damage(obj, 2);
+		thing_damage(obj, subj->damage);
 		thing_disable(subj);
 		return;
 	}
@@ -971,6 +979,10 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 			thing_status_set(subj, ST_FLYING);
 			thing_disable(obj);
 			break;
+		case TIL_POWER:
+			thing_status_set(subj, ST_POWER);
+			thing_disable(obj);
+			break;
 		default:
 			break;
 	}
@@ -993,6 +1005,7 @@ void shoot_direction(struct Thing* subj, enum SHOTTYPE st, enum direction dir) {
 	shot.xpos = subj->xpos;
 	shot.ypos = subj->ypos;
 	shot.st = st;
+	shot.damage = 2 * (thing_status_has(subj, ST_POWER) + 1);
 	--ammo[st];
 	while (shot.til == TIL_SHOT && mshot <= subj->range) {
 		thing_move(&shot, dir);
