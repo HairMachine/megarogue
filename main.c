@@ -775,17 +775,6 @@ void thing_move_toward(struct Thing *t, int xpos, int ypos) {
 	}
 }
 
-void thing_reduce_supercharged_hp() {
-	int i;
-	for (i = 0; i < 32; ++i) {
-		if (things[i].hp > things[i].max_hp) {
-			things[i].hp--;
-		}
-	}
-	if (player.hp > player.max_hp)
-		player.hp--;
-}
-
 
 int ability_use(enum ABILITIES a) {
 	int i, absx, absy;
@@ -1342,7 +1331,6 @@ void joypad_handle(u16 joy, u16 changed, u16 state) {
 		// time based and status events
 		hunger_clock();
 		status_countdown();
-		thing_reduce_supercharged_hp();
 		
 		// monster turn
 		int m = 0;
