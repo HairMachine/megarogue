@@ -273,6 +273,8 @@ void redraw_doors() {
 		absy = abs(player.ypos - doors[i].ypos);
 		if (doors[i].til > TIL_NULL && absx <= player.range && absy <= player.range)
 			tile_draw(doors[i].til, doors[i].xpos, doors[i].ypos);
+		else if (doors[i].til > TIL_NULL)
+			tile_draw(TIL_NULL, 0, 0);
 		else
 			tile_draw(TIL_FLOOR, doors[i].xpos, doors[i].ypos);
 	}
