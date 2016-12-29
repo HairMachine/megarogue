@@ -455,9 +455,12 @@ void thing_status_set_at(struct Thing* t, enum STATUS_ID id, int i) {
 }
 
 void thing_status_set(struct Thing* t, enum STATUS_ID id) {
+	int i;
 	for (i = 0; i < statmax; ++i) {
-		if (t->status[i].id == ST_NONE)
-			return thing_status_set_at(t, id, i);
+		if (t->status[i].id == ST_NONE) {
+			thing_status_set_at(t, id, i);
+			return;
+		}
 	}
 	
 }
