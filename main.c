@@ -848,6 +848,8 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 		return;
 	}
 
+	struct vect2d newpos;
+
 	switch (obj->til) {
 		case TIL_GOBLIN:
 		case TIL_PLAYER:
@@ -913,7 +915,7 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 			thing_disable(obj);
 			break;
 		case TIL_TELE:
-			struct vect2d newpos = position_find_valid();
+			newpos = position_find_valid();
 			subj->xpos = newpos.x;
 			subj->ypos = newpos.y;
 			screen_game();
