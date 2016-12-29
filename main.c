@@ -380,7 +380,7 @@ void draw_ammo() {
 
 void draw_mode() {
 	switch(gm_mode) {
-		case GM_WALK: VDP_drawText("Walk ", 30, 6); break;
+		case GM_WALK: VDP_drawText("     ", 30, 6); break;
 		case GM_SHOOT: VDP_drawText("Shoot", 30, 6); break;
 		default: VDP_drawText("error", 30, 6); break;
 	}
