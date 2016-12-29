@@ -870,7 +870,7 @@ void level_connect_rooms(int rtcx, int rtcy, int rtctx, int rtcty) {
 		for (c = tsy; c < tey; ++c) {
 			if (maparray[c * mapsize + tsx] == TIL_WALL) {
 				if (!door_flag && door_count < maxdoors && gsrand(0, 2) == 0) {
-					doors[door_count] = thing_make(TIL_DOOR_NS, tsx, tsy);
+					doors[door_count] = thing_make(TIL_DOOR_NS, tsx, c);
 					door_flag = 1;
 					door_count++;
 				}
@@ -882,7 +882,7 @@ void level_connect_rooms(int rtcx, int rtcy, int rtctx, int rtcty) {
 		for (c = tsy; c > tey; --c) {
 			if (maparray[c * mapsize + tsx] == TIL_WALL) {
 				if (!door_flag && door_count < maxdoors && gsrand(0, 2) == 0) {
-					doors[door_count] = thing_make(TIL_DOOR_NS, tsx, tsy);
+					doors[door_count] = thing_make(TIL_DOOR_NS, tsx, c);
 					door_flag = 1;
 					door_count++;
 				}
@@ -894,7 +894,7 @@ void level_connect_rooms(int rtcx, int rtcy, int rtctx, int rtcty) {
 		for (c = tsx; c < tex; ++c) {
 			if (maparray[tey * mapsize + c] == TIL_WALL) {
 				if (!door_flag && door_count < maxdoors && gsrand(0, 2) == 0) {
-					doors[door_count] = thing_make(TIL_DOOR_EW, tsx, tsy);
+					doors[door_count] = thing_make(TIL_DOOR_EW, c, tey);
 					door_flag = 1;
 					door_count++;
 				}
@@ -906,7 +906,7 @@ void level_connect_rooms(int rtcx, int rtcy, int rtctx, int rtcty) {
 		for (c = tsx; c > tex; --c) {
 			if (maparray[tey * mapsize + c] == TIL_WALL) {
 				if (!door_flag && door_count < maxdoors && gsrand(0, 2) == 0) {
-					doors[door_count] = thing_make(TIL_DOOR_EW, tsx, tsy);
+					doors[door_count] = thing_make(TIL_DOOR_EW, c, tey);
 					door_flag = 1;
 					door_count++;
 				}			
