@@ -11,7 +11,8 @@ enum direction {
 
 enum tile {
 	TIL_NULL, TIL_CORRIDOR, TIL_FLOOR, TIL_DOOR_NS, TIL_DOOR_EW, TIL_WALL, TIL_PLAYER, TIL_GOBLIN, TIL_STAIRS, TIL_MACGUFFIN,
-	TIL_WPN, TIL_POTION, TIL_FOOD, TIL_SCROLL, TIL_AMMO, TIL_SHOT, TIL_KEY, TIL_PIT, TIL_RAGE, TIL_TELE, TIL_GODMODE, TIL_SUPER
+	TIL_WPN, TIL_POTION, TIL_FOOD, TIL_SCROLL, TIL_AMMO, TIL_SHOT, TIL_KEY, TIL_PIT, TIL_RAGE, TIL_TELE, TIL_GODMODE, TIL_SUPER,
+	TIL_LEVITATE
 };
 
 enum SHOTTYPE {
@@ -87,7 +88,7 @@ enum FLAGS {
 };
 
 enum STATUS_ID {
-	ST_NONE = 0, ST_RAGE = 1, ST_GODMODE = 2
+	ST_NONE = 0, ST_RAGE = 1, ST_GODMODE = 2, ST_FLYING = 4
 };
 
 struct Status {
@@ -230,6 +231,9 @@ void sprite_set(int id, enum tile tilenum, int x, int y) {
 			break;
 		case TIL_SUPER:
 			SPR_initSprite(&sprite[id], &potion, x * 8, y * 8, TILE_ATTR(PAL1, TRUE, TRUE, FALSE));
+			break;
+		case TIL_LEVITATE:
+			SPR_initSprite(&sprite[id], &potion, x * 8, y * 8, TILE_ATTR(PAL2, TRUE, TRUE, FALSE));
 			break;
 		default:
 			// actually should de-initialise the sprite rather than drawing it offscreen
@@ -393,6 +397,11 @@ void draw_status() {
 				sprintf(msg, "GOD:  %d ", player.status[i].cur_time);
 				VDP_drawText(msg, 30, 7 + c);
 				++c;
+				break;
+			case ST_FLYING:
+				sprintf(msg, "FLY:  %d ", player.status[i].cur_time);
+				VDP_drawText(msg, 30, 7 + c);
+				++c;
 			default: break;
 		}
 	}
@@ -467,6 +476,9 @@ void thing_status_set_at(struct Thing* t, enum STATUS_ID id, int i) {
 			s->cur_time = 64;
 			break;
 		case ST_GODMODE:
+			s->cur_time = 32;
+			break;
+		case ST_FLYING:
 			s->cur_time = 32;
 			break;
 		default:
@@ -610,24 +622,26 @@ void things_generate() {
 	// TODO: a better system for deciding what to generate
 	for (i = 15; i < max_i; ++i) {
 		roll = gsrand(0, 11);
-		if (roll >= 0  && roll <= 1)
-			things[i] = thing_put(TIL_POTION);
-		else if (roll >= 2 && roll <= 3)
-			things[i] = thing_put(TIL_FOOD);
-		else if (roll == 4)
-			things[i] = thing_put(TIL_KEY);
-		else if (roll >= 5 && roll <= 6)
-			things[i] = thing_put(TIL_AMMO);
-		else if (roll == 7)
-			things[i] = thing_put(TIL_PIT);
-		else if (roll == 8)	
-			things[i] = thing_put(TIL_RAGE);
-		else if (roll == 9)
-			things[i] = thing_put(TIL_TELE);
-		else if (roll == 10)
-			things[i] = thing_put(TIL_GODMODE);
-		else if (roll == 11)
-			things[i] = thing_put(TIL_SUPER);
+		// if (roll >= 0  && roll <= 1)
+		// 	things[i] = thing_put(TIL_POTION);
+		// else if (roll >= 2 && roll <= 3)
+		// 	things[i] = thing_put(TIL_FOOD);
+		// else if (roll == 4)
+		// 	things[i] = thing_put(TIL_KEY);
+		// else if (roll >= 5 && roll <= 6)
+		// 	things[i] = thing_put(TIL_AMMO);
+		// else if (roll == 7)
+		// 	things[i] = thing_put(TIL_PIT);
+		// else if (roll == 8)	
+		// 	things[i] = thing_put(TIL_RAGE);
+		// else if (roll == 9)
+		// 	things[i] = thing_put(TIL_TELE);
+		// else if (roll == 10)
+		// 	things[i] = thing_put(TIL_GODMODE);
+		// else if (roll == 11)
+		// 	things[i] = thing_put(TIL_SUPER);
+		// else if (roll == 12)
+			things[i] = thing_put(TIL_LEVITATE);
 	}
 	// finally the stairs or macguffin on last level
 	if (depth < maxdepth)
@@ -860,6 +874,10 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 	if (obj->til <= TIL_FLOOR)
 		return;
 
+	// TODO: slightly more complex
+	if (thing_status_has(subj, ST_FLYING))
+		return;
+
 	// for bullets (make its own function - probably player, monsters, shot are own functions)
 	if (subj->til == TIL_SHOT) {
 		thing_damage(obj, 2);
@@ -946,6 +964,10 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 		case TIL_SUPER:
 			subj->hp = subj->max_hp * 2;
 			draw_health();
+			thing_disable(obj);
+			break;
+		case TIL_LEVITATE:
+			thing_status_set(subj, ST_FLYING);
 			thing_disable(obj);
 			break;
 		default:
