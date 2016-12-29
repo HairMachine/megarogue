@@ -729,10 +729,18 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 			break;
 		case TIL_DOOR_NS:
 		case TIL_DOOR_EW:
-			if ((subj->til == TIL_PLAYER && keys > 0) || subj->til != TIL_PLAYER) {
+			if (subj->til == TIL_PLAYER && keys > 0) {
 				--keys;
 				thing_disable(obj);
 				draw_keys();
+			}
+			else if (subj->til == TIL_PLAYER) {
+				if (gsrand(0, 5) == 0) {
+					thing_damage(obj, 1);
+				}
+			}
+			else {
+				thing_disable(obj);
 			}
 			break;
 		case TIL_MACGUFFIN:
