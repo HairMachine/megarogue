@@ -326,24 +326,21 @@ void draw_depth() {
 	VDP_drawText(msg, 30, 3);
 }
 
-void draw_weapon() {
-	if (shot_mode == 1)
-		VDP_drawText("WPN: Gun    ", 30, 4);
-	else
-		VDP_drawText("WPN: Unarmed", 30, 4);
-}
-
 void draw_ammo() {
 	char msg[15];
-	sprintf(msg, "Ammo: %d ", ammo[current_ammo]);
-	VDP_drawText(msg, 30, 5);
-	switch (current_ammo) {
-		case SH_NORMAL:
-			VDP_drawText("AT: Norm.", 30, 6);
-			break;
-		default:
-			VDP_drawText("AT: null", 30, 6);
-			break;
+	if (shot_mode == 0)
+		VDP_drawText("WPN: -    ", 30, 4);
+	else {
+		switch (current_ammo) {
+			case SH_NORMAL:
+				VDP_drawText("WPN: Gun  ", 30, 4);
+				break;
+			default:
+				VDP_drawText("WPN: error", 30, 4);
+				break;
+		}
+		sprintf(msg, "Ammo: %d ", ammo[current_ammo]);
+		VDP_drawText(msg, 30, 5);
 	}
 }
 
@@ -357,7 +354,6 @@ void screen_game() {
 	draw_health();
 	draw_food();
 	draw_depth();
-	draw_weapon();
 	draw_keys();
 	draw_ammo();
 }
@@ -1117,7 +1113,7 @@ void joypad_handle(u16 joy, u16 changed, u16 state) {
 		}
 		else if (state & BUTTON_B) {
 			shot_mode = 1;
-			draw_weapon();
+			draw_ammo();
 		}
 		else if (state & BUTTON_C) {
 			int a = current_ammo;
@@ -1133,7 +1129,7 @@ void joypad_handle(u16 joy, u16 changed, u16 state) {
 		// key releases
 		else if (changed & BUTTON_B) {
 			shot_mode = 0;
-			draw_weapon();
+			draw_ammo();
     }
 	}
 	if (turn == 1) {
