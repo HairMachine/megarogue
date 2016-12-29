@@ -440,7 +440,6 @@ void thing_status_set(struct Thing* t, enum STATUS_ID status) {
 			break;
 	}
 	s->max_time = s->cur_time;
-	return s;
 }
 
 void thing_status_reset(struct Thing* t) {
