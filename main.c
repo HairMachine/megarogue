@@ -1120,10 +1120,14 @@ void joypad_handle(u16 joy, u16 changed, u16 state) {
 			draw_weapon();
 		}
 		else if (state & BUTTON_C) {
-			++current_ammo;
-			if (current_ammo > 8) {
-				current_ammo = 1;
+			int a = current_ammo;
+			while (ammo[a] <= 0 && a < 8)	{
+				++a;
+				if (current_ammo > 8) {
+					current_ammo = 1;
+				}
 			}
+			current_ammo = a;
 			draw_ammo();
 		}
 		// key releases
