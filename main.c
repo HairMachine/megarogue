@@ -102,7 +102,7 @@ struct vect2d {
 const int mapsize = 28;
 const int maparraysize = 784;
 const int roomsize = 8;
-const int TIL_AMMO = 8;
+const int maxdoors = 8;
 enum tile maparray[784];
 struct Thing things[32];
 struct Thing doors[8];
@@ -267,7 +267,7 @@ void redraw_tiles() {
 
 void redraw_doors() {
 	int i;
-	for (i = 0; i < TIL_AMMO; ++i) {
+	for (i = 0; i < maxdoors; ++i) {
 		tile_draw(doors[i].til, doors[i].xpos, doors[i].ypos);
 	}
 }
@@ -491,7 +491,7 @@ struct Thing *thing_collide(struct Thing *t, enum direction dir) {
 		return &blocker;
 	// check doors
 	int i = 0;
-	for (i = 0; i < TIL_AMMO; ++i) {
+	for (i = 0; i < maxdoors; ++i) {
 		if (doors[i].xpos == t->xpos + xm && doors[i].ypos == t->ypos + ym) {
 			return &doors[i];
 		}
@@ -717,7 +717,7 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 			break;
 		case TIL_DOOR_NS:
 		case TIL_DOOR_EW:
-			if ((subj->til == TIL_PLAYER && keys > 0) || subj->til != TIL_PLAYER) {
+			if ((subj->til == TIL_PLAYER && keys > 0) || subj->til != TIL_PLAYER)) {
 				--keys;
 				thing_disable(obj);
 				draw_keys();
@@ -868,7 +868,7 @@ void level_connect_rooms(int rtcx, int rtcy, int rtctx, int rtcty) {
 	if (tsy < tey) {
 		for (c = tsy; c < tey; ++c) {
 			if (maparray[c * mapsize + tsx] == TIL_WALL) {
-				if (!door_flag && door_count < max_doors && gsrand(0, 2) == 0) {
+				if (!door_flag && door_count < maxdoors && gsrand(0, 2) == 0) {
 					thing_make(TIL_DOOR_NS, tsx, tsy);
 					door_flag = 1;
 					door_count++;
@@ -880,7 +880,7 @@ void level_connect_rooms(int rtcx, int rtcy, int rtctx, int rtcty) {
 	else if (tsy > tey) {
 		for (c = tsy; c > tey; --c) {
 			if (maparray[c * mapsize + tsx] == TIL_WALL) {
-				if (!door_flag && doors < max_doors && gsrand(0, 2) == 0) {
+				if (!door_flag && doors < maxdoors && gsrand(0, 2) == 0) {
 					thing_make(TIL_DOOR_NS, tsx, tsy);
 					door_flag = 1;
 					door_count++;
@@ -892,7 +892,7 @@ void level_connect_rooms(int rtcx, int rtcy, int rtctx, int rtcty) {
 	if (tsx < tex) {
 		for (c = tsx; c < tex; ++c) {
 			if (maparray[tey * mapsize + c] == TIL_WALL) {
-				if (!door_flag && doors < max_doors && gsrand(0, 2) == 0) {
+				if (!door_flag && doors < maxdoors && gsrand(0, 2) == 0) {
 					thing_make(TIL_DOOR_EW, tsx, tsy);
 					door_flag = 1;
 					door_count++;
@@ -925,7 +925,7 @@ void level_generate() {
 
 	// reset doors
 	door_count = 0;
-	for (i = 0; i < max_doors; ++i) {
+	for (i = 0; i < maxdoors; ++i) {
 		doors[i] = thing_make(TIL_NULL, 0, 0);
 	}
 
