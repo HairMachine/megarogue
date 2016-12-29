@@ -845,7 +845,7 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 	switch (obj->til) {
 		case TIL_GOBLIN:
 		case TIL_PLAYER:
-			thing_damage(obj, subj->damage * (2 * thing_status_has(subj, ST_RAGE)));
+			thing_damage(obj, subj->damage * (thing_status_has(subj, ST_RAGE) + 1));
 			break;
 		case TIL_STAIRS:
 		case TIL_PIT:
