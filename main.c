@@ -374,7 +374,7 @@ void draw_status() {
 	char msg[15];
 	int i;
 	for (i = 0; i < statmax; ++i) {
-		msg = "";
+		strcpy(msg, "");
 		switch (player.status[i].id) {
 			case ST_RAGE: sprintf(msg, "RAGE: %d ", player.status[i].cur_time); break;
 			default: break;
