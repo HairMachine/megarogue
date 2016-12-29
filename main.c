@@ -460,11 +460,26 @@ void thing_status_set_at(struct Thing* t, enum STATUS_ID id, int i) {
 }
 
 void thing_status_set(struct Thing* t, enum STATUS_ID id) {
-	int i;
+	int i, j;
+	int existing = 0;
+	// set up a temp bit flag var with existing status effects
 	for (i = 0; i < statmax; ++i) {
-		if (t->status[i].id == ST_NONE) {
+			existing = existing | t->status[i].id;
+		}
+	}
+	// apply status effect if not existing; if it is, refresh
+	for (i = 0; i < statmax; ++i) {
+		if (t->status[i].id == ST_NONE && !(existing & id)) {
 			thing_status_set_at(t, id, i);
 			return;
+		}
+		else if (t->status[i].id == ST_NONE) {
+			for (j = 0; j < statmax; ++j) {
+				if (t->status[j].id == id) {
+					thing_status_set_at(t, id, j);
+					return;
+				}
+			}
 		}
 	}
 	
