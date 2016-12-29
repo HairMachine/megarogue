@@ -913,7 +913,7 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 			thing_disable(obj);
 			break;
 		case TIL_TELE:
-			vect2d newpos = position_find_valid();
+			struct vect2d newpos = position_find_valid();
 			subj->xpos = newpos.x;
 			subj->ypos = newpos.y;
 			screen_game();
