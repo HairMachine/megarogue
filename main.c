@@ -267,9 +267,14 @@ void redraw_tiles() {
 }
 
 void redraw_doors() {
-	int i;
+	int i, absx = 0, absy = 0;
 	for (i = 0; i < maxdoors; ++i) {
-		tile_draw(doors[i].til, doors[i].xpos, doors[i].ypos);
+		absx = abs(player.xpos - doors[i].xpos);
+		absy = abs(player.ypos - doors[i].ypos);
+		if (doors[i].til > TIL_NULL && absx <= player.range && absy <= player.range)
+			tile_draw(doors[i].til, doors[i].xpos, doors[i].ypos);
+		else
+			tile_draw(TIL_NULL, -1, -1);
 	}
 }
 
@@ -698,7 +703,6 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 	if (subj->til == TIL_SHOT) {
 		thing_damage(obj, 2);
 		thing_disable(subj);
-		redraw_doors();
 		return;
 	}
 
@@ -722,7 +726,6 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 				--keys;
 				thing_disable(obj);
 				draw_keys();
-				redraw_doors();
 			}
 			break;
 		case TIL_MACGUFFIN:
