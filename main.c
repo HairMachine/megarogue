@@ -102,7 +102,7 @@ struct vect2d {
 const int mapsize = 28;
 const int maparraysize = 784;
 const int roomsize = 8;
-const int maxdoors = 8;
+const int TIL_AMMO = 8;
 enum tile maparray[784];
 struct Thing things[32];
 struct Thing doors[8];
@@ -267,7 +267,7 @@ void redraw_tiles() {
 
 void redraw_doors() {
 	int i;
-	for (i = 0; i < maxdoors; ++i) {
+	for (i = 0; i < TIL_AMMO; ++i) {
 		tile_draw(doors[i].til, doors[i].xpos, doors[i].ypos);
 	}
 }
@@ -491,7 +491,7 @@ struct Thing *thing_collide(struct Thing *t, enum direction dir) {
 		return &blocker;
 	// check doors
 	int i = 0;
-	for (i = 0; i < maxdoors; ++i) {
+	for (i = 0; i < TIL_AMMO; ++i) {
 		if (doors[i].xpos == t->xpos + xm && doors[i].ypos == t->ypos + ym) {
 			return &doors[i];
 		}
