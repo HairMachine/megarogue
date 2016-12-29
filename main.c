@@ -374,16 +374,18 @@ void draw_status() {
 	char msg[15];
 	int i, c = 0;
 	for (i = 0; i < statmax; ++i) {
-		strcpy(msg, "");
 		switch (player.status[i].id) {
 			case ST_RAGE: 
 				sprintf(msg, "RAGE: %d ", player.status[i].cur_time); 
+				VDP_drawText(msg, 30, 7 + c);
 				++c;
 				break;
-			default: strcpy(msg, "       "); break;
+			default: break;
 		}
-		VDP_drawText(msg, 30, 7 + c);
 	}
+	// Overwrite remainder
+	for (i = c; i < statmax; ++i)
+		VDP_drawText("       ", 30, 7 + i); 
 }
 
 void screen_game() {
