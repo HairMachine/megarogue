@@ -86,6 +86,16 @@ enum FLAGS {
 	FL_NONE = 0, FL_MOVES = 1, FL_PASSTHRU = 2, FL_IMMORTAL = 4, FL_OPTIONAL = 8
 };
 
+enum STATUS_ID {
+	ST_NONE = 0, ST_RAGE = 1
+};
+
+struct Status {
+	enum STATUS_ID id,
+	int max_time,
+	int cur_time
+};
+
 struct Thing {
 	int xpos;
 	int ypos;
@@ -96,6 +106,7 @@ struct Thing {
 	enum SHOTTYPE st; // create bullet effets; mostly used for bullets obv
 	int damage;
 	int range;
+	struct status status[8];
 };
 
 struct vect2d {
@@ -108,6 +119,7 @@ const int mapsize = 28;
 const int maparraysize = 784;
 const int roomsize = 8;
 const int maxdoors = 8;
+const int statmax = 8;
 enum tile maparray[784];
 struct Thing things[32];
 struct Thing doors[8];
@@ -411,6 +423,33 @@ int ability_get_random() {
 	return ability_get(roll);
 }
 
+// STATUS EFFECTS
+
+void thing_status_set(struct Thing* t, enum STATUS_ID status) {
+	int i, slot;
+	for (i = 0; i < statmax; ++i) {
+		if (t->status[i].id == ST_NONE)
+			slot = i;
+	}
+
+	struct Status* s = &t->status[slot];
+	s->id = id;
+	switch (id) {
+		default:
+			s->cur_time = 0;
+			break;
+	}
+	s->max_time = s->cur_time;
+	return s;
+}
+
+void thing_status_reset(struct Thing* t) {
+	int i;
+	for (i = 0; i < statmax; ++i) {
+		t->status[i] = status_set(ST_NONE);
+	}
+}
+
 
 // THINGS
 
@@ -421,6 +460,7 @@ struct Thing thing_make(enum tile t, int x, int y) {
 	thing.ypos = y;
 	thing.range = 5;
 	thing.st = SH_NONE;
+	thing_status_reset(&thing);
 	switch (t) {
 		case TIL_PLAYER:
 			thing.hp = 20;
