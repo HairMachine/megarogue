@@ -120,7 +120,7 @@ enum ABILITIES abilities[3] = {AB_NONE, AB_NONE, AB_NONE};
 int shot_mode = 0;
 int food = 512;
 int keys = 5;
-int ammo[8] = {0, 10, 0, 0, 0, 0, 0, 0, 0};
+int ammo[9] = {0, 10, 0, 0, 0, 0, 0, 0, 0};
 int current_ammo = 1;
 
 
@@ -1091,7 +1091,7 @@ void joypad_handle(u16 joy, u16 changed, u16 state) {
 		}
 		else if (state & BUTTON_C) {
 			++current_ammo;
-			if (current_ammo > 7) {
+			if (current_ammo > 8) {
 				current_ammo = 1;
 			}
 			draw_ammo();
