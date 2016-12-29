@@ -544,9 +544,12 @@ void thing_damage(struct Thing *t, int damage) {
 		return;
 
 	t->hp -= damage;
+	if (hp > t->max_hp)
+		t->hp = t->max_hp;
 	if (t->til == TIL_PLAYER)
 		draw_health();
-	if (t->hp <= 0) thing_disable(t);
+	if (t->hp <= 0) 
+		thing_disable(t);
 }
 
 void thing_move(struct Thing *t, enum direction d) {
