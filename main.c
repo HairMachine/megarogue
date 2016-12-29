@@ -895,6 +895,7 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 			break;
 		case TIL_RAGE:
 			thing_status_set(subj, ST_RAGE);
+			thing_disable(obj);
 			break;
 		default:
 			break;
