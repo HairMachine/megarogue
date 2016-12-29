@@ -11,7 +11,7 @@ enum direction {
 
 enum tile {
 	TIL_NULL, TIL_CORRIDOR, TIL_FLOOR, TIL_DOOR_NS, TIL_DOOR_EW, TIL_WALL, TIL_PLAYER, TIL_GOBLIN, TIL_STAIRS, TIL_MACGUFFIN,
-	TIL_WPN, TIL_POTION, TIL_FOOD, TIL_SCROLL, TIL_AMMO, TIL_SHOT, TIL_KEY
+	TIL_WPN, TIL_POTION, TIL_FOOD, TIL_SCROLL, TIL_AMMO, TIL_SHOT, TIL_KEY, TIL_PIT
 };
 
 enum SHOTTYPE {
@@ -185,6 +185,9 @@ void sprite_set(int id, enum tile tilenum, int x, int y) {
 			break;
 		case TIL_STAIRS:
 			SPR_initSprite(&sprite[id], &stairs, x * 8, y * 8, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
+			break;
+		case TIL_PIT:
+			SPR_initSprite(&sprite[id], &stairs, x * 8, y * 8, TILE_ATTR(PAL2, TRUE, FALSE, FALSE));
 			break;
 		case TIL_MACGUFFIN:
 			SPR_initSprite(&sprite[id], &testm, x * 8, y * 8, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
@@ -441,6 +444,9 @@ struct Thing thing_make(enum tile t, int x, int y) {
 		case TIL_SHOT:
 			thing.flags = FL_IMMORTAL;
 			break;
+		case TIL_PIT:
+			thing.flags = FL_IMMORTAL;
+			break;
 		default:
 			thing.flags = FL_PASSTHRU | FL_IMMORTAL;
 			break;
@@ -465,7 +471,7 @@ void things_generate() {
 	}
 	// second loop: items.
 	for (i = 15; i < max_i; ++i) {
-		roll = gsrand(0, 6);
+		roll = gsrand(0, 7);
 		if (roll >= 0  && roll <= 1)
 			things[i] = thing_put(TIL_POTION);
 		else if (roll >= 2 && roll <= 3)
@@ -474,6 +480,8 @@ void things_generate() {
 			things[i] = thing_put(TIL_KEY);
 		else if (roll >= 5 && roll <= 6)
 			things[i] = thing_put(TIL_AMMO);
+		else if (roll == 6)
+			things[i] = thing_put(TIL_PIT);
 	}
 	// finally the stairs or macguffin on last level
 	if (depth < maxdepth)
@@ -719,6 +727,7 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 			thing_damage(obj, subj->damage);
 			break;
 		case TIL_STAIRS:
+		case TIL_PIT:
 			if (subj->til == TIL_PLAYER) {
 				++depth;
 				level_generate();
@@ -769,6 +778,7 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 				thing_disable(obj);
 				draw_keys();
 			}
+			break;
 		default:
 			break;
 	}
