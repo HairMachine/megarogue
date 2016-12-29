@@ -717,11 +717,8 @@ void thing_disable(struct Thing *t) {
 }
 
 void thing_damage(struct Thing *t, int damage) {
-	if ((t->flags & FL_IMMORTAL) || thing_status_has(t, ST_GODMODE))
+	if ((t->flags & FL_IMMORTAL) /*|| thing_status_has(t, ST_GODMODE)*/)
 		return;
-
-	t->hp -= 400;
-	return;
 
 	t->hp -= damage;
 	if (damage < 0 && t->hp > t->max_hp)
