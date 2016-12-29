@@ -90,6 +90,7 @@ struct Thing {
 	int xpos;
 	int ypos;
 	int hp;
+	int max_hp;
 	enum FLAGS flags;
 	enum tile til;
 	enum SHOTTYPE st; // create bullet effets; mostly used for bullets obv
@@ -451,6 +452,7 @@ struct Thing thing_make(enum tile t, int x, int y) {
 			thing.flags = FL_PASSTHRU | FL_IMMORTAL;
 			break;
 	}
+	thing.max_hp = thing.hp;
 	return thing;
 }
 
@@ -472,7 +474,7 @@ void things_generate() {
 	// second loop: items.
 	for (i = 15; i < max_i; ++i) {
 		roll = gsrand(0, 7);
-		/*if (roll >= 0  && roll <= 1)
+		if (roll >= 0  && roll <= 1)
 			things[i] = thing_put(TIL_POTION);
 		else if (roll >= 2 && roll <= 3)
 			things[i] = thing_put(TIL_FOOD);
@@ -480,7 +482,7 @@ void things_generate() {
 			things[i] = thing_put(TIL_KEY);
 		else if (roll >= 5 && roll <= 6)
 			things[i] = thing_put(TIL_AMMO);
-		else if (roll == 6)*/
+		else if (roll == 7)
 			things[i] = thing_put(TIL_PIT);
 	}
 	// finally the stairs or macguffin on last level
@@ -757,8 +759,10 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 				screen_victory();
 			break;
 		case TIL_POTION:
-			thing_damage(subj, -5);
-			thing_disable(obj);
+			if (subj->hp < subj->max_hp) {
+				thing_damage(subj, -5);
+				thing_disable(obj);
+			}
 			break;
 		case TIL_FOOD:
 			food += 64; 
