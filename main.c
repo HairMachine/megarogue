@@ -914,7 +914,7 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 			break;
 		case TIL_TELE:
 			vect2d newpos = position_find_valid();
-			subh->xpos = newpos.x;
+			subj->xpos = newpos.x;
 			subj->ypos = newpos.y;
 			screen_game();
 			break;
