@@ -246,6 +246,7 @@ void move_player_light(enum direction d) {
 			}
 			break;
 	}
+
 }
 
 void redraw_tiles() {
@@ -1127,7 +1128,13 @@ void joypad_handle(u16 joy, u16 changed, u16 state) {
     }
 	}
 	if (turn == 1) {
+		// time based and status events
 		hunger_clock();
+		
+		// gfx refreshes
+		redraw_doors();
+		
+		// monster turn
 		int m = 0;
 		for (m = 0; m < 32; ++m) {
 			if (things[m].til > TIL_NULL) {
