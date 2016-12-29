@@ -464,8 +464,7 @@ void thing_status_set(struct Thing* t, enum STATUS_ID id) {
 	int existing = 0;
 	// set up a temp bit flag var with existing status effects
 	for (i = 0; i < statmax; ++i) {
-			existing = existing | t->status[i].id;
-		}
+		existing = existing | t->status[i].id;
 	}
 	// apply status effect if not existing; if it is, refresh
 	for (i = 0; i < statmax; ++i) {
