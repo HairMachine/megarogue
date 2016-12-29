@@ -405,6 +405,12 @@ void draw_status() {
 				sprintf(msg, "FLY:  %d ", player.status[i].cur_time);
 				VDP_drawText(msg, 30, 7 + c);
 				++c;
+				break;
+			case ST_POWER:
+				sprintf(msg, "PWR:  %d ", player.status[i].cur_time);
+				VDP_drawText(msg, 30, 7 + c);
+				++c;
+				break;
 			default: break;
 		}
 	}
