@@ -1397,7 +1397,7 @@ int main() {
 
 	// Temp: randomise
 	int rs;
-	for (rs = 0; rs < 21; ++rs) {
+	for (rs = 0; rs < 8; ++rs) {
 		random();
 	}
 
