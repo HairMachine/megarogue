@@ -718,8 +718,9 @@ void thing_disable(struct Thing *t) {
 
 void thing_damage(struct Thing *t, int damage) {
 	t->hp -= 5;
+	draw_health();
 	return;
-	
+
 	if ((t->flags & FL_IMMORTAL) || thing_status_has(t, ST_GODMODE))
 		return;
 
