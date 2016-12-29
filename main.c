@@ -652,7 +652,7 @@ void things_generate() {
 
 struct Thing *thing_collide(struct Thing *t, enum direction dir) {
 	// TODO: slightly more complex
-	if (thing_status_has(subj, ST_FLYING))
+	if (thing_status_has(t, ST_FLYING))
 		return &empty;
 
 	int xm = 0, ym = 0;
