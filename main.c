@@ -480,10 +480,15 @@ void thing_status_countdown(struct Thing* t) {
 }
 
 void status_countdown() {
+	// enemies etc.
 	int i;
 	for (i = 0; i < 32; ++i) {
-		thing_status_countdown(&things[i]);
+		if (things[i].til > TIL_NULL)
+			thing_status_countdown(&things[i]);
 	}
+	// player
+	thing_status_countdown(&player);
+	
 	draw_status();
 }
 
