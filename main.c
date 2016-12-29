@@ -11,7 +11,7 @@ enum direction {
 
 enum tile {
 	TIL_NULL, TIL_CORRIDOR, TIL_FLOOR, TIL_DOOR_NS, TIL_DOOR_EW, TIL_WALL, TIL_PLAYER, TIL_GOBLIN, TIL_STAIRS, TIL_MACGUFFIN,
-	TIL_WPN, TIL_POTION, TIL_FOOD, TIL_SCROLL, TIL_AMMO, TIL_SHOT, TIL_KEY, TIL_PIT
+	TIL_WPN, TIL_POTION, TIL_FOOD, TIL_SCROLL, TIL_AMMO, TIL_SHOT, TIL_KEY, TIL_PIT, TIL_RAGE
 };
 
 enum SHOTTYPE {
@@ -220,6 +220,9 @@ void sprite_set(int id, enum tile tilenum, int x, int y) {
 		case TIL_SCROLL:
 			SPR_initSprite(&sprite[id], &testm, x * 8, y * 8, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
 			break;
+		case TIL_RAGE:
+			SPR_initSprite(&sprite[id], &potion, x * 8, y * 8, TILE_ATTR(PAL4, TRUE, FALSE, FALSE));
+			break;
 		default:
 			// actually should de-initialise the sprite rather than drawing it offscreen
 			SPR_initSprite(&sprite[id], &testm, -8, -8, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
@@ -368,6 +371,16 @@ void draw_mode() {
 	}
 }
 
+void draw_status() {
+	int i;
+	for (i = 0; i < player.status; ++i) {
+		switch (player.status[i].id) {
+			case ST_RAGE: VDP_drawText("Rage", 30, 7 + i); break;
+			default: break;
+		}
+	}
+}
+
 void screen_game() {
 	// main screen
 	redraw_tiles();
@@ -381,6 +394,7 @@ void screen_game() {
 	draw_keys();
 	draw_ammo();
 	draw_mode();
+	draw_status();
 }
 
 void screen_victory() {
@@ -461,6 +475,14 @@ void thing_status_countdown(struct Thing* t) {
 				thing_status_set_at(t, ST_NONE, i);
 		}
 	}
+}
+
+void status_countdown() {
+	int i;
+	for (i = 0; i < 32; ++i) {
+		thing_status_countdown(&things[i]);
+	}
+	draw_status();
 }
 
 
@@ -839,6 +861,9 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 				thing_disable(obj);
 				draw_keys();
 			}
+			break;
+		case TIL_RAGE:
+			thing_status_set(subj, ST_RAGE);
 			break;
 		default:
 			break;
@@ -1223,6 +1248,7 @@ void joypad_handle(u16 joy, u16 changed, u16 state) {
 	if (turn == 1) {
 		// time based and status events
 		hunger_clock();
+		status_countdown();
 		
 		// monster turn
 		int m = 0;
