@@ -542,6 +542,7 @@ struct Thing thing_make(enum tile t, int x, int y) {
 		case TIL_PLAYER:
 			thing.hp = 20;
 			thing.damage = 1;
+			thing.range = 8;
 			break;
 		case TIL_GOBLIN:
 			thing.hp = 5;
