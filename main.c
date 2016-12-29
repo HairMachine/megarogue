@@ -18,6 +18,10 @@ enum SHOTTYPE {
 	SH_NONE, SH_NORMAL, SH_FIRE, SH_WATER, SH_ACID, SH_WEB, SH_SOLID, SH_CONDENSER, SH_EXPLOSIVE
 };
 
+enum GM_MODE {
+	GM_WALK, GM_SHOOT
+}
+
 const u32 tile_null[8] = {
 		0x00000000,
 		0x00000000,
@@ -120,7 +124,7 @@ int connections[9] = {
 int depth = 0;
 int maxdepth = 15;
 enum ABILITIES abilities[3] = {AB_NONE, AB_NONE, AB_NONE};
-int shot_mode = 0;
+enum GM_MODE gm_mode = GM_WALK;
 int food = 512;
 int keys = 5;
 int ammo[9] = {0, 10, 0, 0, 0, 0, 0, 0, 0};
@@ -328,20 +332,23 @@ void draw_depth() {
 
 void draw_ammo() {
 	char msg[15];
-	if (shot_mode == 0)
-		VDP_drawText("WPN: -    ", 30, 4);
-	else {
-		switch (current_ammo) {
-			case SH_NORMAL:
-				VDP_drawText("WPN: Gun  ", 30, 4);
-				break;
-			default:
-				VDP_drawText("WPN: error", 30, 4);
-				break;
-		}
-		sprintf(msg, "Ammo: %d ", ammo[current_ammo]);
-		VDP_drawText(msg, 30, 5);
+	switch (current_ammo) {
+		case SH_NORMAL:
+			VDP_drawText("WPN: Gun  ", 30, 4);
+			break;
+		default:
+			VDP_drawText("WPN: error", 30, 4);
+			break;
 	}
+	sprintf(msg, "Ammo: %d ", ammo[current_ammo]);
+	VDP_drawText(msg, 30, 5);
+}
+
+void draw_mode() {
+	switch(gm_mode) {
+		case GM_WALK: VDP_drawText("Walk", 30, 6); break;
+		case GM_SHOOT: VDP_drawText("Shoot", 30, 6); break;
+		default: VDP_drawText("error", 30, 6); break;
 }
 
 void screen_game() {
@@ -356,6 +363,7 @@ void screen_game() {
 	draw_depth();
 	draw_keys();
 	draw_ammo();
+	draw_mode();
 }
 
 void screen_victory() {
@@ -1081,28 +1089,28 @@ void joypad_handle(u16 joy, u16 changed, u16 state) {
 	int turn = 0;
 	if (joy == JOY_1) {
 		if (state & BUTTON_UP) {
-			if (shot_mode)
+			if (gm_mode == GM_SHOOT)
 				shoot_direction(&player, current_ammo, DIR_NORTH);
 			else
 				thing_move(&player, DIR_NORTH);
 			turn = 1;
 		}
 		else if (state & BUTTON_RIGHT) {
-			if (shot_mode)
+			if (gm_mode == GM_SHOOT)
 				shoot_direction(&player, SH_NORMAL, DIR_EAST);
 			else	
 				thing_move(&player, DIR_EAST);
 			turn = 1;
 		}
 		else if (state & BUTTON_DOWN) {
-			if (shot_mode)
+			if (gm_mode == GM_SHOOT)
 				shoot_direction(&player, SH_NORMAL, DIR_SOUTH);
 			else
 				thing_move(&player, DIR_SOUTH);
 			turn = 1;
 		}
 		else if (state & BUTTON_LEFT) {
-			if (shot_mode)
+			if (gm_mode == GM_SHOOT)
 				shoot_direction(&player, SH_NORMAL, DIR_WEST);
 			else
 				thing_move(&player, DIR_WEST);
@@ -1112,8 +1120,8 @@ void joypad_handle(u16 joy, u16 changed, u16 state) {
 			thing_interact_at(&player);
 		}
 		else if (state & BUTTON_B) {
-			shot_mode = 1;
-			draw_ammo();
+			gn_mode = GM_SHOOT;
+			draw_mode();
 		}
 		else if (state & BUTTON_C) {
 			int a = current_ammo;
@@ -1128,8 +1136,8 @@ void joypad_handle(u16 joy, u16 changed, u16 state) {
 		}
 		// key releases
 		else if (changed & BUTTON_B) {
-			shot_mode = 0;
-			draw_ammo();
+			gm_mode = GM_WALK;
+			draw_mode();
     }
 	}
 	if (turn == 1) {
