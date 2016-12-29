@@ -92,7 +92,6 @@ enum STATUS_ID {
 
 struct Status {
 	enum STATUS_ID id;
-	int max_time;
 	int cur_time;
 };
 
@@ -451,7 +450,6 @@ void thing_status_set_at(struct Thing* t, enum STATUS_ID id, int i) {
 			s->cur_time = 0;
 			break;
 	}
-	s->max_time = s->cur_time;
 }
 
 void thing_status_set(struct Thing* t, enum STATUS_ID id) {
@@ -474,8 +472,8 @@ void thing_status_countdown(struct Thing* t) {
 	int i;
 	for (i = 0; i < statmax; ++i) {
 		if (t->status[i].id > ST_NONE) {
-			++t->status[i].cur_time;
-			if (t->status[i].cur_time <= t->status[i].max_time)
+			--t->status[i].cur_time;
+			if (t->status[i].cur_time <= 0)
 				thing_status_set_at(t, ST_NONE, i);
 		}
 	}
