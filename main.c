@@ -372,14 +372,17 @@ void draw_mode() {
 
 void draw_status() {
 	char msg[15];
-	int i;
+	int i, c;
 	for (i = 0; i < statmax; ++i) {
 		strcpy(msg, "");
 		switch (player.status[i].id) {
-			case ST_RAGE: sprintf(msg, "RAGE: %d ", player.status[i].cur_time); break;
+			case ST_RAGE: 
+				sprintf(msg, "RAGE: %d ", player.status[i].cur_time); 
+				++c;
+				break;
 			default: strcpy(msg, "       "); break;
 		}
-		VDP_drawText(msg, 30, 7 + i);
+		VDP_drawText(msg, 30, 7 + c);
 	}
 }
 
