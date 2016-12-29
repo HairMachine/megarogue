@@ -376,7 +376,7 @@ void draw_status() {
 	for (i = 0; i < statmax; ++i) {
 		switch (player.status[i].id) {
 			case ST_RAGE: VDP_drawText("Rage", 30, 7 + i); break;
-			default: break;
+			default: VDP_drawText("     ", 30, 7 + i); break;
 		}
 	}
 }
@@ -443,6 +443,8 @@ void thing_status_set_at(struct Thing* t, enum STATUS_ID id, int i) {
 	struct Status* s = &t->status[i];
 	s->id = id;
 	switch (id) {
+		case ST_RAGE:
+			s->cur_time = 10;
 		default:
 			s->cur_time = 0;
 			break;
@@ -471,7 +473,7 @@ void thing_status_countdown(struct Thing* t) {
 	for (i = 0; i < statmax; ++i) {
 		if (t->status[i].id > ST_NONE) {
 			++t->status[i].cur_time;
-			if (t->status[i].cur_time == t->status[i].max_time)
+			if (t->status[i].cur_time <= t->status[i].max_time)
 				thing_status_set_at(t, ST_NONE, i);
 		}
 	}
