@@ -1011,7 +1011,7 @@ void shoot_direction(struct Thing* subj, enum SHOTTYPE st, enum direction dir) {
 	shot.xpos = subj->xpos;
 	shot.ypos = subj->ypos;
 	shot.st = st;
-	shot.damage = 2 * (thing_status_has(subj, ST_POWER) << 2);
+	shot.damage = 2 * (1 * (thing_status_has(subj, ST_POWER) << 2));
 	--ammo[st];
 	while (shot.til == TIL_SHOT && mshot <= subj->range) {
 		thing_move(&shot, dir);
