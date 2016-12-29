@@ -425,13 +425,7 @@ int ability_get_random() {
 
 // STATUS EFFECTS
 
-void thing_status_set(struct Thing* t, enum STATUS_ID id) {
-	int i, slot;
-	for (i = 0; i < statmax; ++i) {
-		if (t->status[i].id == ST_NONE)
-			slot = i;
-	}
-
+void thing_status_set_at(struct Thing* t, enum STATUS_ID id, int i) {
 	struct Status* s = &t->status[slot];
 	s->id = id;
 	switch (id) {
@@ -442,10 +436,30 @@ void thing_status_set(struct Thing* t, enum STATUS_ID id) {
 	s->max_time = s->cur_time;
 }
 
+void thing_status_set(struct Thing* t, enum STATUS_ID id) {
+	int i, slot;
+	for (i = 0; i < statmax; ++i) {
+		if (t->status[i].id == ST_NONE)
+			return thing_status_set_at(t, id, slot);
+	}
+	
+}
+
 void thing_status_reset(struct Thing* t) {
 	int i;
 	for (i = 0; i < statmax; ++i) {
-		thing_status_set(t, ST_NONE);
+		thing_status_set_at(t, ST_NONE, i);
+	}
+}
+
+void thing_status_countdown(struct Thing* t) {
+	int i;
+	for (i = 0; i < statmax; ++i) {
+		if (t->status[i].id > ST_NONE) {
+			++t->status[i].cur_time;
+			if (t->status[i].cur_time == t->status[i].max_time)
+				thing_status_set_at(t, ST_NONE, i);
+		}
 	}
 }
 
