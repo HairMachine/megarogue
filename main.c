@@ -845,10 +845,7 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 	switch (obj->til) {
 		case TIL_GOBLIN:
 		case TIL_PLAYER:
-			if (thing_status_has(subj, ST_RAGE))
-				thing_damage(obj, subj->damage * 2);
-			else
-				thing_damage(obj, subj->damage);
+			thing_damage(obj, subj->damage * (2 * thing_status_has(subj, ST_RAGE));
 			break;
 		case TIL_STAIRS:
 		case TIL_PIT:
@@ -869,7 +866,7 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 			}
 			else if (subj->til == TIL_PLAYER) {
 				if (gsrand(0, 5) == 0) {
-					thing_damage(obj, 1);
+					thing_damage(obj, 1 + thing_status_has(subj, ST_RAGE));
 				}
 			}
 			else {
