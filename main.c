@@ -505,13 +505,13 @@ struct Thing *thing_collide(struct Thing *t, enum direction dir) {
 	// check doors
 	int i = 0;
 	for (i = 0; i < maxdoors; ++i) {
-		if (doors[i].xpos == t->xpos + xm && doors[i].ypos == t->ypos + ym) {
+		if (doors[i].til > TIL_NULL && doors[i].xpos == t->xpos + xm && doors[i].ypos == t->ypos + ym) {
 			return &doors[i];
 		}
 	}
 	// check things
 	for (i = 0; i < 32; ++i) {
-		if (things[i].xpos == t->xpos + xm && things[i].ypos == t->ypos + ym) {
+		if (things[i].til > TIL_NULL && things[i].xpos == t->xpos + xm && things[i].ypos == t->ypos + ym) {
 			return &things[i];
 		}
 	}
