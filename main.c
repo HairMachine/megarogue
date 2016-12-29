@@ -426,7 +426,7 @@ int ability_get_random() {
 // STATUS EFFECTS
 
 void thing_status_set_at(struct Thing* t, enum STATUS_ID id, int i) {
-	struct Status* s = &t->status[slot];
+	struct Status* s = &t->status[i];
 	s->id = id;
 	switch (id) {
 		default:
