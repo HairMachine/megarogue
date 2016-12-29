@@ -484,7 +484,7 @@ void things_generate() {
 		// 	things[i] = thing_put(TIL_AMMO);
 		// else if (roll == 7)
 		// 	things[i] = thing_put(TIL_PIT);
-	}
+	// }
 	// finally the stairs or macguffin on last level
 	if (depth < maxdepth)
 		things[31] = thing_put(TIL_STAIRS);
