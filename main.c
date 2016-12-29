@@ -106,7 +106,7 @@ struct Thing {
 	enum SHOTTYPE st; // create bullet effets; mostly used for bullets obv
 	int damage;
 	int range;
-	struct status status[8];
+	struct Status status[8];
 };
 
 struct vect2d {
