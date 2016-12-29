@@ -472,7 +472,7 @@ void things_generate() {
 	// second loop: items.
 	for (i = 15; i < max_i; ++i) {
 		roll = gsrand(0, 7);
-		if (roll >= 0  && roll <= 1)
+		/*if (roll >= 0  && roll <= 1)
 			things[i] = thing_put(TIL_POTION);
 		else if (roll >= 2 && roll <= 3)
 			things[i] = thing_put(TIL_FOOD);
@@ -480,7 +480,7 @@ void things_generate() {
 			things[i] = thing_put(TIL_KEY);
 		else if (roll >= 5 && roll <= 6)
 			things[i] = thing_put(TIL_AMMO);
-		else if (roll == 6)
+		else if (roll == 6)*/
 			things[i] = thing_put(TIL_PIT);
 	}
 	// finally the stairs or macguffin on last level
