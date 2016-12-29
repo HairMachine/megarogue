@@ -579,9 +579,6 @@ struct Thing thing_make(enum tile t, int x, int y) {
 		case TIL_TELE:
 			thing.flags = FL_IMMORTAL | FL_OPTIONAL;
 			break;
-		case TIL_GODMODE:
-			thing.flags = FL_IMMORTAL;
-			break;
 		default:
 			thing.flags = FL_PASSTHRU | FL_IMMORTAL;
 			break;
@@ -608,22 +605,22 @@ void things_generate() {
 	}
 	// second loop: items.
 	for (i = 15; i < max_i; ++i) {
-		// roll = gsrand(0, 10);
-		// if (roll >= 0  && roll <= 1)
-		// 	things[i] = thing_put(TIL_POTION);
-		// else if (roll >= 2 && roll <= 3)
-		// 	things[i] = thing_put(TIL_FOOD);
-		// else if (roll == 4)
-		// 	things[i] = thing_put(TIL_KEY);
-		// else if (roll >= 5 && roll <= 6)
-		// 	things[i] = thing_put(TIL_AMMO);
-		// else if (roll == 7)
-		// 	things[i] = thing_put(TIL_PIT);
-		// else if (roll == 8)	
-		// 	things[i] = thing_put(TIL_RAGE);
-		// else if (roll == 9)
-		// 	things[i] = thing_put(TIL_TELE);
-		// else if (roll == 10)
+		roll = gsrand(0, 10);
+		if (roll >= 0  && roll <= 1)
+			things[i] = thing_put(TIL_POTION);
+		else if (roll >= 2 && roll <= 3)
+			things[i] = thing_put(TIL_FOOD);
+		else if (roll == 4)
+			things[i] = thing_put(TIL_KEY);
+		else if (roll >= 5 && roll <= 6)
+			things[i] = thing_put(TIL_AMMO);
+		else if (roll == 7)
+			things[i] = thing_put(TIL_PIT);
+		else if (roll == 8)	
+			things[i] = thing_put(TIL_RAGE);
+		else if (roll == 9)
+			things[i] = thing_put(TIL_TELE);
+		else if (roll == 10)
 			things[i] = thing_put(TIL_GODMODE);
 	}
 	// finally the stairs or macguffin on last level
