@@ -221,7 +221,7 @@ void sprite_set(int id, enum tile tilenum, int x, int y) {
 			SPR_initSprite(&sprite[id], &testm, x * 8, y * 8, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
 			break;
 		case TIL_RAGE:
-			SPR_initSprite(&sprite[id], &potion, x * 8, y * 8, TILE_ATTR(PAL4, TRUE, FALSE, FALSE));
+			SPR_initSprite(&sprite[id], &potion, x * 8, y * 8, TILE_ATTR(PAL0, TRUE, FALSE, FALSE));
 			break;
 		default:
 			// actually should de-initialise the sprite rather than drawing it offscreen
