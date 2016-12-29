@@ -687,7 +687,7 @@ void thing_damage(struct Thing *t, int damage) {
 		return;
 
 	t->hp -= damage;
-	if (t->hp > t->max_hp)
+	if (damage < 0 && t->hp > t->max_hp)
 		t->hp = t->max_hp;
 	if (t->til == TIL_PLAYER)
 		draw_health();
