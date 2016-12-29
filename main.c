@@ -651,10 +651,6 @@ void things_generate() {
 }
 
 struct Thing *thing_collide(struct Thing *t, enum direction dir) {
-	// TODO: slightly more complex
-	if (thing_status_has(t, ST_FLYING))
-		return &empty;
-
 	int xm = 0, ym = 0;
 	switch (dir) {
 		case DIR_NORTH:
@@ -682,11 +678,16 @@ struct Thing *thing_collide(struct Thing *t, enum direction dir) {
 		}
 	}
 	// check things
+	// TODO: slightly more complex
+	if (thing_status_has(t, ST_FLYING))
+		return &empty;
+
 	for (i = 0; i < 32; ++i) {
 		if (things[i].til > TIL_NULL && things[i].xpos == t->xpos + xm && things[i].ypos == t->ypos + ym) {
 			return &things[i];
 		}
 	}
+	
 	// check player
 	if (t->til != TIL_PLAYER && player.xpos == t->xpos + xm && player.ypos == t->ypos + ym) {
 		return &player;
