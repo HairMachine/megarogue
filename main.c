@@ -955,6 +955,8 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 			break;
 		case TIL_SUPER:
 			subj->hp = subj->max_hp * 2;
+			draw_health();
+			thing_disable(obj);
 			break;
 		default:
 			break;
