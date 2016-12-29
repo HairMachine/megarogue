@@ -580,6 +580,7 @@ struct Thing thing_make(enum tile t, int x, int y) {
 			thing.hp = 20;
 			thing.damage = 1;
 			thing.range = 8;
+			thing.flags = FL_NONE;
 			break;
 		case TIL_GOBLIN:
 			thing.hp = 5;
