@@ -717,6 +717,9 @@ void thing_disable(struct Thing *t) {
 }
 
 void thing_damage(struct Thing *t, int damage) {
+	t->hp -= 5;
+	return;
+	
 	if ((t->flags & FL_IMMORTAL) || thing_status_has(t, ST_GODMODE))
 		return;
 
@@ -1011,8 +1014,9 @@ void shoot_direction(struct Thing* subj, enum SHOTTYPE st, enum direction dir) {
 	shot.xpos = subj->xpos;
 	shot.ypos = subj->ypos;
 	shot.st = st;
-	//shot.damage = 2 * (1 * (thing_status_has(subj, ST_POWER) << 2));
 	shot.damage = 2;
+	if (thing_status_has(subj, ST_POWER))
+		shot.damage *= 4;
 	--ammo[st];
 	while (shot.til == TIL_SHOT && mshot <= subj->range) {
 		thing_move(&shot, dir);
