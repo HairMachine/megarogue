@@ -717,7 +717,7 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 			break;
 		case TIL_DOOR_NS:
 		case TIL_DOOR_EW:
-			if ((subj->til == TIL_PLAYER && keys > 0) || subj->til != TIL_PLAYER)) {
+			if ((subj->til == TIL_PLAYER && keys > 0) || subj->til != TIL_PLAYER) {
 				--keys;
 				thing_disable(obj);
 				draw_keys();
