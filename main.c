@@ -651,6 +651,10 @@ void things_generate() {
 }
 
 struct Thing *thing_collide(struct Thing *t, enum direction dir) {
+	// TODO: slightly more complex
+	if (thing_status_has(subj, ST_FLYING))
+		return &empty;
+
 	int xm = 0, ym = 0;
 	switch (dir) {
 		case DIR_NORTH:
@@ -872,10 +876,6 @@ int ability_use(enum ABILITIES a) {
 void thing_interact(struct Thing *subj, struct Thing *obj) {
 	// do nothing if the thing isn't a thing
 	if (obj->til <= TIL_FLOOR)
-		return;
-
-	// TODO: slightly more complex
-	if (thing_status_has(subj, ST_FLYING))
 		return;
 
 	// for bullets (make its own function - probably player, monsters, shot are own functions)
