@@ -373,7 +373,7 @@ void draw_mode() {
 
 void draw_status() {
 	int i;
-	for (i = 0; i < player.status; ++i) {
+	for (i = 0; i < statmax; ++i) {
 		switch (player.status[i].id) {
 			case ST_RAGE: VDP_drawText("Rage", 30, 7 + i); break;
 			default: break;
