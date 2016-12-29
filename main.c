@@ -588,18 +588,19 @@ void things_generate() {
 	}
 	// second loop: items.
 	for (i = 15; i < max_i; ++i) {
-		// roll = gsrand(0, 7);
-		// if (roll >= 0  && roll <= 1)
-		// 	things[i] = thing_put(TIL_POTION);
-		// else if (roll >= 2 && roll <= 3)
-		// 	things[i] = thing_put(TIL_FOOD);
-		// else if (roll == 4)
-		// 	things[i] = thing_put(TIL_KEY);
-		// else if (roll >= 5 && roll <= 6)
-		// 	things[i] = thing_put(TIL_AMMO);
-		// else if (roll == 7)
-		// 	things[i] = thing_put(TIL_PIT);
-		things[i] = thing_put(TIL_RAGE);
+		roll = gsrand(0, 8);
+		if (roll >= 0  && roll <= 1)
+			things[i] = thing_put(TIL_POTION);
+		else if (roll >= 2 && roll <= 3)
+			things[i] = thing_put(TIL_FOOD);
+		else if (roll == 4)
+			things[i] = thing_put(TIL_KEY);
+		else if (roll >= 5 && roll <= 6)
+			things[i] = thing_put(TIL_AMMO);
+		else if (roll == 7)
+			things[i] = thing_put(TIL_PIT);
+		else if (roll == 8)	
+			things[i] = thing_put(TIL_RAGE);
 	}
 	// finally the stairs or macguffin on last level
 	if (depth < maxdepth)
