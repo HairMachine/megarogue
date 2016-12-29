@@ -1120,7 +1120,7 @@ void joypad_handle(u16 joy, u16 changed, u16 state) {
 			thing_interact_at(&player);
 		}
 		else if (state & BUTTON_B) {
-			gn_mode = GM_SHOOT;
+			gm_mode = GM_SHOOT;
 			draw_mode();
 		}
 		else if (state & BUTTON_C) {
