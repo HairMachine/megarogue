@@ -349,6 +349,7 @@ void draw_mode() {
 		case GM_WALK: VDP_drawText("Walk", 30, 6); break;
 		case GM_SHOOT: VDP_drawText("Shoot", 30, 6); break;
 		default: VDP_drawText("error", 30, 6); break;
+	}
 }
 
 void screen_game() {
