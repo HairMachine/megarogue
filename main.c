@@ -446,6 +446,7 @@ void thing_status_set_at(struct Thing* t, enum STATUS_ID id, int i) {
 	switch (id) {
 		case ST_RAGE:
 			s->cur_time = 10;
+			break;
 		default:
 			s->cur_time = 0;
 			break;
