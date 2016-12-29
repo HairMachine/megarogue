@@ -519,7 +519,7 @@ struct Thing *thing_collide(struct Thing *t, enum direction dir) {
 void thing_disable(struct Thing *t) {
 	if (t->til == TIL_PLAYER)
 		screen_dead();
-	*t = thing_make(TIL_NULL, 0, 0);
+	*t = thing_make(TIL_NULL, t->xpos, t->ypos);
 }
 
 void thing_damage(struct Thing *t, int damage) {
