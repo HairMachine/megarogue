@@ -451,7 +451,7 @@ void thing_status_set_at(struct Thing* t, enum STATUS_ID id, int i) {
 	s->id = id;
 	switch (id) {
 		case ST_RAGE:
-			s->cur_time = 10;
+			s->cur_time = 64;
 			break;
 		default:
 			s->cur_time = 0;
@@ -513,6 +513,15 @@ void status_countdown() {
 	thing_status_countdown(&player);
 
 	draw_status();
+}
+
+int thing_status_has(struct Thing* t, enum STATUS_ID id) {
+	int i;
+	for (i = 0; i < statmax; ++i) {
+		if (t->status[i].id == id)
+			return 1;
+	}
+	return 0;
 }
 
 
@@ -836,7 +845,10 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 	switch (obj->til) {
 		case TIL_GOBLIN:
 		case TIL_PLAYER:
-			thing_damage(obj, subj->damage);
+			if (thing_status_has(subj, ST_RAGE))
+				thing_damage(obj, subj->damage * 2);
+			else
+				thing_damage(obj, subj->damage);
 			break;
 		case TIL_STAIRS:
 		case TIL_PIT:
