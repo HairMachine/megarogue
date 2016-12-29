@@ -372,7 +372,7 @@ void draw_mode() {
 
 void draw_status() {
 	char msg[15];
-	int i, c;
+	int i, c = 0;
 	for (i = 0; i < statmax; ++i) {
 		strcpy(msg, "");
 		switch (player.status[i].id) {
