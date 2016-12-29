@@ -91,9 +91,9 @@ enum STATUS_ID {
 };
 
 struct Status {
-	enum STATUS_ID id,
-	int max_time,
-	int cur_time
+	enum STATUS_ID id;
+	int max_time;
+	int cur_time;
 };
 
 struct Thing {
