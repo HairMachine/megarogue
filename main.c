@@ -467,24 +467,24 @@ void things_generate() {
 	if (max_m > 15) max_m = 15;
 	// int max_i = depth + 17;
 	// if (max_i > 27) max_i = 27;
-	int max_i = 10 + (depth >> 1) + 15;
+	int max_i = 8 + (depth >> 1) + 15;
 	// first loop: monsters.
 	for (i = 0; i < max_m; ++i) {
 		things[i] = thing_put(TIL_GOBLIN);
 	}
 	// second loop: items.
 	for (i = 15; i < max_i; ++i) {
-	// 	roll = gsrand(0, 7);
-	// 	if (roll >= 0  && roll <= 1)
+		roll = gsrand(0, 7);
+		if (roll >= 0  && roll <= 1)
 			things[i] = thing_put(TIL_POTION);
-		// else if (roll >= 2 && roll <= 3)
-		// 	things[i] = thing_put(TIL_FOOD);
-		// else if (roll == 4)
-		// 	things[i] = thing_put(TIL_KEY);
-		// else if (roll >= 5 && roll <= 6)
-		// 	things[i] = thing_put(TIL_AMMO);
-		// else if (roll == 7)
-		// 	things[i] = thing_put(TIL_PIT);
+		else if (roll >= 2 && roll <= 3)
+			things[i] = thing_put(TIL_FOOD);
+		else if (roll == 4)
+			things[i] = thing_put(TIL_KEY);
+		else if (roll >= 5 && roll <= 6)
+			things[i] = thing_put(TIL_AMMO);
+		else if (roll == 7)
+			things[i] = thing_put(TIL_PIT);
 	}
 	// finally the stairs or macguffin on last level
 	if (depth < maxdepth)
