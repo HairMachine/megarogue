@@ -11,7 +11,7 @@ enum direction {
 
 enum tile {
 	TIL_NULL, TIL_CORRIDOR, TIL_FLOOR, TIL_DOOR_NS, TIL_DOOR_EW, TIL_WALL, TIL_PLAYER, TIL_GOBLIN, TIL_STAIRS, TIL_MACGUFFIN,
-	TIL_WPN, TIL_POTION, TIL_FOOD, TIL_SCROLL, TIL_AMMO, TIL_SHOT, TIL_KEY, TIL_PIT, TIL_RAGE, TIL_TELE, TIL_GODMODE
+	TIL_WPN, TIL_POTION, TIL_FOOD, TIL_SCROLL, TIL_AMMO, TIL_SHOT, TIL_KEY, TIL_PIT, TIL_RAGE, TIL_TELE, TIL_GODMODE, TIL_SUPER
 };
 
 enum SHOTTYPE {
@@ -227,6 +227,9 @@ void sprite_set(int id, enum tile tilenum, int x, int y) {
 			break;
 		case TIL_GODMODE:
 			SPR_initSprite(&sprite[id], &card, x * 8, y * 8, TILE_ATTR(PAL3, TRUE, FALSE, FALSE));
+			break;
+		case TIL_SUPER:
+			SPR_initSprite(&sprite[id], &potion, x * 8, y * 8, TILE_ATTR(PAL1, TRUE, TRUE, FALSE));
 			break;
 		default:
 			// actually should de-initialise the sprite rather than drawing it offscreen
@@ -606,22 +609,24 @@ void things_generate() {
 	// second loop: items.
 	for (i = 15; i < max_i; ++i) {
 		roll = gsrand(0, 10);
-		if (roll >= 0  && roll <= 1)
-			things[i] = thing_put(TIL_POTION);
-		else if (roll >= 2 && roll <= 3)
-			things[i] = thing_put(TIL_FOOD);
-		else if (roll == 4)
-			things[i] = thing_put(TIL_KEY);
-		else if (roll >= 5 && roll <= 6)
-			things[i] = thing_put(TIL_AMMO);
-		else if (roll == 7)
-			things[i] = thing_put(TIL_PIT);
-		else if (roll == 8)	
-			things[i] = thing_put(TIL_RAGE);
-		else if (roll == 9)
-			things[i] = thing_put(TIL_TELE);
-		else if (roll == 10)
-			things[i] = thing_put(TIL_GODMODE);
+		// if (roll >= 0  && roll <= 1)
+		// 	things[i] = thing_put(TIL_POTION);
+		// else if (roll >= 2 && roll <= 3)
+		// 	things[i] = thing_put(TIL_FOOD);
+		// else if (roll == 4)
+		// 	things[i] = thing_put(TIL_KEY);
+		// else if (roll >= 5 && roll <= 6)
+		// 	things[i] = thing_put(TIL_AMMO);
+		// else if (roll == 7)
+		// 	things[i] = thing_put(TIL_PIT);
+		// else if (roll == 8)	
+		// 	things[i] = thing_put(TIL_RAGE);
+		// else if (roll == 9)
+		// 	things[i] = thing_put(TIL_TELE);
+		// else if (roll == 10)
+		// 	things[i] = thing_put(TIL_GODMODE);
+		// else if (roll == 11)
+			things[i] = thing_put(TIL_SUPER);
 	}
 	// finally the stairs or macguffin on last level
 	if (depth < maxdepth)
@@ -768,6 +773,17 @@ void thing_move_toward(struct Thing *t, int xpos, int ypos) {
 	else if (x_dir > 0 && x_dist >= y_dist) {
 		thing_move(t, DIR_WEST);
 	}
+}
+
+void thing_reduce_supercharged_hp() {
+	int i;
+	for (i = 0; i < 32; ++i) {
+		if (things[i].hp > things[i].max_hp) {
+			things[i].hp--;
+		}
+	}
+	if (player.hp > player.max_hp)
+		player.hp--;
 }
 
 
@@ -936,6 +952,9 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 		case TIL_GODMODE:
 			thing_status_set(subj, ST_GODMODE);
 			thing_disable(obj);
+			break;
+		case TIL_SUPER:
+			subj->hp = subj->max_hp * 2;
 			break;
 		default:
 			break;
@@ -1321,6 +1340,7 @@ void joypad_handle(u16 joy, u16 changed, u16 state) {
 		// time based and status events
 		hunger_clock();
 		status_countdown();
+		thing_reduce_supercharged_hp();
 		
 		// monster turn
 		int m = 0;
