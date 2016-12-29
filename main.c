@@ -371,13 +371,14 @@ void draw_mode() {
 }
 
 void draw_status() {
+	char msg[15] = "";
 	int i;
 	for (i = 0; i < statmax; ++i) {
-		debug(player.status[i].cur_time, 37, 7 + i);
 		switch (player.status[i].id) {
-			case ST_RAGE: VDP_drawText("RAGE: ", 30, 7 + i); break;
-			default: VDP_drawText("         ", 30, 7 + i); break;
+			case ST_RAGE: sprintf(msg, "RAGE: %d ", player.status[i].cur_time); break;
+			default: break;
 		}
+		VDP_drawText(msg, 30, 7 + i);
 	}
 }
 
@@ -488,7 +489,7 @@ void status_countdown() {
 	}
 	// player
 	thing_status_countdown(&player);
-	
+
 	draw_status();
 }
 
