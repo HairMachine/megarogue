@@ -473,7 +473,7 @@ void things_generate() {
 		things[i] = thing_put(TIL_GOBLIN);
 	}
 	// second loop: items.
-	// for (i = 15; i < max_i; ++i) {
+	for (i = 15; i < max_i; ++i) {
 	// 	roll = gsrand(0, 7);
 	// 	if (roll >= 0  && roll <= 1)
 			things[i] = thing_put(TIL_POTION);
@@ -485,7 +485,7 @@ void things_generate() {
 		// 	things[i] = thing_put(TIL_AMMO);
 		// else if (roll == 7)
 		// 	things[i] = thing_put(TIL_PIT);
-	// }
+	}
 	// finally the stairs or macguffin on last level
 	if (depth < maxdepth)
 		things[31] = thing_put(TIL_STAIRS);
