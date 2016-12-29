@@ -20,7 +20,7 @@ enum SHOTTYPE {
 
 enum GM_MODE {
 	GM_WALK, GM_SHOOT
-}
+};
 
 const u32 tile_null[8] = {
 		0x00000000,
