@@ -102,8 +102,11 @@ struct vect2d {
 const int mapsize = 28;
 const int maparraysize = 784;
 const int roomsize = 8;
+const int maxdoors = 8;
 enum tile maparray[784];
 struct Thing things[32];
+struct Thing doors[8];
+int door_count = 0;
 Sprite sprite[33];
 struct Thing player;
 struct Thing empty;
@@ -262,6 +265,13 @@ void redraw_tiles() {
 	}
 }
 
+void redraw_doors() {
+	int i;
+	for (i = 0; i < maxdoors; ++i) {
+		tile_draw(doors[i].til, doors[i].xpos, doors[i].ypos);
+	}
+}
+
 void redraw_things() {
 	int k = 0, absx = 0, absy = 0;
 	for (k = 0; k < 32; ++k) {
@@ -333,6 +343,7 @@ void screen_game() {
 	// main screen
 	redraw_tiles();
 	redraw_things();
+	redraw_doors();
 	//tile_draw(player.til, player.xpos, player.ypos);
 	// sidebar
 	draw_health();
@@ -406,6 +417,11 @@ struct Thing thing_make(enum tile t, int x, int y) {
 		case TIL_WALL:
 			thing.flags = FL_IMMORTAL;
 			break;
+		case TIL_DOOR_NS:
+		case TIL_DOOR_EW:
+			thing.flags = FL_NONE;
+			thing.hp = 10;
+			break;
 		case TIL_STAIRS:
 			thing.flags = FL_IMMORTAL | FL_OPTIONAL;
 			break;
@@ -473,22 +489,14 @@ struct Thing *thing_collide(struct Thing *t, enum direction dir) {
 	int til_i = ((t->ypos + ym) * mapsize) + (t->xpos + xm);
 	if (maparray[til_i] >= TIL_WALL)
 		return &blocker;
-	else if (maparray[til_i] > TIL_FLOOR) {
-		// Doors should be things
-		if (t->til == TIL_SHOT) {
-			maparray[til_i] = TIL_CORRIDOR;
-			tile_draw(TIL_CORRIDOR, t->xpos + xm, t->ypos + ym);
+	// check doors
+	int i = 0;
+	for (i = 0; i < maxdoors; ++i) {
+		if (doors[i].xpos == t->xpos + xm && doors[i].ypos == t->ypos + ym) {
+			return &doors[i];
 		}
-		else if (t->til == TIL_PLAYER && keys > 0) {
-			--keys;
-			maparray[til_i] = TIL_CORRIDOR;
-			tile_draw(TIL_CORRIDOR, t->xpos + xm, t->ypos + ym);
-			draw_keys();
-		}
-		return &blocker;
 	}
 	// check things
-	int i = 0;
 	for (i = 0; i < 32; ++i) {
 		if (things[i].xpos == t->xpos + xm && things[i].ypos == t->ypos + ym) {
 			return &things[i];
@@ -689,6 +697,7 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 	if (subj->til == TIL_SHOT) {
 		thing_damage(obj, 2);
 		thing_disable(subj);
+		redraw_doors();
 		return;
 	}
 
@@ -706,6 +715,14 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 				thing_disable(subj);
 			}
 			break;
+		case TIL_DOOR_NS:
+		case TIL_DOOR_EW:
+			if ((subj->til == TIL_PLAYER && keys > 0) || subj->til != TIL_PLAYER)) {
+				--keys;
+				thing_disable(obj);
+				draw_keys();
+				redraw_doors();
+			}
 		case TIL_MACGUFFIN:
 			if (subj->til == TIL_PLAYER)
 				screen_victory();
@@ -849,50 +866,50 @@ void level_connect_rooms(int rtcx, int rtcy, int rtctx, int rtcty) {
 
 	int c = 0;
 	if (tsy < tey) {
-		for (c = tsy; c < tey; c++) {
+		for (c = tsy; c < tey; ++c) {
 			if (maparray[c * mapsize + tsx] == TIL_WALL) {
-				if (!door_flag && gsrand(0, 2) == 0) {
-					maparray[c * mapsize + tsx] = TIL_DOOR_NS;
+				if (!door_flag && door_count < max_doors && gsrand(0, 2) == 0) {
+					thing_make(TIL_DOOR_NS, tsx, tsy);
 					door_flag = 1;
+					door_count++;
 				}
-				else		
-					maparray[c * mapsize + tsx] = TIL_CORRIDOR;
+				maparray[c * mapsize + tsx] = TIL_CORRIDOR;
 			}
 		}
 	}
 	else if (tsy > tey) {
-		for (c = tsy; c > tey; c--) {
+		for (c = tsy; c > tey; --c) {
 			if (maparray[c * mapsize + tsx] == TIL_WALL) {
-				if (!door_flag && gsrand(0, 2) == 0) {
-					maparray[c * mapsize + tsx] = TIL_DOOR_NS;
+				if (!door_flag && doors < max_doors && gsrand(0, 2) == 0) {
+					thing_make(TIL_DOOR_NS, tsx, tsy);
 					door_flag = 1;
+					door_count++;
 				}
-				else	
-					maparray[c * mapsize + tsx] = TIL_CORRIDOR;
+				maparray[c * mapsize + tsx] = TIL_CORRIDOR;
 			}
 		}
 	}
 	if (tsx < tex) {
-		for (c = tsx; c < tex; c++) {
+		for (c = tsx; c < tex; ++c) {
 			if (maparray[tey * mapsize + c] == TIL_WALL) {
-				if (!door_flag && gsrand(0, 2) == 0) {
-					maparray[tey * mapsize + c] = TIL_DOOR_EW;
+				if (!door_flag && doors < max_doors && gsrand(0, 2) == 0) {
+					thing_make(TIL_DOOR_EW, tsx, tsy);
 					door_flag = 1;
+					door_count++;
 				}
-				else
-					maparray[tey * mapsize + c] = TIL_CORRIDOR;
+				maparray[tey * mapsize + c] = TIL_CORRIDOR;
 			}
 		}
 	}
 	else if (tsx > tex) {
-		for (c = tsx; c > tex; c--) {
+		for (c = tsx; c > tex; --c) {
 			if (maparray[tey * mapsize + c] == TIL_WALL) {
 				if (!door_flag && gsrand(0, 2) == 0) {
-					maparray[tey * mapsize + c] = TIL_DOOR_EW;
+					thing_make(TIL_DOOR_EW, tsx, tsy);
 					door_flag = 1;
-				}
-				else
-					maparray[tey * mapsize + c] = TIL_CORRIDOR;
+					door_count++;
+				}			
+				maparray[tey * mapsize + c] = TIL_CORRIDOR;
 			}
 		}
 	}
@@ -904,6 +921,12 @@ void level_generate() {
 	int i;
 	for (i = 0; i < 9; ++i) {
 		connections[i] = 0;
+	}
+
+	// reset doors
+	door_count = 0;
+	for (i = 0; i < max_doors; ++i) {
+		doors[i] = thing_make(TIL_NULL, 0, 0);
 	}
 
 	for (i = 0; i < maparraysize; ++i) {
