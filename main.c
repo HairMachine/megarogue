@@ -425,7 +425,7 @@ int ability_get_random() {
 
 // STATUS EFFECTS
 
-void thing_status_set(struct Thing* t, enum STATUS_ID status) {
+void thing_status_set(struct Thing* t, enum STATUS_ID id) {
 	int i, slot;
 	for (i = 0; i < statmax; ++i) {
 		if (t->status[i].id == ST_NONE)
