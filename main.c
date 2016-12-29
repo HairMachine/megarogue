@@ -87,7 +87,7 @@ enum FLAGS {
 };
 
 enum STATUS_ID {
-	ST_NONE = 0, ST_RAGE = 1, ST_GODMODE
+	ST_NONE = 0, ST_RAGE = 1, ST_GODMODE = 2
 };
 
 struct Status {
