@@ -11,7 +11,7 @@ enum direction {
 
 enum tile {
 	TIL_NULL, TIL_CORRIDOR, TIL_FLOOR, TIL_DOOR_NS, TIL_DOOR_EW, TIL_WALL, TIL_PLAYER, TIL_GOBLIN, TIL_STAIRS, TIL_MACGUFFIN,
-	TIL_WPN, TIL_POTION, TIL_FOOD, TIL_SCROLL, TIL_AMMO, TIL_SHOT, TIL_KEY, TIL_PIT, TIL_RAGE, TIL_TELE
+	TIL_WPN, TIL_POTION, TIL_FOOD, TIL_SCROLL, TIL_AMMO, TIL_SHOT, TIL_KEY, TIL_PIT, TIL_RAGE, TIL_TELE, TIL_GODMODE
 };
 
 enum SHOTTYPE {
@@ -87,7 +87,7 @@ enum FLAGS {
 };
 
 enum STATUS_ID {
-	ST_NONE = 0, ST_RAGE = 1
+	ST_NONE = 0, ST_RAGE = 1, ST_GODMODE
 };
 
 struct Status {
@@ -224,6 +224,9 @@ void sprite_set(int id, enum tile tilenum, int x, int y) {
 			break;
 		case TIL_TELE:
 			SPR_initSprite(&sprite[id], &card, x * 8, y * 8, TILE_ATTR(PAL2, TRUE, FALSE, FALSE));
+			break;
+		case TIL_GODMODE:
+			SPR_initSprite(&sprite[id], &card, x * 8, y * 8, TILE_ATTR(PAL3, TRUE, FALSE, FALSE));
 			break;
 		default:
 			// actually should de-initialise the sprite rather than drawing it offscreen
@@ -383,6 +386,10 @@ void draw_status() {
 				VDP_drawText(msg, 30, 7 + c);
 				++c;
 				break;
+			case ST_GODMODE:
+				sprintf(msg, "GOD:  %d ", player.status[i].cur_time);
+				VDP_drawText(msg, 30, 7 + c);
+				++c;
 			default: break;
 		}
 	}
@@ -455,6 +462,9 @@ void thing_status_set_at(struct Thing* t, enum STATUS_ID id, int i) {
 	switch (id) {
 		case ST_RAGE:
 			s->cur_time = 64;
+			break;
+		case ST_GODMODE:
+			s->cur_time = 32;
 			break;
 		default:
 			s->cur_time = 0;
@@ -569,6 +579,9 @@ struct Thing thing_make(enum tile t, int x, int y) {
 		case TIL_TELE:
 			thing.flags = FL_IMMORTAL | FL_OPTIONAL;
 			break;
+		case TIL_GODMODE:
+			thing.flags = FL_IMMORTAL;
+			break;
 		default:
 			thing.flags = FL_PASSTHRU | FL_IMMORTAL;
 			break;
@@ -595,7 +608,7 @@ void things_generate() {
 	}
 	// second loop: items.
 	for (i = 15; i < max_i; ++i) {
-		roll = gsrand(0, 9);
+		roll = gsrand(0, 10);
 		if (roll >= 0  && roll <= 1)
 			things[i] = thing_put(TIL_POTION);
 		else if (roll >= 2 && roll <= 3)
@@ -610,6 +623,8 @@ void things_generate() {
 			things[i] = thing_put(TIL_RAGE);
 		else if (roll == 9)
 			things[i] = thing_put(TIL_TELE);
+		else if (roll == 10)
+			things[i] = thing_put(TIL_GODMODE);
 	}
 	// finally the stairs or macguffin on last level
 	if (depth < maxdepth)
@@ -666,7 +681,7 @@ void thing_disable(struct Thing *t) {
 }
 
 void thing_damage(struct Thing *t, int damage) {
-	if (t->flags & FL_IMMORTAL)
+	if (t->flags & FL_IMMORTAL || thing_status_has(t, ST_GODMODE));
 		return;
 
 	t->hp -= damage;
@@ -920,6 +935,10 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 			subj->xpos = newpos.x;
 			subj->ypos = newpos.y;
 			screen_game();
+			break;
+		case TIL_GODMODE:
+			thing_status_set(subj, ST_GODMODE);
+			thing_disable(obj);
 			break;
 		default:
 			break;
