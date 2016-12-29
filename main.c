@@ -723,6 +723,7 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 				draw_keys();
 				redraw_doors();
 			}
+			break;
 		case TIL_MACGUFFIN:
 			if (subj->til == TIL_PLAYER)
 				screen_victory();
