@@ -1134,9 +1134,6 @@ void joypad_handle(u16 joy, u16 changed, u16 state) {
 		// time based and status events
 		hunger_clock();
 		
-		// gfx refreshes
-		redraw_doors();
-		
 		// monster turn
 		int m = 0;
 		for (m = 0; m < 32; ++m) {
@@ -1144,6 +1141,9 @@ void joypad_handle(u16 joy, u16 changed, u16 state) {
 				thing_move_toward(&things[m], player.xpos, player.ypos);
 			}
 		}
+
+		// gfx refreshes
+		redraw_doors();
 	}
 }
 
