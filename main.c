@@ -377,7 +377,7 @@ void draw_status() {
 		strcpy(msg, "");
 		switch (player.status[i].id) {
 			case ST_RAGE: sprintf(msg, "RAGE: %d ", player.status[i].cur_time); break;
-			default: break;
+			default: strcpy(msg, "       "); break;
 		}
 		VDP_drawText(msg, 30, 7 + i);
 	}
@@ -475,8 +475,8 @@ void thing_status_countdown(struct Thing* t) {
 	for (i = 0; i < statmax; ++i) {
 		if (t->status[i].id > ST_NONE) {
 			t->status[i].cur_time--;
-			//if (t->status[i].cur_time <= 0)
-				//thing_status_set_at(t, ST_NONE, i);
+			if (t->status[i].cur_time <= 0)
+				thing_status_set_at(t, ST_NONE, i);
 		}
 	}
 }
