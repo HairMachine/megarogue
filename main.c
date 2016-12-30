@@ -1193,7 +1193,7 @@ void level_generate() {
 			memcpy(maparray, room1, sizeof(room1));
 			break;
 		case 1:
-			memcpy(maparray, room1, sizeof(room1));
+			memcpy(maparray, room2, sizeof(room1));
 			break;
 	}
 
