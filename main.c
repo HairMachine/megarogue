@@ -628,14 +628,14 @@ void things_generate() {
 	if (max_m > 15) max_m = 15;
 	// int max_i = depth + 17;
 	// if (max_i > 27) max_i = 27;
-	int max_i = 5 + gsrand(0, 2);
+	int max_i = 5 + gsrand(0, 1);
 	// first loop: monsters.
 	for (i = 0; i < max_m; ++i) {
 		things[i] = thing_put(TIL_GOBLIN);
 	}
 	// second loop: items.
 	// TODO: a better system for deciding what to generate
-	for (i = 15; i < max_i; ++i) {
+	for (i = 15; i < max_i + 15; ++i) {
 		roll = gsrand(0, 13);
 		if (roll >= 0  && roll <= 1)
 			things[i] = thing_put(TIL_POTION);
