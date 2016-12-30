@@ -600,7 +600,7 @@ struct Thing thing_make(enum tile t, int x, int y) {
 			thing.hp = 10;
 			break;
 		case TIL_STAIRS:
-			thing.flags = FL_IMMORTAL | FL_OPTIONAL;
+			thing.flags = FL_IMMORTAL;
 			break;
 		case TIL_SHOT:
 			thing.flags = FL_IMMORTAL;
