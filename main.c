@@ -758,11 +758,11 @@ void thing_move(struct Thing *t, enum direction d) {
 			t->ypos--;
 			break;
 		case DIR_EAST:
-			if (t->xpos >= mapsize) return;
+			if (t->xpos >= mapsize - 1) return;
 			t->xpos++;
 			break;
 		case DIR_SOUTH:
-			if (t->ypos >= mapsize) return;
+			if (t->ypos >= mapsize - 1) return;
 			t->ypos++;
 			break;
 		case DIR_WEST:
