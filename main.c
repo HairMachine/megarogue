@@ -758,8 +758,8 @@ void thing_move(struct Thing *t, enum direction d) {
 			t->xpos--;
 			break;
 	}
-	if (t->til == TIL_PLAYER)
-		move_player_light(d);
+	// if (t->til == TIL_PLAYER)
+	// 	move_player_light(d);
 }
 
 void thing_move_toward(struct Thing *t, int xpos, int ypos) {
