@@ -1159,145 +1159,11 @@ void level_connect_rooms(int rtcx, int rtcy, int rtctx, int rtcty) {
 	connections[rtcy * 2 + rtcx] = 1;
 }
 
+// alternative simple level generator
 void level_generate() {
-	// reset all room connections
 	int i;
-	for (i = 0; i < 4; ++i) {
-		connections[i] = 0;
-	}
-
-	// reset doors
-	door_count = 0;
-	for (i = 0; i < maxdoors; ++i) {
-		doors[i] = thing_make(TIL_NULL, 0, 0);
-	}
-
-	for (i = 0; i < maparraysize; ++i) {
-		maparray[i] = TIL_WALL;
-	}
-	level_generate_room(1, 1, roomsize, roomsize);
-	level_generate_room(roomsize + 1, 1, roomsize * 2, roomsize);
-	//level_generate_room(roomsize * 2 + 1, 1, roomsize * 3, roomsize);
-	level_generate_room(1, roomsize + 1, roomsize, roomsize * 2);
-	level_generate_room(roomsize + 1, roomsize + 1, roomsize * 2, roomsize * 2);
-	//level_generate_room(roomsize * 2 + 1, roomsize + 1, roomsize * 3, roomsize * 2);
-	//level_generate_room(1, roomsize * 2 + 1, roomsize, roomsize * 3);
-	//level_generate_room(roomsize + 1, roomsize * 2 + 1, roomsize * 2, roomsize * 3);
-	//level_generate_room(roomsize * 2 + 1, roomsize * 2 + 1, roomsize * 3, roomsize * 3);
-
-	int rtcx, rtcy, rtctx, rtcty, dir;
-
-	rtcx = gsrand(0, 1);
-	rtcy = gsrand(0, 1);
-
-	rtctx = 2;
-	rtcty = 2;
-
-	// First step: step through, joining rooms then using that room to make a new join.
-	// Eventually, we get into a dead end, so stop and go on to phase 2 of the generator.
-
-	while (1) {
-
-		// for some ungodly reason, doing this in the while condition itself does not work.
-		if (room_open_connections(rtcx, rtcy) == 0) break;
-
-		// make sure the connection is valid
-		while (rtctx > 1 || rtcty > 1 || rtctx < 0 || rtcty < 0 || connections[rtcty * 2 + rtctx] == 1) {
-			dir = gsrand(0, 3);
-			switch (dir) {
-				case 0:
-					rtcty = rtcy - 1;
-					rtctx = rtcx;
-					break;
-				case 1:
-					rtctx = rtcx + 1;
-					rtcty = rtcy;
-					break;
-				case 2:
-					rtcty = rtcy + 1;
-					rtctx = rtcx;
-					break;
-				case 3:
-					rtctx = rtcx - 1;
-					rtcty = rtcy;
-					break;
-			}
-		}
-
-		level_connect_rooms(rtcx, rtcy, rtctx, rtcty);
-
-		rtcx = rtctx;
-		rtcy = rtcty;
-		rtctx = 2;
-		rtcty = 2;
-	}
-
-	// Second part: select randomly an unjoined room, and join to an adjacent room, until no more unjoined rooms exist.
-	// NOTE: there is a bug, sometimes rooms are not connected
-	struct vect2d ntc;
-	int wtf = 0;
-	while (1) {
-		ntc = level_get_first_unconnected();
-		if (ntc.x == -1) break;
-
-		rtcx = ntc.x;
-		rtcy = ntc.y;
-		rtctx = 2;
-		rtcty = 2;
-		while (rtctx > 1 || rtcty > 1 || rtctx < 0 || rtcty < 0) {
-			dir = gsrand(0, 3);
-			switch (dir) {
-				case 0:
-					rtcty = rtcy - 1;
-					rtctx = rtcx;
-					break;
-				case 1:
-					rtctx = rtcx + 1;
-					rtcty = rtcy;
-					break;
-				case 2:
-					rtcty = rtcy + 1;
-					rtctx = rtcx;
-					break;
-				case 3:
-					rtctx = rtcx - 1;
-					rtcty = rtcy;
-					break;
-			}
-		}
-
-		level_connect_rooms(rtcx, rtcy, rtctx, rtcty);
-	}
-
-	// Third part: some random connections
-	int xtra_connections = gsrand(1, 3);
-	for (i = 0; i < xtra_connections; ++i) {
-		rtcx = gsrand(0, 1);
-		rtctx = gsrand(0, 1);
-		rtcy = gsrand(0, 1);
-		rtcty = gsrand(0, 1);
-		level_connect_rooms(rtcx, rtcty, rtctx, rtcty);
-	}
-
-	// Fourth part: remove silly doors
-	int cx = 0;
-	int cy = 0;
-	for (i = 0; i < maparraysize; ++i) {
-		if (maparray[i] == TIL_DOOR_EW || maparray[i] == TIL_DOOR_NS) {
-			// doors with more than 2 floors or corridors adjacent get turned into corridors
-			if (i - mapsize >= 0 && maparray[i - mapsize] <= TIL_FLOOR)
-				++cy;
-			if (i + 1 < maparraysize && maparray[i + 1] <= TIL_FLOOR)
-				++cx;
-			if (i - 1 >= 0 && maparray[i - 1] <= TIL_FLOOR)
-				++cx;
-			if (i + mapsize < maparraysize && maparray[i + mapsize] <= TIL_FLOOR)
-				++cy;
-			if (cx > 2 || cy > 2 || (cx >= 1 && cy >= 1))
-				maparray[i] = TIL_CORRIDOR;
-		}
-		cx = 0;
-		cy = 0;
+	for (i = 0; i < 256; ++i) {
+		maparray[i] = TIL_FLOOR;
 	}
 
 	// Put stuff
@@ -1309,6 +1175,157 @@ void level_generate() {
 
 	screen_game();
 }
+
+// void level_generate() {
+// 	// reset all room connections
+// 	int i;
+// 	for (i = 0; i < 4; ++i) {
+// 		connections[i] = 0;
+// 	}
+
+// 	// reset doors
+// 	door_count = 0;
+// 	for (i = 0; i < maxdoors; ++i) {
+// 		doors[i] = thing_make(TIL_NULL, 0, 0);
+// 	}
+
+// 	for (i = 0; i < maparraysize; ++i) {
+// 		maparray[i] = TIL_WALL;
+// 	}
+// 	level_generate_room(1, 1, roomsize, roomsize);
+// 	level_generate_room(roomsize + 1, 1, roomsize * 2, roomsize);
+// 	//level_generate_room(roomsize * 2 + 1, 1, roomsize * 3, roomsize);
+// 	level_generate_room(1, roomsize + 1, roomsize, roomsize * 2);
+// 	level_generate_room(roomsize + 1, roomsize + 1, roomsize * 2, roomsize * 2);
+// 	//level_generate_room(roomsize * 2 + 1, roomsize + 1, roomsize * 3, roomsize * 2);
+// 	//level_generate_room(1, roomsize * 2 + 1, roomsize, roomsize * 3);
+// 	//level_generate_room(roomsize + 1, roomsize * 2 + 1, roomsize * 2, roomsize * 3);
+// 	//level_generate_room(roomsize * 2 + 1, roomsize * 2 + 1, roomsize * 3, roomsize * 3);
+
+// 	int rtcx, rtcy, rtctx, rtcty, dir;
+
+// 	rtcx = gsrand(0, 1);
+// 	rtcy = gsrand(0, 1);
+
+// 	rtctx = 2;
+// 	rtcty = 2;
+
+// 	// First step: step through, joining rooms then using that room to make a new join.
+// 	// Eventually, we get into a dead end, so stop and go on to phase 2 of the generator.
+
+// 	while (1) {
+
+// 		// for some ungodly reason, doing this in the while condition itself does not work.
+// 		if (room_open_connections(rtcx, rtcy) == 0) break;
+
+// 		// make sure the connection is valid
+// 		while (rtctx > 1 || rtcty > 1 || rtctx < 0 || rtcty < 0 || connections[rtcty * 2 + rtctx] == 1) {
+// 			dir = gsrand(0, 3);
+// 			switch (dir) {
+// 				case 0:
+// 					rtcty = rtcy - 1;
+// 					rtctx = rtcx;
+// 					break;
+// 				case 1:
+// 					rtctx = rtcx + 1;
+// 					rtcty = rtcy;
+// 					break;
+// 				case 2:
+// 					rtcty = rtcy + 1;
+// 					rtctx = rtcx;
+// 					break;
+// 				case 3:
+// 					rtctx = rtcx - 1;
+// 					rtcty = rtcy;
+// 					break;
+// 			}
+// 		}
+
+// 		level_connect_rooms(rtcx, rtcy, rtctx, rtcty);
+
+// 		rtcx = rtctx;
+// 		rtcy = rtcty;
+// 		rtctx = 2;
+// 		rtcty = 2;
+// 	}
+
+// 	// Second part: select randomly an unjoined room, and join to an adjacent room, until no more unjoined rooms exist.
+// 	// NOTE: there is a bug, sometimes rooms are not connected
+// 	struct vect2d ntc;
+// 	int wtf = 0;
+// 	while (1) {
+// 		ntc = level_get_first_unconnected();
+// 		if (ntc.x == -1) break;
+
+// 		rtcx = ntc.x;
+// 		rtcy = ntc.y;
+// 		rtctx = 2;
+// 		rtcty = 2;
+// 		while (rtctx > 1 || rtcty > 1 || rtctx < 0 || rtcty < 0) {
+// 			dir = gsrand(0, 3);
+// 			switch (dir) {
+// 				case 0:
+// 					rtcty = rtcy - 1;
+// 					rtctx = rtcx;
+// 					break;
+// 				case 1:
+// 					rtctx = rtcx + 1;
+// 					rtcty = rtcy;
+// 					break;
+// 				case 2:
+// 					rtcty = rtcy + 1;
+// 					rtctx = rtcx;
+// 					break;
+// 				case 3:
+// 					rtctx = rtcx - 1;
+// 					rtcty = rtcy;
+// 					break;
+// 			}
+// 		}
+
+// 		level_connect_rooms(rtcx, rtcy, rtctx, rtcty);
+// 	}
+
+// 	// Third part: some random connections
+// 	int xtra_connections = gsrand(1, 3);
+// 	for (i = 0; i < xtra_connections; ++i) {
+// 		rtcx = gsrand(0, 1);
+// 		rtctx = gsrand(0, 1);
+// 		rtcy = gsrand(0, 1);
+// 		rtcty = gsrand(0, 1);
+// 		level_connect_rooms(rtcx, rtcty, rtctx, rtcty);
+// 	}
+
+// 	// Fourth part: remove silly doors
+// 	int cx = 0;
+// 	int cy = 0;
+// 	for (i = 0; i < maparraysize; ++i) {
+// 		if (maparray[i] == TIL_DOOR_EW || maparray[i] == TIL_DOOR_NS) {
+// 			// doors with more than 2 floors or corridors adjacent get turned into corridors
+// 			if (i - mapsize >= 0 && maparray[i - mapsize] <= TIL_FLOOR)
+// 				++cy;
+// 			if (i + 1 < maparraysize && maparray[i + 1] <= TIL_FLOOR)
+// 				++cx;
+// 			if (i - 1 >= 0 && maparray[i - 1] <= TIL_FLOOR)
+// 				++cx;
+// 			if (i + mapsize < maparraysize && maparray[i + mapsize] <= TIL_FLOOR)
+// 				++cy;
+// 			if (cx > 2 || cy > 2 || (cx >= 1 && cy >= 1))
+// 				maparray[i] = TIL_CORRIDOR;
+// 		}
+// 		cx = 0;
+// 		cy = 0;
+// 	}
+
+// 	// Put stuff
+// 	struct vect2d ppos = position_find_valid();
+// 	player.xpos = ppos.x;
+// 	player.ypos = ppos.y;
+
+// 	things_generate();
+
+// 	screen_game();
+// }
 
 void hunger_clock() {
 	--food;
