@@ -1209,11 +1209,6 @@ void level_generate() {
 			break;
 	}
 
-	// Put stuff
-	struct vect2d ppos = position_find_valid();
-	player.xpos = ppos.x;
-	player.ypos = ppos.y;
-
 	things_generate();
 
 	screen_game();
