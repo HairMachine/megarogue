@@ -299,7 +299,7 @@ void redraw_tiles() {
 		else
 			tile_draw(TIL_NULL, x, y);
 		++x;
-		if (x >= mapsize - 1) {
+		if (x >= mapsize) {
 			x = 0;
 			++y;
 		}
@@ -671,20 +671,28 @@ struct Thing *thing_collide(struct Thing *t, enum direction dir) {
 	int xm = 0, ym = 0;
 	switch (dir) {
 		case DIR_NORTH:
-			ym = -1;
+			ym = t->ypos - 1;
+			if (ym < 0) 
+				ym = 0;
 			break;
 		case DIR_EAST:
-			xm = 1;
+			xm = t->xpos + 1;
+			if (xm >= mapsize) 
+				xm = mapsize;
 			break;
 		case DIR_SOUTH:
-			ym = 1;
+			ym = t->ypos + 1;
+			if (ym >= mapsize)
+				ym = mapsize;
 			break;
 		case DIR_WEST:
-			xm = -1;
+			xm = t->xpos - 1;
+			if (xm < 0)
+				xm = 0;
 			break;
 	}
 	// check wall
-	int til_i = ((t->ypos + ym) * mapsize) + (t->xpos + xm);
+	int til_i = (ym * mapsize) + xm;
 	if (maparray[til_i] >= TIL_WALL)
 		return &blocker;
 	// check doors
