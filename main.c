@@ -923,6 +923,8 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 			if (subj->til == TIL_PLAYER) {
 				++depth;
 				level_generate();
+				player.xpos = abs(player.xpos - 4);
+				player.ypos = abs(player.ypos - 4);
 			}
 			else {
 				thing_disable(subj);
@@ -1473,7 +1475,7 @@ int main() {
 	}
 
 	blocker = thing_make(TIL_WALL, 0, 0);
-	player = thing_make(TIL_PLAYER, 0, 0);
+	player = thing_make(TIL_PLAYER, 1, 4);
 	shot = thing_make(TIL_SHOT, 0, 0);
 
 	// Generate a level and place everything
