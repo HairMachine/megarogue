@@ -486,16 +486,16 @@ void thing_status_set_at(struct Thing* t, enum STATUS_ID id, int i) {
 	s->id = id;
 	switch (id) {
 		case ST_RAGE:
-			s->cur_time = 64;
-			break;
-		case ST_GODMODE:
 			s->cur_time = 32;
 			break;
+		case ST_GODMODE:
+			s->cur_time = 16;
+			break;
 		case ST_FLYING:
-			s->cur_time = 64;
+			s->cur_time = 32;
 			break;
 		case ST_POWER:
-			s->cur_time = 64;
+			s->cur_time = 32;
 			break;
 		default:
 			s->cur_time = 0;
@@ -626,11 +626,11 @@ struct Thing thing_put(enum tile t) {
 
 void things_generate() {
 	int i, roll;
-	int max_m = 3 + gsrand(0, 1);
+	int max_m = 1 + gsrand(0, 3);
 	//if (max_m > 15) max_m = 15;
 	// int max_i = depth + 17;
 	// if (max_i > 27) max_i = 27;
-	int max_i = 3 + gsrand(0, 1);
+	int max_i = 2 + gsrand(0, 2);
 	// first loop: monsters.
 	for (i = 0; i < max_m; ++i) {
 		things[i] = thing_put(TIL_GOBLIN);
@@ -916,7 +916,10 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 	switch (obj->til) {
 		case TIL_GOBLIN:
 		case TIL_PLAYER:
-			thing_damage(obj, subj->damage * (thing_status_has(subj, ST_RAGE) + 1));
+			if (thing_status_has(subj, ST_RAGE))
+				thing_damage(obj, subj->damage * 4);
+			else
+				thing_damage(obj, subj->damage);
 			break;
 		case TIL_STAIRS:
 		case TIL_PIT:
@@ -924,11 +927,11 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 				// wrap player
 				if (player.xpos == 1)	
 					player.xpos = mapsize - 2;
-				if (player.ypos == 1)
+				else if (player.ypos == 1)
 					player.ypos = mapsize - 2;
-				if (player.xpos == mapsize - 2)
+				else if (player.xpos == mapsize - 2)
 					player.xpos = 1;
-				if (player.ypos == mapsize - 2)
+				else if (player.ypos == mapsize - 2)
 					player.ypos = 1;
 				// Make a new map
 				++depth;
