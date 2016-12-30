@@ -624,11 +624,11 @@ struct Thing thing_put(enum tile t) {
 
 void things_generate() {
 	int i, roll;
-	int max_m = depth + 3;
+	int max_m = 1 + depth >> 1;
 	if (max_m > 15) max_m = 15;
 	// int max_i = depth + 17;
 	// if (max_i > 27) max_i = 27;
-	int max_i = 8 + (depth >> 1) + 15;
+	int max_i = 4 + (depth >> 1) + 15;
 	// first loop: monsters.
 	for (i = 0; i < max_m; ++i) {
 		things[i] = thing_put(TIL_GOBLIN);
