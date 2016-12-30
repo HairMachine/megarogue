@@ -452,7 +452,7 @@ struct vect2d position_find_valid() {
 	struct vect2d pos = {-1, -1};
 	int xp = gsrand(0, mapsize - 1);
 	int yp = gsrand(0, mapsize - 1);
-	while (maparray[yp * mapsize + xp] != TIL_FLOOR) {
+	while (maparray[yp * mapsize + xp] != TIL_FLOOR || (player.ypos == yp && player.xpos == xp)) {
 		xp = gsrand(0, mapsize - 1);
 		yp = gsrand(0, mapsize - 1);
 	}
@@ -921,12 +921,18 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 		case TIL_STAIRS:
 		case TIL_PIT:
 			if (subj->til == TIL_PLAYER) {
-				++depth;
-				level_generate();
+				// wrap player
 				if (player.xpos == 1)	
 					player.xpos = mapsize - 2;
 				if (player.ypos == 1)
 					player.ypos = mapsize - 2;
+				if (player.xpos == mapsize - 2)
+					player.xpos = 1;
+				if (player.ypos == mapsize - 2)
+					player.ypos = 1;
+				// Make a new map
+				++depth;
+				level_generate();
 			}
 			else {
 				thing_disable(subj);
