@@ -116,14 +116,14 @@ struct vect2d {
 
 // MOst of this needs a bit of a move around I think
 //const int mapsize = 28;
-const int mapsize = 16;
+const int mapsize = 8;
 //const int maparraysize = 784;
-const int maparraysize = 256;
+const int maparraysize = 64;
 const int roomsize = 8;
 const int maxdoors = 8;
 const int statmax = 8;
 //enum tile maparray[784];
-enum tile maparray[256];
+enum tile maparray[8];
 struct Thing things[32];
 struct Thing doors[8];
 int door_count = 0;
@@ -1165,7 +1165,7 @@ void level_connect_rooms(int rtcx, int rtcy, int rtctx, int rtcty) {
 // alternative simple level generator
 void level_generate() {
 	int i;
-	for (i = 0; i < 256; ++i) {
+	for (i = 0; i < maparraysize; ++i) {
 		maparray[i] = TIL_FLOOR;
 	}
 
