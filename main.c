@@ -129,10 +129,9 @@ struct Thing player;
 struct Thing empty;
 struct Thing blocker;
 struct Thing shot;
-int connections[9] = {
-		0, 0, 0,
-		0, 0, 0,
-		0, 0, 0
+int connections[4] = {
+		0, 0, 
+		0, 0
 };
 int depth = 0;
 int maxdepth = 15;
@@ -1048,13 +1047,13 @@ void level_generate_room(int minx, int miny, int maxx, int maxy) {
 
 int room_open_connections(int x, int y) {
 	int c = 0;
-	if (y - 1 >= 0 && connections[(y - 1) * 3 + x] == 0)
+	if (y - 1 >= 0 && connections[(y - 1) * 2 + x] == 0)
 		c++;
-	if (x + 1 < 3 && connections[y * 3 + (x + 1)] == 0)
+	if (x + 1 < 2 && connections[y * 2 + (x + 1)] == 0)
 		c++;
-	if (y + 1 < 3 && connections[(y + 1) * 3 + x] == 0)
+	if (y + 1 < 2 && connections[(y + 1) * 2 + x] == 0)
 		c++;
-	if (x - 1 >= 0 && connections[y * 3 + (x - 1)] == 0)
+	if (x - 1 >= 0 && connections[y * 2 + (x - 1)] == 0)
 		c++;
 	return c;
 }
@@ -1062,9 +1061,9 @@ int room_open_connections(int x, int y) {
 int level_unconnected_rooms() {
 	int x, y;
 	int c = 0;
-	for (x = 0; x < 3; ++x) {
-		for (y = 0; y < 3; ++y) {
-			if (connections[y * 3 + x] == 0)
+	for (x = 0; x < 2; ++x) {
+		for (y = 0; y < 2; ++y) {
+			if (connections[y * 2 + x] == 0)
 				++c;
 		}
 	}
@@ -1074,9 +1073,9 @@ int level_unconnected_rooms() {
 struct vect2d level_get_first_unconnected() {
 	int x, y;
 	struct vect2d ntc = {-1, -1};
-	for (x = 0; x < 3; ++x) {
-		for (y = 0; y < 3; ++y) {
-			if (connections[y * 3 + x] == 0) {
+	for (x = 0; x < 2; ++x) {
+		for (y = 0; y < 2; ++y) {
+			if (connections[y * 2 + x] == 0) {
 				ntc.x = x;
 				ntc.y = y;
 				return ntc;
@@ -1157,13 +1156,13 @@ void level_connect_rooms(int rtcx, int rtcy, int rtctx, int rtcty) {
 			}
 		}
 	}
-	connections[rtcy * 3 + rtcx] = 1;
+	connections[rtcy * 2 + rtcx] = 1;
 }
 
 void level_generate() {
 	// reset all room connections
 	int i;
-	for (i = 0; i < 9; ++i) {
+	for (i = 0; i < 4; ++i) {
 		connections[i] = 0;
 	}
 
@@ -1178,21 +1177,21 @@ void level_generate() {
 	}
 	level_generate_room(1, 1, roomsize, roomsize);
 	level_generate_room(roomsize + 1, 1, roomsize * 2, roomsize);
-	level_generate_room(roomsize * 2 + 1, 1, roomsize * 3, roomsize);
+	//level_generate_room(roomsize * 2 + 1, 1, roomsize * 3, roomsize);
 	level_generate_room(1, roomsize + 1, roomsize, roomsize * 2);
 	level_generate_room(roomsize + 1, roomsize + 1, roomsize * 2, roomsize * 2);
-	level_generate_room(roomsize * 2 + 1, roomsize + 1, roomsize * 3, roomsize * 2);
-	level_generate_room(1, roomsize * 2 + 1, roomsize, roomsize * 3);
-	level_generate_room(roomsize + 1, roomsize * 2 + 1, roomsize * 2, roomsize * 3);
-	level_generate_room(roomsize * 2 + 1, roomsize * 2 + 1, roomsize * 3, roomsize * 3);
+	//level_generate_room(roomsize * 2 + 1, roomsize + 1, roomsize * 3, roomsize * 2);
+	//level_generate_room(1, roomsize * 2 + 1, roomsize, roomsize * 3);
+	//level_generate_room(roomsize + 1, roomsize * 2 + 1, roomsize * 2, roomsize * 3);
+	//level_generate_room(roomsize * 2 + 1, roomsize * 2 + 1, roomsize * 3, roomsize * 3);
 
 	int rtcx, rtcy, rtctx, rtcty, dir;
 
-	rtcx = gsrand(0, 2);
-	rtcy = gsrand(0, 2);
+	rtcx = gsrand(0, 1);
+	rtcy = gsrand(0, 1);
 
-	rtctx = 3;
-	rtcty = 3;
+	rtctx = 2;
+	rtcty = 2;
 
 	// First step: step through, joining rooms then using that room to make a new join.
 	// Eventually, we get into a dead end, so stop and go on to phase 2 of the generator.
@@ -1203,7 +1202,7 @@ void level_generate() {
 		if (room_open_connections(rtcx, rtcy) == 0) break;
 
 		// make sure the connection is valid
-		while (rtctx > 2 || rtcty > 2 || rtctx < 0 || rtcty < 0 || connections[rtcty * 3 + rtctx] == 1) {
+		while (rtctx > 1 || rtcty > 1 || rtctx < 0 || rtcty < 0 || connections[rtcty * 2 + rtctx] == 1) {
 			dir = gsrand(0, 3);
 			switch (dir) {
 				case 0:
@@ -1229,8 +1228,8 @@ void level_generate() {
 
 		rtcx = rtctx;
 		rtcy = rtcty;
-		rtctx = 3;
-		rtcty = 3;
+		rtctx = 2;
+		rtcty = 2;
 	}
 
 	// Second part: select randomly an unjoined room, and join to an adjacent room, until no more unjoined rooms exist.
@@ -1243,9 +1242,9 @@ void level_generate() {
 
 		rtcx = ntc.x;
 		rtcy = ntc.y;
-		rtctx = 3;
-		rtcty = 3;
-		while (rtctx > 2 || rtcty > 2 || rtctx < 0 || rtcty < 0) {
+		rtctx = 2;
+		rtcty = 2;
+		while (rtctx > 1 || rtcty > 1 || rtctx < 0 || rtcty < 0) {
 			dir = gsrand(0, 3);
 			switch (dir) {
 				case 0:
@@ -1271,12 +1270,12 @@ void level_generate() {
 	}
 
 	// Third part: some random connections
-	int xtra_connections = gsrand(3, 7);
+	int xtra_connections = gsrand(1, 3);
 	for (i = 0; i < xtra_connections; ++i) {
-		rtcx = gsrand(0, 2);
-		rtctx = gsrand(0, 2);
-		rtcy = gsrand(0, 2);
-		rtcty = gsrand(0, 2);
+		rtcx = gsrand(0, 1);
+		rtctx = gsrand(0, 1);
+		rtcy = gsrand(0, 1);
+		rtcty = gsrand(0, 1);
 		level_connect_rooms(rtcx, rtcty, rtctx, rtcty);
 	}
 
