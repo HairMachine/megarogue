@@ -677,13 +677,13 @@ struct Thing *thing_collide(struct Thing *t, enum direction dir) {
 			break;
 		case DIR_EAST:
 			xm = t->xpos + 1;
-			if (xm >= mapsize) 
-				xm = mapsize;
+			if (xm >= mapsize - 1) 
+				xm = mapsize - 1;
 			break;
 		case DIR_SOUTH:
 			ym = t->ypos + 1;
-			if (ym >= mapsize)
-				ym = mapsize;
+			if (ym >= mapsize - 1)
+				ym = mapsize - 1;
 			break;
 		case DIR_WEST:
 			xm = t->xpos - 1;
