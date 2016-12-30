@@ -624,7 +624,7 @@ struct Thing thing_put(enum tile t) {
 
 void things_generate() {
 	int i, roll;
-	int max_m = 1 + depth >> 1;
+	int max_m = 1 + (depth >> 1);
 	if (max_m > 15) max_m = 15;
 	// int max_i = depth + 17;
 	// if (max_i > 27) max_i = 27;
