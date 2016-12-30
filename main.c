@@ -116,14 +116,14 @@ struct vect2d {
 
 // MOst of this needs a bit of a move around I think
 //const int mapsize = 28;
-const int mapsize = 8;
+const int mapsize = 10;
 //const int maparraysize = 784;
-const int maparraysize = 64;
+const int maparraysize = 100;
 const int roomsize = 8;
 const int maxdoors = 8;
 const int statmax = 8;
 //enum tile maparray[784];
-enum tile maparray[8];
+enum tile maparray[81];
 struct Thing things[32];
 struct Thing doors[8];
 int door_count = 0;
@@ -1164,26 +1164,30 @@ void level_connect_rooms(int rtcx, int rtcy, int rtctx, int rtcty) {
 void level_generate() {
 	int c = gsrand(0, 1);
 	int i;
-	int room1[64] = {
-		2, 2, 2, 2, 2, 2, 2, 2,
-		2, 2, 2, 2, 2, 2, 2, 2,
-		2, 2, 2, 2, 2, 2, 2, 2,
-		2, 2, 2, 2, 2, 2, 2, 2,
-		2, 2, 2, 2, 2, 2, 2, 2,
-		2, 2, 2, 2, 2, 2, 2, 2,
-		2, 2, 2, 2, 2, 2, 2, 2,
-		2, 2, 2, 2, 2, 2, 2, 2
+	int room1[100] = {
+		6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+		6, 2, 2, 2, 2, 2, 2, 2, 2, 6,
+		6, 2, 2, 2, 2, 2, 2, 2, 2, 6,
+		6, 2, 2, 2, 2, 2, 2, 2, 2, 6,
+		6, 2, 2, 2, 2, 2, 2, 2, 2, 6,
+		6, 2, 2, 2, 2, 2, 2, 2, 2, 6,
+		6, 2, 2, 2, 2, 2, 2, 2, 2, 6,
+		6, 2, 2, 2, 2, 2, 2, 2, 2, 6,
+		6, 2, 2, 2, 2, 2, 2, 2, 2, 6,
+		6, 6, 6, 6, 6, 6, 6, 6, 6, 6
 	};
 
-	int room2[64] = {
-		2, 2, 2, 2, 2, 2, 2, 2,
-		2, 6, 2, 2, 2, 2, 6, 2,
-		2, 2, 2, 2, 2, 2, 2, 2,
-		2, 2, 2, 6, 6, 2, 2, 2,
-		2, 2, 2, 6, 6, 2, 2, 2,
-		2, 2, 2, 2, 2, 2, 2, 2,
-		2, 6, 2, 2, 2, 2, 6, 2,
-		2, 2, 2, 2, 2, 2, 2, 2
+	int room2[100] = {
+		6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+		6, 2, 2, 2, 2, 2, 2, 2, 2, 6,
+		6, 2, 6, 2, 2, 2, 2, 6, 2, 6,
+		6, 2, 2, 2, 2, 2, 2, 2, 2, 6,
+		6, 2, 2, 2, 6, 6, 2, 2, 2, 6,
+		6, 2, 2, 2, 6, 6, 2, 2, 2, 6,
+		6, 2, 2, 2, 2, 2, 2, 2, 2, 6,
+		6, 2, 6, 2, 2, 2, 2, 6, 2, 6,
+		6, 2, 2, 2, 2, 2, 2, 2, 2, 6,
+		6, 6, 6, 6, 6, 6, 6, 6, 6, 6
 	};
 
 	switch (c) {
