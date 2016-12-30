@@ -10,7 +10,7 @@ enum direction {
 };
 
 enum tile {
-	TIL_NULL, TIL_CORRIDOR, TIL_FLOOR, TIL_DOOR_NS, TIL_DOOR_EW, TIL_WALL, TIL_PLAYER, TIL_GOBLIN, TIL_STAIRS, TIL_MACGUFFIN,
+	TIL_NULL, TIL_CORRIDOR, TIL_FLOOR, TIL_TAKEN, TIL_DOOR_NS, TIL_DOOR_EW, TIL_WALL, TIL_PLAYER, TIL_GOBLIN, TIL_STAIRS, TIL_MACGUFFIN,
 	TIL_WPN, TIL_POTION, TIL_FOOD, TIL_SCROLL, TIL_AMMO, TIL_SHOT, TIL_KEY, TIL_PIT, TIL_RAGE, TIL_TELE, TIL_GODMODE, TIL_SUPER,
 	TIL_LEVITATE, TIL_POWER
 };
@@ -175,6 +175,7 @@ void tile_draw(enum tile tilenum, int x, int y) {
 			VDP_setTileMapXY(APLAN, TIL_NULL, x, y);
 			break;
 		case TIL_FLOOR:
+		case TIL_TAKEN:
 		case TIL_CORRIDOR:
 			VDP_setTileMapXY(APLAN, TIL_FLOOR, x, y);
 			break;
@@ -457,6 +458,7 @@ struct vect2d position_find_valid() {
 	}
 	pos.x = xp;
 	pos.y = yp;
+	maparray[yp * mapsize + xp] = TIL_TAKEN;
 	return pos;
 }
 
