@@ -1400,7 +1400,7 @@ int main() {
 
 	// Temp: randomise
 	int rs;
-	for (rs = 0; rs < 8; ++rs) {
+	for (rs = 0; rs < 13; ++rs) {
 		random();
 	}
 
