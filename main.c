@@ -1185,7 +1185,7 @@ void level_connect_rooms(int rtcx, int rtcy, int rtctx, int rtcty) {
 
 // alternative simple level generator
 void level_generate() {
-	int c = gsrand(0, 1);
+	int c = gsrand(0, 3);
 	int i;
 	int room1[100] = {
 		6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
