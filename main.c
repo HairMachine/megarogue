@@ -299,7 +299,7 @@ void redraw_tiles() {
 		else
 			tile_draw(TIL_NULL, x, y);
 		++x;
-		if (x >= mapsize) {
+		if (x >= mapsize - 1) {
 			x = 0;
 			++y;
 		}
