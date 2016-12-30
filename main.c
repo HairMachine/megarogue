@@ -668,8 +668,8 @@ void things_generate() {
 			case 2: exit_x = 0; exit_y = 4; break;
 			case 3: exit_x = 4; exit_y = mapsize - 1; break;
 		}
-		thing_make(TIL_STAIRS, exit_x, exit_y);
 		maparray[exit_y * mapsize + exit_x] = TIL_FLOOR;
+		thing_make(TIL_STAIRS, exit_x, exit_y);
 	}
 	else
 		things[31] = thing_put(TIL_MACGUFFIN);
