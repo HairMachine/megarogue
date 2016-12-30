@@ -449,11 +449,11 @@ void screen_dead() {
 
 struct vect2d position_find_valid() {
 	struct vect2d pos = {-1, -1};
-	int xp = gsrand(0, mapsize);
-	int yp = gsrand(0, mapsize);
+	int xp = gsrand(0, mapsize - 1);
+	int yp = gsrand(0, mapsize - 1);
 	while (maparray[yp * mapsize + xp] != TIL_FLOOR) {
-		xp = gsrand(0, mapsize);
-		yp = gsrand(0, mapsize);
+		xp = gsrand(0, mapsize - 1);
+		yp = gsrand(0, mapsize - 1);
 	}
 	pos.x = xp;
 	pos.y = yp;
@@ -671,28 +671,20 @@ struct Thing *thing_collide(struct Thing *t, enum direction dir) {
 	int xm = 0, ym = 0;
 	switch (dir) {
 		case DIR_NORTH:
-			ym = t->ypos - 1;
-			if (ym < 0) 
-				ym = 0;
+			ym = -1;
 			break;
 		case DIR_EAST:
-			xm = t->xpos + 1;
-			if (xm >= mapsize - 1) 
-				xm = mapsize - 1;
+			xm = 1;
 			break;
 		case DIR_SOUTH:
-			ym = t->ypos + 1;
-			if (ym >= mapsize - 1)
-				ym = mapsize - 1;
+			ym = 1;
 			break;
 		case DIR_WEST:
-			xm = t->xpos - 1;
-			if (xm < 0)
-				xm = 0;
+			xm = -1;
 			break;
 	}
 	// check wall
-	int til_i = (ym * mapsize) + xm;
+	int til_i = ((t->ypos + ym) * mapsize) + (t->xpos + xm);
 	if (maparray[til_i] >= TIL_WALL)
 		return &blocker;
 	// check doors
