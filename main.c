@@ -636,7 +636,7 @@ void things_generate() {
 	// second loop: items.
 	// TODO: a better system for deciding what to generate
 	for (i = 15; i < max_i + 15; ++i) {
-		roll = gsrand(0, 13);
+		roll = gsrand(0, 11);
 		if (roll >= 0  && roll <= 1)
 			things[i] = thing_put(TIL_POTION);
 		else if (roll >= 2 && roll <= 3)
@@ -654,10 +654,6 @@ void things_generate() {
 		else if (roll == 10)
 			things[i] = thing_put(TIL_GODMODE);
 		else if (roll == 11)
-			things[i] = thing_put(TIL_SUPER);
-		else if (roll == 12)
-			things[i] = thing_put(TIL_LEVITATE);
-		else if (roll == 13)
 			things[i] = thing_put(TIL_POWER);
 	}
 	// finally the stairs or macguffin on last level
