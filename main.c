@@ -1164,9 +1164,37 @@ void level_connect_rooms(int rtcx, int rtcy, int rtctx, int rtcty) {
 
 // alternative simple level generator
 void level_generate() {
+	int c = gsrand(0, 1);
 	int i;
-	for (i = 0; i < maparraysize; ++i) {
-		maparray[i] = TIL_FLOOR;
+	int room1[64] = {
+		2, 2, 2, 2, 2, 2, 2, 2,
+		2, 2, 2, 2, 2, 2, 2, 2,
+		2, 2, 2, 2, 2, 2, 2, 2,
+		2, 2, 2, 2, 2, 2, 2, 2,
+		2, 2, 2, 2, 2, 2, 2, 2,
+		2, 2, 2, 2, 2, 2, 2, 2,
+		2, 2, 2, 2, 2, 2, 2, 2,
+		2, 2, 2, 2, 2, 2, 2, 2
+	};
+
+	int room2[64] = {
+		2, 2, 2, 2, 2, 2, 2, 2,
+		2, 5, 2, 2, 2, 2, 5, 2,
+		2, 2, 2, 2, 2, 2, 2, 2,
+		2, 2, 2, 5, 5, 2, 2, 2,
+		2, 2, 2, 5, 5, 2, 2, 2,
+		2, 2, 2, 2, 2, 2, 2, 2,
+		2, 5, 2, 2, 2, 2, 5, 2,
+		2, 2, 2, 2, 2, 2, 2, 2
+	};
+
+	switch (c) {
+		case 0: 
+			memcpy(maparray, room1, sizeof(room1));
+			break;
+		case 1:
+			memcpy(maparray, room1, sizeof(room1));
+			break;
 	}
 
 	// Put stuff
