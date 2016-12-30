@@ -123,7 +123,7 @@ const int roomsize = 8;
 const int maxdoors = 8;
 const int statmax = 8;
 //enum tile maparray[784];
-enum tile maparry[256];
+enum tile maparray[256];
 struct Thing things[32];
 struct Thing doors[8];
 int door_count = 0;
