@@ -923,10 +923,10 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 			if (subj->til == TIL_PLAYER) {
 				++depth;
 				level_generate();
-				if (player.xpos == 0)	
-					player.xpos = 4;
-				if (player.ypos == 0)
-					player.ypos = 4;
+				if (player.xpos == 1)	
+					player.xpos = mapsize - 2;
+				if (player.ypos == 1)
+					player.ypos = mapsize - 2;
 			}
 			else {
 				thing_disable(subj);
