@@ -660,7 +660,7 @@ void things_generate() {
 	}
 	// finally the stairs on a normal level, or macguffin on last level
 	if (depth < maxdepth) {
-		/*roll = gsrand(0, 3);
+		roll = gsrand(0, 3);
 		int exit_x, exit_y;
 		switch (roll) {
 			case 0: exit_x = 4; exit_y = 0; break;
@@ -668,8 +668,8 @@ void things_generate() {
 			case 2: exit_x = 0; exit_y = 4; break;
 			case 3: exit_x = 4; exit_y = mapsize - 1; break;
 		}
-		maparray[exit_y * mapsize + exit_x] = TIL_FLOOR;*/
-		thing_make(TIL_STAIRS, 0, 4);
+		maparray[exit_y * mapsize + exit_x] = TIL_FLOOR;
+		things[31] = thing_make(TIL_STAIRS, exit_x, exit_y);
 	}
 	else
 		things[31] = thing_put(TIL_MACGUFFIN);
