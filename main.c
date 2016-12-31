@@ -10,9 +10,9 @@ enum direction {
 };
 
 enum tile {
-	TIL_NULL, TIL_CORRIDOR, TIL_FLOOR, TIL_TAKEN, TIL_DOOR_NS, TIL_DOOR_EW, TIL_WALL, TIL_PLAYER, TIL_GOBLIN, TIL_STAIRS, TIL_MACGUFFIN,
-	TIL_WPN, TIL_POTION, TIL_FOOD, TIL_SCROLL, TIL_AMMO, TIL_SHOT, TIL_KEY, TIL_PIT, TIL_RAGE, TIL_TELE, TIL_GODMODE, TIL_SUPER,
-	TIL_LEVITATE, TIL_POWER
+	TIL_NULL, TIL_CORRIDOR, TIL_FLOOR, TIL_TAKEN, TIL_DOOR_NS, TIL_DOOR_EW, TIL_WALL, TIL_PLAYER, TIL_GOBLIN, TIL_STAIRS, 
+	TIL_MACGUFFIN, TIL_WPN, TIL_POTION, TIL_FOOD, TIL_SCROLL, TIL_AMMO, TIL_SHOT, TIL_KEY, TIL_PIT, TIL_RAGE, TIL_TELE, 
+	TIL_GODMODE, TIL_SUPER, TIL_LEVITATE, TIL_POWER
 };
 
 enum SHOTTYPE {
@@ -24,36 +24,36 @@ enum GM_MODE {
 };
 
 const u32 tile_null[8] = {
-		0x00000000,
-		0x00000000,
-		0x00000000,
-		0x00000000,
-		0x00000000,
-		0x00000000,
-		0x00000000,
-		0x00000000
+	0x00000000,
+	0x00000000,
+	0x00000000,
+	0x00000000,
+	0x00000000,
+	0x00000000,
+	0x00000000,
+	0x00000000
 };
 
 const u32 tile_wall[8] = {
-		0x11111111,
-		0x11111111,
-		0x11111111,
-		0x11111111,
-		0x11111111,
-		0x11111111,
-		0x11111111,
-		0x11111111
+	0x11111111,
+	0x11111111,
+	0x11111111,
+	0x11111111,
+	0x11111111,
+	0x11111111,
+	0x11111111,
+	0x11111111
 };
 
 const u32 tile_floor[8] = {
-		0x11111111,
-		0x10000000,
-		0x10000000,
-		0x10000000,
-		0x10000000,
-		0x10000000,
-		0x10000000,
-		0x10000000
+	0x11111111,
+	0x10000000,
+	0x10000000,
+	0x10000000,
+	0x10000000,
+	0x10000000,
+	0x10000000,
+	0x10000000
 };
 
 const u32 tile_door_ns[8] = {
@@ -144,7 +144,6 @@ int food = 512;
 int keys = 5;
 int ammo[9] = {0, 10, 0, 0, 0, 0, 0, 0, 0};
 int current_ammo = 1;
-
 
 void level_generate();
 
@@ -911,10 +910,13 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 		return;
 	}
 
+	// For all non-bullet collisions
+	// Collisions are currently non-commutative, which is kind of weird I guess.
 	struct vect2d newpos;
 
 	switch (obj->til) {
 		case TIL_GOBLIN:
+			break;
 		case TIL_PLAYER:
 			if (thing_status_has(subj, ST_RAGE))
 				thing_damage(obj, subj->damage * 4);
