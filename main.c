@@ -641,8 +641,8 @@ void things_generate() {
 	}
 	// second loop: items.
 	// TODO: a better system for deciding what to generate
-	dl = 0;
-	while (dl < depth && num < max_i + num) {
+	dl = 0; max_i += num;
+	while (dl < depth && num < max_i) {
 		roll = gsrand(0, 4);
 		if (roll == 0)
 			things[num] = thing_put(TIL_POTION);
