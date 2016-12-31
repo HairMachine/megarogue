@@ -633,35 +633,30 @@ void things_generate() {
 	// if (max_i > 27) max_i = 27;
 	int max_i = 2 + gsrand(0, 2);
 	// first loop: monsters.
-	int dl = 0, num_m = 0;
+	int dl = 0, num = 0;
 	struct Thing this_m;
-	while (dl < depth && num_m < max_m) {
-		things[num_m] = thing_put(TIL_GOBLIN);
+	while (dl < depth && num < max_m) {
+		things[num] = thing_put(TIL_GOBLIN);
 		dl += this_m.dl;
-		++num_m;
+		++num;
 	}
 	// second loop: items.
 	// TODO: a better system for deciding what to generate
-	for (i = 15; i < max_i + 15; ++i) {
-		roll = gsrand(0, 11);
-		if (roll >= 0  && roll <= 1)
-			things[i] = thing_put(TIL_POTION);
-		else if (roll >= 2 && roll <= 3)
-			things[i] = thing_put(TIL_FOOD);
+	dl = 0; num = 0;
+	while (dl < depth && num < max_i) {
+		roll = gsrand(0, 4);
+		if (roll == 0)
+			things[num] = thing_put(TIL_POTION);
+		else if (roll == 1)
+			things[num] = thing_put(TIL_FOOD);
+		else if (roll == 2)
+			things[num] = thing_put(TIL_AMMO);
+		else if (roll == 3)
+			things[num] = thing_put(TIL_PIT);
 		else if (roll == 4)
-			things[i] = thing_put(TIL_KEY);
-		else if (roll >= 5 && roll <= 6)
-			things[i] = thing_put(TIL_AMMO);
-		else if (roll == 7)
-			things[i] = thing_put(TIL_PIT);
-		else if (roll == 8)	
-			things[i] = thing_put(TIL_RAGE);
-		else if (roll == 9)
-			things[i] = thing_put(TIL_TELE);
-		else if (roll == 10)
-			things[i] = thing_put(TIL_GODMODE);
-		else if (roll == 11)
-			things[i] = thing_put(TIL_POWER);
+			things[num] = thing_put(TIL_TELE);
+		++num;
+		dl += things[i].dl;
 	}
 	// finally the stairs on a normal level, or macguffin on last level
 	if (depth < maxdepth) {
@@ -976,7 +971,7 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 			}
 			break;
 		case TIL_FOOD:
-			food += 64; 
+			food += 16; 
 			draw_food();
 			thing_disable(obj);
 			break;
