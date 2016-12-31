@@ -635,7 +635,7 @@ void things_generate() {
 	// first loop: monsters.
 	int dl = 0, num_m = 0;
 	struct Thing this_m;
-	while (dl <= depth && num_m < max_m) {
+	while (dl < depth && num_m < max_m) {
 		things[num_m] = thing_put(TIL_GOBLIN);
 		dl += this_m.dl;
 		++num_m;
