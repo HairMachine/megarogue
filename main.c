@@ -107,6 +107,7 @@ struct Thing {
 	int damage;
 	int range;
 	struct Status status[8];
+	int dl;
 };
 
 struct vect2d {
@@ -578,6 +579,7 @@ struct Thing thing_make(enum tile t, int x, int y) {
 	thing.range = 5;
 	thing.st = SH_NONE;
 	thing_status_reset(&thing);
+	thing.dl = 1;
 	switch (t) {
 		case TIL_PLAYER:
 			thing.hp = 10;
@@ -631,8 +633,12 @@ void things_generate() {
 	// if (max_i > 27) max_i = 27;
 	int max_i = 2 + gsrand(0, 2);
 	// first loop: monsters.
-	for (i = 0; i < max_m; ++i) {
-		things[i] = thing_put(TIL_GOBLIN);
+	int dl = 0, num_m = 0;
+	struct Thing this_m;
+	while (dl <= depth && num_m < max_m) {
+		things[num_m] = thing_put(TIL_GOBLIN);
+		dl += this_m.dl;
+		++num_m;
 	}
 	// second loop: items.
 	// TODO: a better system for deciding what to generate
