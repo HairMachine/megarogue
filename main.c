@@ -580,13 +580,13 @@ struct Thing thing_make(enum tile t, int x, int y) {
 	thing_status_reset(&thing);
 	switch (t) {
 		case TIL_PLAYER:
-			thing.hp = 20;
+			thing.hp = 10;
 			thing.damage = 1;
 			thing.range = 32;
 			thing.flags = FL_NONE;
 			break;
 		case TIL_GOBLIN:
-			thing.hp = 5;
+			thing.hp = 1;
 			thing.flags = FL_MOVES;
 			thing.damage = 1;
 			break;
@@ -596,7 +596,7 @@ struct Thing thing_make(enum tile t, int x, int y) {
 		case TIL_DOOR_NS:
 		case TIL_DOOR_EW:
 			thing.flags = FL_NONE;
-			thing.hp = 10;
+			thing.hp = 5;
 			break;
 		case TIL_STAIRS:
 			thing.flags = FL_IMMORTAL;
@@ -1037,7 +1037,7 @@ void shoot_direction(struct Thing* subj, enum SHOTTYPE st, enum direction dir) {
 	shot.xpos = subj->xpos;
 	shot.ypos = subj->ypos;
 	shot.st = st;
-	shot.damage = 2;
+	shot.damage = 1;
 	if (thing_status_has(subj, ST_POWER))
 		shot.damage *= 4;
 	--ammo[st];
