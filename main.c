@@ -143,7 +143,7 @@ enum ABILITIES abilities[3] = {AB_NONE, AB_NONE, AB_NONE};
 enum GM_MODE gm_mode = GM_WALK;
 int food = 512;
 int keys = 5;
-int ammo[9] = {0, 10, 0, 0, 0, 0, 0, 0, 0};
+int ammo[9] = {0, 4, 0, 0, 0, 0, 0, 0, 0};
 int current_ammo = 1;
 
 void level_generate();
@@ -977,7 +977,7 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 			break;
 		case TIL_AMMO:
 			if (subj->til == TIL_PLAYER) {
-				ammo[SH_NORMAL] += 4;
+				ammo[SH_NORMAL] += 2;
 				thing_disable(obj);
 				draw_ammo();
 			}
