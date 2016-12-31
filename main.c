@@ -642,7 +642,7 @@ void things_generate() {
 	// second loop: items.
 	// TODO: a better system for deciding what to generate
 	dl = 0;
-	while (dl < depth && num < max_i + max_m) {
+	while (dl < depth && num < max_i + num) {
 		roll = gsrand(0, 4);
 		if (roll == 0)
 			things[num] = thing_put(TIL_POTION);
@@ -655,7 +655,7 @@ void things_generate() {
 		else if (roll == 4)
 			things[num] = thing_put(TIL_TELE);
 		++num;
-		dl += things[i].dl;
+		dl += things[num].dl;
 	}
 	// finally the stairs on a normal level, or macguffin on last level
 	if (depth < maxdepth) {
