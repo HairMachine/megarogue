@@ -627,17 +627,16 @@ struct Thing thing_put(enum tile t) {
 
 void things_generate() {
 	int i, roll;
-	int max_m = 1 + gsrand(0, 3);
+	int max_m = 3 + gsrand(0, 1);
 	//if (max_m > 15) max_m = 15;
 	// int max_i = depth + 17;
 	// if (max_i > 27) max_i = 27;
 	int max_i = 2 + gsrand(0, 2);
 	// first loop: monsters.
 	int dl = 0, num = 0;
-	struct Thing this_m;
 	while (dl < depth && num < max_m) {
 		things[num] = thing_put(TIL_GOBLIN);
-		dl += this_m.dl;
+		dl += things[num].dl;
 		++num;
 	}
 	// second loop: items.
