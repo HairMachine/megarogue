@@ -1,0 +1,1 @@
+SPRITE template_dude "template_dude.bmp" 2 2

@@ -1,0 +1,1 @@
+TILESET bigtiles "bigtiles.bmp"

@@ -1,9 +1,10 @@
 #include <genesis.h>
 #include "res/testm.h"
 #include "res/potion.h"
-#include "res/hero.h"
 #include "res/stairs.h"
 #include "res/card.h"
+#include "res/bigtiles.h"
+#include "res/template_dude.h"
 
 enum direction {
 	DIR_NORTH, DIR_EAST, DIR_SOUTH, DIR_WEST
@@ -170,17 +171,25 @@ int gsrand(int min, int max) {
 }
 
 void tile_draw(enum tile tilenum, int x, int y) {
+	x *= 2;
+	y *= 2;
 	switch (tilenum) {
 		case TIL_NULL:
-			VDP_setTileMapXY(APLAN, TIL_NULL, x, y);
+			VDP_setTileMapXY(APLAN, TILE_ATTR_FULL(PAL1, 0, 0, 0, TIL_NULL), x, y);
 			break;
 		case TIL_FLOOR:
 		case TIL_TAKEN:
 		case TIL_CORRIDOR:
-			VDP_setTileMapXY(APLAN, TIL_FLOOR, x, y);
+			VDP_setTileMapXY(APLAN, TILE_ATTR_FULL(PAL1, 0, 0, 0, 0), x, y);
+			VDP_setTileMapXY(APLAN, TILE_ATTR_FULL(PAL1, 0, 0, 0, 1), x + 1, y);
+			VDP_setTileMapXY(APLAN, TILE_ATTR_FULL(PAL1, 0, 0, 0, 4), x, y + 1);
+			VDP_setTileMapXY(APLAN, TILE_ATTR_FULL(PAL1, 0, 0, 0, 5), x + 1, y + 1);
 			break;
 		case TIL_WALL:
-			VDP_setTileMapXY(APLAN, TIL_WALL, x, y);
+			VDP_setTileMapXY(APLAN, TILE_ATTR_FULL(PAL1, 0, 0, 0, 2), x, y);
+			VDP_setTileMapXY(APLAN, TILE_ATTR_FULL(PAL1, 0, 0, 0, 3), x + 1, y);
+			VDP_setTileMapXY(APLAN, TILE_ATTR_FULL(PAL1, 0, 0, 0, 6), x, y + 1);
+			VDP_setTileMapXY(APLAN, TILE_ATTR_FULL(PAL1, 0, 0, 0, 7), x + 1, y + 1);
 			break;
 		case TIL_DOOR_NS:
 			VDP_setTileMapXY(APLAN, TIL_DOOR_NS, x, y);
@@ -192,58 +201,59 @@ void tile_draw(enum tile tilenum, int x, int y) {
 }
 
 void sprite_set(int id, enum tile tilenum, int x, int y) {
+	const int ts = 16;
 	switch (tilenum) {
 		case TIL_GOBLIN:
-			SPR_initSprite(&sprite[id], &testm, x * 8, y * 8, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
+			SPR_initSprite(&sprite[id], &testm, x * ts, y * ts, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
 			break;
 		case TIL_PLAYER:
-			SPR_initSprite(&sprite[id], &hero, x * 8, y * 8, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
+			SPR_initSprite(&sprite[id], &template_dude, x * ts, y * ts, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
 			break;
 		case TIL_STAIRS:
-			SPR_initSprite(&sprite[id], &stairs, x * 8, y * 8, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
+			SPR_initSprite(&sprite[id], &stairs, x * ts, y * ts, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
 			break;
 		case TIL_PIT:
-			SPR_initSprite(&sprite[id], &stairs, x * 8, y * 8, TILE_ATTR(PAL2, TRUE, FALSE, FALSE));
+			SPR_initSprite(&sprite[id], &stairs, x * ts, y * ts, TILE_ATTR(PAL2, TRUE, FALSE, FALSE));
 			break;
 		case TIL_MACGUFFIN:
-			SPR_initSprite(&sprite[id], &testm, x * 8, y * 8, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
+			SPR_initSprite(&sprite[id], &testm, x * ts, y * ts, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
 			break;
 		case TIL_POTION:
-			SPR_initSprite(&sprite[id], &potion, x * 8, y * 8, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
+			SPR_initSprite(&sprite[id], &potion, x * ts, y * ts, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
 			break;
 		case TIL_FOOD:
-			SPR_initSprite(&sprite[id], &potion, x * 8, y * 8, TILE_ATTR(PAL2, TRUE, FALSE, FALSE));
+			SPR_initSprite(&sprite[id], &potion, x * ts, y * ts, TILE_ATTR(PAL2, TRUE, FALSE, FALSE));
 			break;
 		case TIL_KEY:
-			SPR_initSprite(&sprite[id], &potion, x * 8, y * 8, TILE_ATTR(PAL3, TRUE, FALSE, FALSE));
+			SPR_initSprite(&sprite[id], &potion, x * ts, y * ts, TILE_ATTR(PAL3, TRUE, FALSE, FALSE));
 			break;
 		case TIL_AMMO:
-			SPR_initSprite(&sprite[id], &card, x * 8, y * 8, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
+			SPR_initSprite(&sprite[id], &card, x * ts, y * ts, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
 			break;
 		case TIL_SCROLL:
-			SPR_initSprite(&sprite[id], &testm, x * 8, y * 8, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
+			SPR_initSprite(&sprite[id], &testm, x * ts, y * ts, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
 			break;
 		case TIL_RAGE:
-			SPR_initSprite(&sprite[id], &potion, x * 8, y * 8, TILE_ATTR(PAL0, TRUE, FALSE, FALSE));
+			SPR_initSprite(&sprite[id], &potion, x * ts, y * ts, TILE_ATTR(PAL0, TRUE, FALSE, FALSE));
 			break;
 		case TIL_TELE:
-			SPR_initSprite(&sprite[id], &card, x * 8, y * 8, TILE_ATTR(PAL2, TRUE, FALSE, FALSE));
+			SPR_initSprite(&sprite[id], &card, x * ts, y * ts, TILE_ATTR(PAL2, TRUE, FALSE, FALSE));
 			break;
 		case TIL_GODMODE:
-			SPR_initSprite(&sprite[id], &card, x * 8, y * 8, TILE_ATTR(PAL3, TRUE, FALSE, FALSE));
+			SPR_initSprite(&sprite[id], &card, x * ts, y * ts, TILE_ATTR(PAL3, TRUE, FALSE, FALSE));
 			break;
 		case TIL_SUPER:
-			SPR_initSprite(&sprite[id], &potion, x * 8, y * 8, TILE_ATTR(PAL1, TRUE, TRUE, FALSE));
+			SPR_initSprite(&sprite[id], &potion, x * ts, y * ts, TILE_ATTR(PAL1, TRUE, TRUE, FALSE));
 			break;
 		case TIL_LEVITATE:
-			SPR_initSprite(&sprite[id], &potion, x * 8, y * 8, TILE_ATTR(PAL2, TRUE, TRUE, FALSE));
+			SPR_initSprite(&sprite[id], &potion, x * ts, y * ts, TILE_ATTR(PAL2, TRUE, TRUE, FALSE));
 			break;
 		case TIL_POWER:
-			SPR_initSprite(&sprite[id], &potion, x * 8, y * 8, TILE_ATTR(PAL3, TRUE, TRUE, FALSE));
+			SPR_initSprite(&sprite[id], &potion, x * ts, y * ts, TILE_ATTR(PAL3, TRUE, TRUE, FALSE));
 			break;
 		default:
 			// actually should de-initialise the sprite rather than drawing it offscreen
-			SPR_initSprite(&sprite[id], &testm, -8, -8, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
+			SPR_initSprite(&sprite[id], &testm, -ts, -ts, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
 			break;
 	}
 }
@@ -1519,11 +1529,12 @@ int main() {
 		random();
 	}
 
-	VDP_loadTileData((const u32 *) tile_null, TIL_NULL, 1, 0);
+	/*VDP_loadTileData((const u32 *) tile_null, TIL_NULL, 1, 0);
 	VDP_loadTileData((const u32 *) tile_wall, TIL_WALL, 1, 0);
-	VDP_loadTileData((const u32 *) tile_floor, TIL_FLOOR, 1, 0);
-	VDP_loadTileData((const u32 *) tile_door_ns, TIL_DOOR_NS, 1, 0);
-	VDP_loadTileData((const u32 *) tile_door_ew, TIL_DOOR_EW, 1, 0);
+	VDP_loadTileData((const u32 *) tile_floor, TIL_FLOOR, 1, 0);*/
+	VDP_loadTileSet(&bigtiles, TIL_NULL, 0);
+	/*VDP_loadTileData((const u32 *) tile_door_ns, TIL_DOOR_NS, 1, 0);
+	VDP_loadTileData((const u32 *) tile_door_ew, TIL_DOOR_EW, 1, 0);*/
 
 	// Initialise basic stuff
 	empty = thing_make(TIL_NULL, 0, 0);
