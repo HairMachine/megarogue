@@ -24,6 +24,11 @@ enum GM_MODE {
 	GM_WALK, GM_SHOOT
 };
 
+enum LVL_TYPE {
+	LVL_NORMAL, LVL_SHOP, LVL_TREASURE
+};
+
+
 const u32 tile_null[8] = {
 	0x00000000,
 	0x00000000,
@@ -192,11 +197,17 @@ void tile_draw(enum tile tilenum, int x, int y) {
 			VDP_setTileMapXY(APLAN, TILE_ATTR_FULL(PAL1, 0, 0, 0, 7), x + 1, y + 1);
 			break;
 		case TIL_DOOR_NS:
-			VDP_setTileMapXY(APLAN, TIL_DOOR_NS, x, y);
+			VDP_setTileMapXY(APLAN, TILE_ATTR_FULL(PAL1, 0, 0, 0, 9), x, y);
+			VDP_setTileMapXY(APLAN, TILE_ATTR_FULL(PAL1, 0, 0, 0, 10), x + 1, y);
+			VDP_setTileMapXY(APLAN, TILE_ATTR_FULL(PAL1, 0, 0, 0, 13), x, y + 1);
+			VDP_setTileMapXY(APLAN, TILE_ATTR_FULL(PAL1, 0, 0, 0, 14), x + 1, y + 1);
 			break;
 		case TIL_DOOR_EW:
-			VDP_setTileMapXY(APLAN, TIL_DOOR_EW, x, y);
-			break;	
+			VDP_setTileMapXY(APLAN, TILE_ATTR_FULL(PAL1, 0, 0, 0, 9), x, y);
+			VDP_setTileMapXY(APLAN, TILE_ATTR_FULL(PAL1, 0, 0, 0, 10), x + 1, y);
+			VDP_setTileMapXY(APLAN, TILE_ATTR_FULL(PAL1, 0, 0, 0, 13), x, y + 1);
+			VDP_setTileMapXY(APLAN, TILE_ATTR_FULL(PAL1, 0, 0, 0, 14), x + 1, y + 1);
+			break;
 	}
 }
 
@@ -679,6 +690,20 @@ void things_generate() {
 		}
 		maparray[exit_y * mapsize + exit_x] = TIL_FLOOR;
 		things[31] = thing_make(TIL_STAIRS, exit_x, exit_y);
+		// maybe a key door
+		roll = gsrand(0, 4);
+		enum tile d_til;
+		if (roll <= 4) {
+			roll = gsrand(0, 3);
+			switch (roll) {
+				case 0: exit_x = 5; exit_y = 0; d_til = TIL_DOOR_NS; break;
+				case 1: exit_x = mapsize - 1, exit_y = 5; d_til = TIL_DOOR_EW; break;
+				case 2: exit_x = 0; exit_y = 5; d_til = TIL_DOOR_EW; break;
+				case 3: exit_x = 5; exit_y = mapsize - 1; d_til = TIL_DOOR_NS; break;
+			}
+			maparray[exit_y * mapsize + exit_x] = d_til;
+			things[30] = thing_make(d_til, exit_x, exit_y);
+		}
 	}
 	else
 		things[31] = thing_put(TIL_MACGUFFIN);
@@ -957,16 +982,17 @@ void thing_interact(struct Thing *subj, struct Thing *obj) {
 		case TIL_DOOR_EW:
 			if (subj->til == TIL_PLAYER && keys > 0) {
 				--keys;
-				thing_disable(obj);
+				++depth;
+				if (player.xpos == 1)
+					player.xpos = mapsize - 2;
+				else if (player.ypos == 1)
+					player.ypos = mapsize - 2;
+				else if (player.xpos == mapsize - 2)
+					player.xpos = 1;
+				else if (player.ypos == mapsize - 2)
+					player.ypos = 1;
+				level_generate_special(LVL_TREASURE);
 				draw_keys();
-			}
-			else if (subj->til == TIL_PLAYER) {
-				if (gsrand(0, 5) == 0) {
-					thing_damage(obj, 1 + thing_status_has(subj, ST_RAGE));
-				}
-			}
-			else {
-				thing_disable(obj);
 			}
 			break;
 		case TIL_MACGUFFIN:
@@ -1273,14 +1299,63 @@ void level_generate() {
 			memcpy(maparray, room2, sizeof(room2));
 			break;
 		case 2:
-			memcpy(maparray, room3, sizeof(room2));
+			memcpy(maparray, room3, sizeof(room3));
 			break;
 		case 3:
-			memcpy(maparray, room4, sizeof(room2));
+			memcpy(maparray, room4, sizeof(room4));
 			break;
 	}
 
 	things_generate();
+
+	screen_game();
+}
+
+void level_generate_special(enum LVL_TYPE lt) {
+	int i;
+	int room1[100] = {
+			6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+			6, 2, 2, 2, 2, 2, 2, 2, 2, 6,
+			6, 2, 2, 2, 2, 2, 2, 2, 2, 6,
+			6, 2, 2, 2, 2, 2, 2, 2, 2, 6,
+			6, 2, 2, 2, 2, 2, 2, 2, 2, 6,
+			6, 2, 2, 2, 2, 2, 2, 2, 2, 6,
+			6, 2, 2, 2, 2, 2, 2, 2, 2, 6,
+			6, 2, 2, 2, 2, 2, 2, 2, 2, 6,
+			6, 2, 2, 2, 2, 2, 2, 2, 2, 6,
+			6, 6, 6, 6, 6, 6, 6, 6, 6, 6
+	};
+
+	for (i = 0; i < 32; ++i) {
+		things[i] = thing_make(TIL_NULL, 0, 0);
+	}
+
+	switch (lt) {
+		case LVL_TREASURE:
+			memcpy(maparray, room1, sizeof(room1));
+			things[0] = thing_make(TIL_AMMO, 2, 4);
+			things[1] = thing_make(TIL_POTION, 2, 7);
+			if (player.ypos == 1) {
+				maparray[(player.ypos - 1) * mapsize + player.xpos] = TIL_FLOOR;
+				things[31] = thing_make(TIL_STAIRS, player.xpos, player.ypos - 1);
+			}
+			else if (player.xpos == mapsize - 2) {
+				maparray[player.ypos * mapsize + player.xpos + 1] = TIL_FLOOR;
+				things[31] = thing_make(TIL_STAIRS, player.xpos + 1, player.ypos);
+			}
+			else if (player.ypos == mapsize - 2) {
+				maparray[(player.ypos + 1) * mapsize + player.xpos] = TIL_FLOOR;
+				things[31] = thing_make(TIL_STAIRS, player.xpos, player.ypos + 1);
+			}
+			else if (player.xpos == 1) {
+				maparray[player.ypos * mapsize + player.xpos - 1] = TIL_FLOOR;
+				things[31] = thing_make(TIL_STAIRS, player.xpos - 1, player.ypos);
+			}
+			break;
+		default:
+			level_generate();
+			break;
+	}
 
 	screen_game();
 }
@@ -1532,9 +1607,10 @@ int main() {
 	/*VDP_loadTileData((const u32 *) tile_null, TIL_NULL, 1, 0);
 	VDP_loadTileData((const u32 *) tile_wall, TIL_WALL, 1, 0);
 	VDP_loadTileData((const u32 *) tile_floor, TIL_FLOOR, 1, 0);*/
-	VDP_loadTileSet(&bigtiles, TIL_NULL, 0);
 	/*VDP_loadTileData((const u32 *) tile_door_ns, TIL_DOOR_NS, 1, 0);
 	VDP_loadTileData((const u32 *) tile_door_ew, TIL_DOOR_EW, 1, 0);*/
+
+	VDP_loadTileSet(&bigtiles, TIL_NULL, 0);
 
 	// Initialise basic stuff
 	empty = thing_make(TIL_NULL, 0, 0);
